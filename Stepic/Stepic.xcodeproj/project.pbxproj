@@ -6,6 +6,14 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		F19FF8642D944A3500098615 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = F19FF8632D944A3500098615 /* RealmSwift */; };
+		F19FF8672D944A4E00098615 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = F19FF8662D944A4E00098615 /* RxCocoa */; };
+		F19FF8692D944A4E00098615 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = F19FF8682D944A4E00098615 /* RxSwift */; };
+		F19FF86C2D944A5F00098615 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = F19FF86B2D944A5F00098615 /* Lottie */; };
+		F19FF86F2D944A9800098615 /* Toast in Frameworks */ = {isa = PBXBuildFile; productRef = F19FF86E2D944A9800098615 /* Toast */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		F19FF8432D9447B700098615 /* Stepic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Stepic.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -36,6 +44,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F19FF8692D944A4E00098615 /* RxSwift in Frameworks */,
+				F19FF8672D944A4E00098615 /* RxCocoa in Frameworks */,
+				F19FF8642D944A3500098615 /* RealmSwift in Frameworks */,
+				F19FF86F2D944A9800098615 /* Toast in Frameworks */,
+				F19FF86C2D944A5F00098615 /* Lottie in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,6 +91,11 @@
 			);
 			name = Stepic;
 			packageProductDependencies = (
+				F19FF8632D944A3500098615 /* RealmSwift */,
+				F19FF8662D944A4E00098615 /* RxCocoa */,
+				F19FF8682D944A4E00098615 /* RxSwift */,
+				F19FF86B2D944A5F00098615 /* Lottie */,
+				F19FF86E2D944A9800098615 /* Toast */,
 			);
 			productName = Stepic;
 			productReference = F19FF8432D9447B700098615 /* Stepic.app */;
@@ -107,6 +125,12 @@
 			);
 			mainGroup = F19FF83A2D9447B700098615;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				F19FF8622D944A3400098615 /* XCRemoteSwiftPackageReference "realm-swift" */,
+				F19FF8652D944A4E00098615 /* XCRemoteSwiftPackageReference "RxSwift" */,
+				F19FF86A2D944A5F00098615 /* XCRemoteSwiftPackageReference "lottie-ios" */,
+				F19FF86D2D944A9800098615 /* XCRemoteSwiftPackageReference "Toast-Swift" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = F19FF8442D9447B700098615 /* Products */;
 			projectDirPath = "";
@@ -343,6 +367,69 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		F19FF8622D944A3400098615 /* XCRemoteSwiftPackageReference "realm-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/realm/realm-swift.git";
+			requirement = {
+				kind = exactVersion;
+				version = 10.54.3;
+			};
+		};
+		F19FF8652D944A4E00098615 /* XCRemoteSwiftPackageReference "RxSwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ReactiveX/RxSwift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.9.0;
+			};
+		};
+		F19FF86A2D944A5F00098615 /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-ios.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.5.1;
+			};
+		};
+		F19FF86D2D944A9800098615 /* XCRemoteSwiftPackageReference "Toast-Swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/scalessec/Toast-Swift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.1.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		F19FF8632D944A3500098615 /* RealmSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F19FF8622D944A3400098615 /* XCRemoteSwiftPackageReference "realm-swift" */;
+			productName = RealmSwift;
+		};
+		F19FF8662D944A4E00098615 /* RxCocoa */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F19FF8652D944A4E00098615 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxCocoa;
+		};
+		F19FF8682D944A4E00098615 /* RxSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F19FF8652D944A4E00098615 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxSwift;
+		};
+		F19FF86B2D944A5F00098615 /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F19FF86A2D944A5F00098615 /* XCRemoteSwiftPackageReference "lottie-ios" */;
+			productName = Lottie;
+		};
+		F19FF86E2D944A9800098615 /* Toast */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F19FF86D2D944A9800098615 /* XCRemoteSwiftPackageReference "Toast-Swift" */;
+			productName = Toast;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = F19FF83B2D9447B700098615 /* Project object */;
 }
