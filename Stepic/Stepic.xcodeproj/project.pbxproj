@@ -7,12 +7,27 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		F19FF8642D944A3500098615 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = F19FF8632D944A3500098615 /* RealmSwift */; };
 		F19FF8672D944A4E00098615 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = F19FF8662D944A4E00098615 /* RxCocoa */; };
 		F19FF8692D944A4E00098615 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = F19FF8682D944A4E00098615 /* RxSwift */; };
 		F19FF86C2D944A5F00098615 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = F19FF86B2D944A5F00098615 /* Lottie */; };
 		F19FF86F2D944A9800098615 /* Toast in Frameworks */ = {isa = PBXBuildFile; productRef = F19FF86E2D944A9800098615 /* Toast */; };
+		F1A408B02D956D8700947B9F /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = F1A408AF2D956D8700947B9F /* RealmSwift */; };
+		F1A408B12D956E3B00947B9F /* RealmSwift in Embed Frameworks */ = {isa = PBXBuildFile; productRef = F1A408AF2D956D8700947B9F /* RealmSwift */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		F1A408B22D956E3B00947B9F /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				F1A408B12D956E3B00947B9F /* RealmSwift in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		F19FF8432D9447B700098615 /* Stepic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Stepic.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -46,8 +61,8 @@
 			files = (
 				F19FF8692D944A4E00098615 /* RxSwift in Frameworks */,
 				F19FF8672D944A4E00098615 /* RxCocoa in Frameworks */,
-				F19FF8642D944A3500098615 /* RealmSwift in Frameworks */,
 				F19FF86F2D944A9800098615 /* Toast in Frameworks */,
+				F1A408B02D956D8700947B9F /* RealmSwift in Frameworks */,
 				F19FF86C2D944A5F00098615 /* Lottie in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -81,6 +96,7 @@
 				F19FF83F2D9447B700098615 /* Sources */,
 				F19FF8402D9447B700098615 /* Frameworks */,
 				F19FF8412D9447B700098615 /* Resources */,
+				F1A408B22D956E3B00947B9F /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -91,11 +107,11 @@
 			);
 			name = Stepic;
 			packageProductDependencies = (
-				F19FF8632D944A3500098615 /* RealmSwift */,
 				F19FF8662D944A4E00098615 /* RxCocoa */,
 				F19FF8682D944A4E00098615 /* RxSwift */,
 				F19FF86B2D944A5F00098615 /* Lottie */,
 				F19FF86E2D944A9800098615 /* Toast */,
+				F1A408AF2D956D8700947B9F /* RealmSwift */,
 			);
 			productName = Stepic;
 			productReference = F19FF8432D9447B700098615 /* Stepic.app */;
@@ -122,14 +138,15 @@
 			knownRegions = (
 				en,
 				Base,
+				ko,
 			);
 			mainGroup = F19FF83A2D9447B700098615;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				F19FF8622D944A3400098615 /* XCRemoteSwiftPackageReference "realm-swift" */,
 				F19FF8652D944A4E00098615 /* XCRemoteSwiftPackageReference "RxSwift" */,
 				F19FF86A2D944A5F00098615 /* XCRemoteSwiftPackageReference "lottie-ios" */,
 				F19FF86D2D944A9800098615 /* XCRemoteSwiftPackageReference "Toast-Swift" */,
+				F1A408AE2D956D8700947B9F /* XCRemoteSwiftPackageReference "realm-swift" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = F19FF8442D9447B700098615 /* Products */;
@@ -231,6 +248,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -285,6 +303,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -294,6 +313,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -341,6 +361,7 @@
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -369,14 +390,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		F19FF8622D944A3400098615 /* XCRemoteSwiftPackageReference "realm-swift" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/realm/realm-swift.git";
-			requirement = {
-				kind = exactVersion;
-				version = 10.54.3;
-			};
-		};
 		F19FF8652D944A4E00098615 /* XCRemoteSwiftPackageReference "RxSwift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ReactiveX/RxSwift.git";
@@ -401,14 +414,17 @@
 				minimumVersion = 5.1.1;
 			};
 		};
+		F1A408AE2D956D8700947B9F /* XCRemoteSwiftPackageReference "realm-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/realm/realm-swift.git";
+			requirement = {
+				kind = exactVersion;
+				version = 10.54.3;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		F19FF8632D944A3500098615 /* RealmSwift */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = F19FF8622D944A3400098615 /* XCRemoteSwiftPackageReference "realm-swift" */;
-			productName = RealmSwift;
-		};
 		F19FF8662D944A4E00098615 /* RxCocoa */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = F19FF8652D944A4E00098615 /* XCRemoteSwiftPackageReference "RxSwift" */;
@@ -428,6 +444,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = F19FF86D2D944A9800098615 /* XCRemoteSwiftPackageReference "Toast-Swift" */;
 			productName = Toast;
+		};
+		F1A408AF2D956D8700947B9F /* RealmSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F1A408AE2D956D8700947B9F /* XCRemoteSwiftPackageReference "realm-swift" */;
+			productName = RealmSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
