@@ -1,14 +1,14 @@
 //
-//  ViewController.swift
+//  MyPageViewController.swift
 //  Stepic
 //
-//  Created by 강민수 on 3/26/25.
+//  Created by 강민수 on 3/27/25.
 //
 
 import UIKit
 
-class ViewController: UIViewController {
-
+final class MyPageViewController: UIViewController {
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .cyan
