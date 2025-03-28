@@ -16,4 +16,8 @@ extension UIImage {
     static var personImage: UIImage {
         return UIImage(systemName: "person")!
     }
+    
+    static var chevronDown: UIImage {
+        return UIImage(systemName: "chevron.down")!
+    }
 }
