@@ -13,6 +13,8 @@
 		F19FF86F2D944A9800098615 /* Toast in Frameworks */ = {isa = PBXBuildFile; productRef = F19FF86E2D944A9800098615 /* Toast */; };
 		F1A408B02D956D8700947B9F /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = F1A408AF2D956D8700947B9F /* RealmSwift */; };
 		F1A408B12D956E3B00947B9F /* RealmSwift in Embed Frameworks */ = {isa = PBXBuildFile; productRef = F1A408AF2D956D8700947B9F /* RealmSwift */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		F1A408B52D9577A300947B9F /* FSCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = F1A408B42D9577A300947B9F /* FSCalendar */; };
+		F1A408B82D9577BE00947B9F /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = F1A408B72D9577BE00947B9F /* SnapKit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -60,7 +62,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				F19FF8692D944A4E00098615 /* RxSwift in Frameworks */,
+				F1A408B52D9577A300947B9F /* FSCalendar in Frameworks */,
 				F19FF8672D944A4E00098615 /* RxCocoa in Frameworks */,
+				F1A408B82D9577BE00947B9F /* SnapKit in Frameworks */,
 				F19FF86F2D944A9800098615 /* Toast in Frameworks */,
 				F1A408B02D956D8700947B9F /* RealmSwift in Frameworks */,
 				F19FF86C2D944A5F00098615 /* Lottie in Frameworks */,
@@ -112,6 +116,8 @@
 				F19FF86B2D944A5F00098615 /* Lottie */,
 				F19FF86E2D944A9800098615 /* Toast */,
 				F1A408AF2D956D8700947B9F /* RealmSwift */,
+				F1A408B42D9577A300947B9F /* FSCalendar */,
+				F1A408B72D9577BE00947B9F /* SnapKit */,
 			);
 			productName = Stepic;
 			productReference = F19FF8432D9447B700098615 /* Stepic.app */;
@@ -147,6 +153,8 @@
 				F19FF86A2D944A5F00098615 /* XCRemoteSwiftPackageReference "lottie-ios" */,
 				F19FF86D2D944A9800098615 /* XCRemoteSwiftPackageReference "Toast-Swift" */,
 				F1A408AE2D956D8700947B9F /* XCRemoteSwiftPackageReference "realm-swift" */,
+				F1A408B32D9577A300947B9F /* XCRemoteSwiftPackageReference "FSCalendar" */,
+				F1A408B62D9577BE00947B9F /* XCRemoteSwiftPackageReference "SnapKit" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = F19FF8442D9447B700098615 /* Products */;
@@ -422,6 +430,22 @@
 				version = 10.54.3;
 			};
 		};
+		F1A408B32D9577A300947B9F /* XCRemoteSwiftPackageReference "FSCalendar" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/WenchaoD/FSCalendar.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.8.4;
+			};
+		};
+		F1A408B62D9577BE00947B9F /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.7.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -449,6 +473,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = F1A408AE2D956D8700947B9F /* XCRemoteSwiftPackageReference "realm-swift" */;
 			productName = RealmSwift;
+		};
+		F1A408B42D9577A300947B9F /* FSCalendar */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F1A408B32D9577A300947B9F /* XCRemoteSwiftPackageReference "FSCalendar" */;
+			productName = FSCalendar;
+		};
+		F1A408B72D9577BE00947B9F /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F1A408B62D9577BE00947B9F /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

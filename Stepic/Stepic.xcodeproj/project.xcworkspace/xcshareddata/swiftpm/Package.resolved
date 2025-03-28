@@ -1,6 +1,15 @@
 {
-  "originHash" : "5af8261aa956d09f5bbc306c3b39ec98555c22fd6d898d1921900f9ee5878036",
+  "originHash" : "3877557a6bb1063cde5c9e1a097a4b35313532eb7ad156cc8a5ebcd7d3a4b678",
   "pins" : [
+    {
+      "identity" : "fscalendar",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/WenchaoD/FSCalendar.git",
+      "state" : {
+        "revision" : "0fbdec5172fccb90f707472eeaea4ffe095278f6",
+        "version" : "2.8.4"
+      }
+    },
     {
       "identity" : "lottie-ios",
       "kind" : "remoteSourceControl",
@@ -35,6 +44,15 @@
       "state" : {
         "revision" : "5dd1907d64f0d36f158f61a466bab75067224893",
         "version" : "6.9.0"
+      }
+    },
+    {
+      "identity" : "snapkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SnapKit/SnapKit.git",
+      "state" : {
+        "revision" : "2842e6e84e82eb9a8dac0100ca90d9444b0307f4",
+        "version" : "5.7.1"
       }
     },
     {
