@@ -29,7 +29,7 @@ final class HomeViewController: UIViewController {
     }
     
     private func configureView() {
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .backgroundPrimary
         
         scrollView.showsVerticalScrollIndicator = false
         
@@ -37,7 +37,7 @@ final class HomeViewController: UIViewController {
         calendarTitleLabel.textColor = .textPrimary
         calendarTitleLabel.font = .titleLarge
         
-        calendarButton.configuration = configureButtonConfiguration()
+        calendarButton.configuration = configureCalendarButtonConfiguration()
         
         calendar.headerHeight = 0
         calendar.appearance.weekdayTextColor = .textSecondary // 요일 글자색
@@ -54,13 +54,22 @@ final class HomeViewController: UIViewController {
         calendar.appearance.titleSelectionColor = .white // 선택된 날짜 글자색
         calendar.appearance.todayColor = .accentPrimary
         calendar.appearance.titleTodayColor = .white
+        calendar.scrollEnabled = false
         
         recordCollectionView.backgroundColor = .clear
-        recordCollectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "Cell") // TODO: 기본 Cell
+        recordCollectionView.delegate = self // TODO: 이후 삭제
+        recordCollectionView.dataSource = self // TODO: 이후 삭제
+        recordCollectionView.register(
+            RecordCollectionViewCell.self,
+            forCellWithReuseIdentifier: RecordCollectionViewCell.identifier
+        )
+        recordCollectionView.register(
+            RecordCollectionHeaderView.self,
+            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+            withReuseIdentifier: RecordCollectionHeaderView.identifier
+        )
         
-        recordButton.setTitle(.StringLiterals.Home.walkButtonTitle, for: .normal)
-        recordButton.backgroundColor = .accentPrimary
-        recordButton.setTitleColor(.white, for: .normal)
+        recordButton.configuration = configureMainButtonButtonConfiguration(title: .StringLiterals.Home.walkButtonTitle)
         recordButton.layer.cornerRadius = 10
     }
     
@@ -105,9 +114,11 @@ final class HomeViewController: UIViewController {
         }
         
         recordCollectionView.snp.makeConstraints {
+            let screenWidth: CGFloat = view.window?.windowScene?.screen.bounds.width ?? UIScreen.main.bounds.width
+            let height = (screenWidth - 56) / 2 + 174 + 38
             $0.top.equalTo(calendar.snp.bottom).offset(34)
-            $0.horizontalEdges.equalToSuperview().inset(22)
-            $0.height.equalTo(375)
+            $0.horizontalEdges.equalToSuperview()
+            $0.height.equalTo(height)
         }
         
         recordButton.snp.makeConstraints {
@@ -119,25 +130,78 @@ final class HomeViewController: UIViewController {
     }
     
     private func configureCollectionLayout() -> UICollectionViewLayout {
-        let itemSize = NSCollectionLayoutSize(widthDimension: .absolute(300), heightDimension: .absolute(225))
+        let itemSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1),
+            heightDimension: .fractionalHeight(1)
+        )
+        
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         
-        let groupSize = NSCollectionLayoutSize(widthDimension: .absolute(300), heightDimension: .absolute(225))
+        let screenWidth: CGFloat = view.window?.windowScene?.screen.bounds.width ?? UIScreen.main.bounds.width
+        let groupHeight = (screenWidth - 56) / 2 + 174
+        let groupSize = NSCollectionLayoutSize(
+            widthDimension: .absolute(screenWidth - 44),
+            heightDimension: .absolute(groupHeight)
+        )
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
         
         let section = NSCollectionLayoutSection(group: group)
-        section.orthogonalScrollingBehavior = .continuous
+        section.orthogonalScrollingBehavior = .groupPaging
         section.interGroupSpacing = 10
+        section.contentInsets = NSDirectionalEdgeInsets(top: .zero, leading: 22, bottom: .zero, trailing: 22)
+        
+        let headerSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1.0),
+            heightDimension: .absolute(38)
+        )
+        
+        let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(
+            layoutSize: headerSize,
+            elementKind: UICollectionView.elementKindSectionHeader,
+            alignment: .top
+        )
+        section.boundarySupplementaryItems = [sectionHeader]
         
         return UICollectionViewCompositionalLayout(section: section)
     }
     
-    private func configureButtonConfiguration() -> UIButton.Configuration {
+    private func configureCalendarButtonConfiguration() -> UIButton.Configuration {
         var configuration = UIButton.Configuration.plain()
         configuration.image = .chevronDown
         configuration.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(pointSize: 12)
         configuration.baseForegroundColor = .accessoryContent
         
         return configuration
+    }
+}
+
+// MARK: - TODO: 이후 삭제
+extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 10
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: RecordCollectionViewCell.identifier,
+            for: indexPath
+        ) as? RecordCollectionViewCell else { return UICollectionViewCell() }
+        
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        guard kind == UICollectionView.elementKindSectionHeader else {
+            return UICollectionReusableView()
+        }
+        
+        guard let headerView = collectionView.dequeueReusableSupplementaryView(
+            ofKind: kind,
+            withReuseIdentifier: RecordCollectionHeaderView.identifier,
+            for: indexPath
+        ) as? RecordCollectionHeaderView else { return UICollectionReusableView() }
+                
+        return headerView
     }
 }
