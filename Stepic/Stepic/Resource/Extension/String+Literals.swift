@@ -24,6 +24,10 @@ extension String {
         
         enum Home {
             static let walkButtonTitle: String = localized("homeWalkButton")
+            static let emotionTitle: String = localized("emotionTitle")
+            static let timeTitle: String = localized("timeTitle")
+            static let distanceTitle: String = localized("distanceTitle")
+            static let recordTitle: String = localized("recordTitle")
         }
     }
 }
