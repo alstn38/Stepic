@@ -21,5 +21,9 @@ extension String {
             static let homeTitle: String = localized("tapBarHomeTitle")
             static let myPageTitle: String = localized("tapBarMyPageTitle")
         }
+        
+        enum Home {
+            static let walkButtonTitle: String = localized("homeWalkButton")
+        }
     }
 }
