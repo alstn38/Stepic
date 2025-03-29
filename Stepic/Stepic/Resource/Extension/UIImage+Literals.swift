@@ -32,4 +32,8 @@ extension UIImage {
     static var camera: UIImage {
         return UIImage(systemName: "camera")!
     }
+    
+    static var xMark: UIImage {
+        return UIImage(systemName: "xmark")!
+    }
 }
