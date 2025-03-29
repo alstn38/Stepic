@@ -12,6 +12,7 @@ import SnapKit
 
 final class HomeViewController: UIViewController {
     
+    private let weatherView = WeatherView()
     private let scrollView = UIScrollView()
     private let contentView = UIView()
     private let calendarTitleLabel = UILabel()
@@ -23,9 +24,14 @@ final class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        configureNavigation()
         configureView()
         configureHierarchy()
         configureLayout()
+    }
+    
+    private func configureNavigation() {
+        navigationItem.titleView = weatherView
     }
     
     private func configureView() {
