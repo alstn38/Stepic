@@ -20,4 +20,16 @@ extension UIImage {
     static var chevronDown: UIImage {
         return UIImage(systemName: "chevron.down")!
     }
+    
+    static var photo: UIImage {
+        return UIImage(systemName: "photo")!
+    }
+    
+    static var squareFill: UIImage {
+        return UIImage(systemName: "square.fill")!
+    }
+    
+    static var camera: UIImage {
+        return UIImage(systemName: "camera")!
+    }
 }
