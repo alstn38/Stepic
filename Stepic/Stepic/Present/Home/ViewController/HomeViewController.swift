@@ -51,16 +51,22 @@ final class HomeViewController: UIViewController {
         calendar.placeholderType = .none
         calendar.scope = .month
         calendar.appearance.titleFont = .captionRegular // 날짜 숫자 크기
-        calendar.appearance.imageOffset = CGPoint(x: 0, y: 10) // 이미지 위치 조정
+        calendar.appearance.titleOffset = CGPoint(x: 0, y: -10)
+        calendar.appearance.imageOffset = CGPoint(x: 0, y: 3) // 이미지 위치 조정
         calendar.backgroundColor = .backgroundSecondary
         calendar.layer.cornerRadius = 10
         calendar.clipsToBounds = true
         calendar.appearance.titleDefaultColor = .textSecondary // 기본 날짜 글자색
-        calendar.appearance.selectionColor = .accentPrimary.withAlphaComponent(0.3) // 선택된 날짜 배경색
+        calendar.appearance.selectionColor = .accentPrimary.withAlphaComponent(0.7) // 선택된 날짜 배경색
         calendar.appearance.titleSelectionColor = .white // 선택된 날짜 글자색
         calendar.appearance.todayColor = .accentPrimary
         calendar.appearance.titleTodayColor = .white
         calendar.scrollEnabled = false
+        calendar.appearance.borderRadius = 8.0
+        
+        calendar.delegate = self
+        calendar.dataSource = self
+        calendar.register(CalendarCell.self, forCellReuseIdentifier: CalendarCell.identifier)
         
         recordCollectionView.backgroundColor = .clear
         recordCollectionView.delegate = self // TODO: 이후 삭제
@@ -209,5 +215,33 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         ) as? RecordCollectionHeaderView else { return UICollectionReusableView() }
                 
         return headerView
+    }
+}
+
+extension HomeViewController: FSCalendarDelegate, FSCalendarDataSource {
+    
+    /// 캘린더의 이미지 설정
+    func calendar(_ calendar: FSCalendar, imageFor date: Date) -> UIImage? {
+        let image = UIImage(systemName: "circle.fill")
+        
+        return resizeImage(image: image, targetSize: CGSize(width: 38, height: 38))
+    }
+    
+    func calendar(_ calendar: FSCalendar, cellFor date: Date, at position: FSCalendarMonthPosition) -> FSCalendarCell {
+        guard let cell = calendar.dequeueReusableCell(
+            withIdentifier: CalendarCell.identifier,
+            for: date,
+            at: position
+        ) as? CalendarCell else { return FSCalendarCell() }
+        return cell
+    }
+    
+    /// 이미지 크기 조절 (파일 위치 변경 가능)
+    private func resizeImage(image: UIImage?, targetSize: CGSize) -> UIImage? {
+        guard let image = image else { return nil }
+        let renderer = UIGraphicsImageRenderer(size: targetSize)
+        return renderer.image { _ in
+            image.draw(in: CGRect(origin: .zero, size: targetSize))
+        }
     }
 }
