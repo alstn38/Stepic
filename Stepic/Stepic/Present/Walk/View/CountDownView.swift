@@ -42,7 +42,7 @@ final class CountDownView: UIView {
     
     private func configureView() {
         self.isHidden = true
-        self.backgroundColor = .backgroundPrimary
+        self.backgroundColor = .backgroundRunning
         
         if self.traitCollection.userInterfaceStyle == .dark {
             animationView = LottieAnimationView(name: "countDownDark")
