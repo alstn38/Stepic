@@ -19,7 +19,7 @@ final class WalkViewController: UIViewController {
     private let timeTitleLabel = UILabel()
     private let durationDistanceLabel = UILabel()
     private let distanceTitleLabel = UILabel()
-    private let pictureCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+    private lazy var pictureCollectionView = UICollectionView(frame: .zero, collectionViewLayout: configureFlowLayout())
     private let walkAnimationView = LottieAnimationView(name: "walkLight")
     private let albumButtonView = WalkButtonView(buttonImage: .photo)
     private let pauseButtonView = WalkButtonView(buttonImage: .squareFill)
@@ -62,6 +62,12 @@ final class WalkViewController: UIViewController {
         
         pictureCollectionView.showsHorizontalScrollIndicator = false
         pictureCollectionView.backgroundColor = .clear
+        pictureCollectionView.register(
+            WalkPictureCollectionViewCell.self,
+            forCellWithReuseIdentifier: WalkPictureCollectionViewCell.identifier
+        )
+        pictureCollectionView.delegate = self // TODO: 이후 삭제
+        pictureCollectionView.dataSource = self // TODO: 이후 삭제
         
         walkAnimationView.loopMode = .loop
         walkAnimationView.play()
@@ -146,5 +152,59 @@ final class WalkViewController: UIViewController {
             $0.bottom.equalTo(view.safeAreaLayoutGuide).offset(-60.adjustedHeight)
             $0.trailing.equalToSuperview().inset((screenWidth - 156) / 4)
         }
+    }
+    
+    private func configureFlowLayout() -> UICollectionViewFlowLayout {
+        let screenWidth: CGFloat = view.window?.windowScene?.screen.bounds.width ?? UIScreen.main.bounds.width
+        let spacing: CGFloat = 65
+        let cellLength: CGFloat = screenWidth - (spacing * 2)
+        
+        let layout = CarouselLayout()
+        layout.scrollDirection = .horizontal
+        layout.minimumInteritemSpacing = 10
+        layout.itemSize = CGSize(width: cellLength, height: cellLength)
+        layout.sectionInset = UIEdgeInsets(top: .zero, left: spacing, bottom: .zero, right: spacing)
+        
+        return layout
+    }
+}
+
+// MARK: - UIScrollViewDelegate
+extension WalkViewController: UIScrollViewDelegate {
+    
+    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        guard let layout = pictureCollectionView.collectionViewLayout as? CarouselLayout else { return }
+        
+        let pageWidth = layout.itemSize.width + layout.minimumLineSpacing
+        let currentPage = round(scrollView.contentOffset.x / pageWidth)
+        let nextPage: CGFloat
+        
+        if velocity.x > 0 {
+            nextPage = ceil(scrollView.contentOffset.x / pageWidth)
+        } else if velocity.x < 0 {
+            nextPage = floor(scrollView.contentOffset.x / pageWidth)
+        } else {
+            nextPage = round(scrollView.contentOffset.x / pageWidth)
+        }
+        
+        let targetX = nextPage * pageWidth
+        targetContentOffset.pointee = CGPoint(x: targetX, y: targetContentOffset.pointee.y)
+    }
+}
+
+// TODO: 이후 삭제
+extension WalkViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 10
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: WalkPictureCollectionViewCell.identifier,
+            for: indexPath
+        ) as? WalkPictureCollectionViewCell else { return UICollectionViewCell() }
+        
+        return cell
     }
 }
