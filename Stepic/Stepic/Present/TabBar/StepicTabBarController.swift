@@ -47,9 +47,9 @@ final class StepicTabBarController: UITabBarController {
     private func configureTabBarAppearance() {
         let tabBarAppearance = UITabBarAppearance()
         tabBarAppearance.configureWithDefaultBackground()
-        tabBarAppearance.stackedLayoutAppearance.selected.iconColor = .accentPrimary
+        tabBarAppearance.stackedLayoutAppearance.selected.iconColor = .textPrimary
         tabBar.standardAppearance = tabBarAppearance
         tabBar.scrollEdgeAppearance = tabBarAppearance
-        tabBar.tintColor = .accentPrimary
+        tabBar.tintColor = .textPrimary
     }
 }
