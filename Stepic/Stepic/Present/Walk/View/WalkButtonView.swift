@@ -7,14 +7,28 @@
 
 import UIKit
 
+import RxCocoa
+import RxSwift
 import SnapKit
 
 final class WalkButtonView: UIView {
     
+    let tapGesture = UITapGestureRecognizer()
+    var longTapGesture: Observable<Void> {
+        return logTapGestureSubject.asObserver()
+    }
+    
+    private let longGesture: Bool
     private let buttonImage: UIImage
+    private var longPressTimer: Timer?
+    private let feedbackGenerator = UIImpactFeedbackGenerator(style: .medium)
+    private let logTapGestureSubject = PublishSubject<Void>()
+    private let disposeBag = DisposeBag()
+    
     private let buttonImageView = UIImageView()
     
-    init(buttonImage: UIImage) {
+    init(longGesture: Bool, buttonImage: UIImage) {
+        self.longGesture = longGesture
         self.buttonImage = buttonImage
         super.init(frame: .zero)
         
@@ -59,6 +73,22 @@ final class WalkButtonView: UIView {
         self.layer.cornerRadius = 26
         self.backgroundColor = .backgroundButton
         
+        if longGesture {
+            feedbackGenerator.prepare()
+            let longPressGesture = UILongPressGestureRecognizer(
+                target: self,
+                action: #selector(handleLongPress(_:))
+            )
+            longPressGesture.minimumPressDuration = 0.1
+            self.addGestureRecognizer(longPressGesture)
+            
+            buttonImageView.image = buttonImage
+            buttonImageView.contentMode = .scaleAspectFit
+            buttonImageView.tintColor = .white
+        } else {
+            self.addGestureRecognizer(tapGesture)
+        }
+        
         buttonImageView.image = buttonImage
         buttonImageView.contentMode = .scaleAspectFit
         buttonImageView.tintColor = .white
@@ -72,5 +102,38 @@ final class WalkButtonView: UIView {
         buttonImageView.snp.makeConstraints {
             $0.edges.equalToSuperview().inset(14)
         }
+    }
+    
+    @objc private func handleLongPress(_ gesture: UILongPressGestureRecognizer) {
+        switch gesture.state {
+        case .began:
+            startLongPressAnimation()
+        case .ended, .cancelled:
+            resetButton()
+        default:
+            break
+        }
+    }
+    
+    private func startLongPressAnimation() {
+        feedbackGenerator.impactOccurred()
+        UIView.animate(withDuration: 2.0, delay: 0, options: [.curveEaseOut], animations: {
+            self.transform = CGAffineTransform(scaleX: 2, y: 2)
+        })
+        
+        longPressTimer = Timer.scheduledTimer(withTimeInterval: 2.0, repeats: false) {
+            [weak self] _ in
+            self?.logTapGestureSubject.onNext(())
+            self?.resetButton()
+            self?.feedbackGenerator.impactOccurred()
+        }
+    }
+    
+    private func resetButton() {
+        self.layer.removeAllAnimations()
+        longPressTimer?.invalidate()
+        longPressTimer = nil
+        
+        self.transform = .identity
     }
 }
