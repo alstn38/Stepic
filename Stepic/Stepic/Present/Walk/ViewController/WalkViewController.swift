@@ -8,6 +8,8 @@
 import UIKit
 
 import Lottie
+import RxCocoa
+import RxSwift
 import SnapKit
 
 final class WalkViewController: UIViewController {
@@ -21,9 +23,9 @@ final class WalkViewController: UIViewController {
     private let distanceTitleLabel = UILabel()
     private lazy var pictureCollectionView = UICollectionView(frame: .zero, collectionViewLayout: configureFlowLayout())
     private let walkAnimationView = LottieAnimationView(name: "walkLight")
-    private let albumButtonView = WalkButtonView(buttonImage: .photo)
-    private let pauseButtonView = WalkButtonView(buttonImage: .squareFill)
-    private let cameraButtonView = WalkButtonView(buttonImage: .camera)
+    private let albumButtonView = WalkButtonView(longGesture: false, buttonImage: .photo)
+    private let pauseButtonView = WalkButtonView(longGesture: true, buttonImage: .squareFill)
+    private let cameraButtonView = WalkButtonView(longGesture: false, buttonImage: .camera)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -176,7 +178,6 @@ extension WalkViewController: UIScrollViewDelegate {
         guard let layout = pictureCollectionView.collectionViewLayout as? CarouselLayout else { return }
         
         let pageWidth = layout.itemSize.width + layout.minimumLineSpacing
-        let currentPage = round(scrollView.contentOffset.x / pageWidth)
         let nextPage: CGFloat
         
         if velocity.x > 0 {
