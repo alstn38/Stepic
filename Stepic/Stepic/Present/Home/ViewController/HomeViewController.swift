@@ -8,9 +8,13 @@
 import UIKit
 
 import FSCalendar
+import RxSwift
+import RxCocoa
 import SnapKit
 
 final class HomeViewController: UIViewController {
+    
+    private let disposeBag = DisposeBag()
     
     private let weatherView = WeatherView()
     private let scrollView = UIScrollView()
@@ -28,6 +32,16 @@ final class HomeViewController: UIViewController {
         configureView()
         configureHierarchy()
         configureLayout()
+        
+        // TODO: 이후 위치 변경
+        recordButton.rx.tap
+            .bind(with: self) { owner, _ in
+                let viewController = WalkViewController()
+                viewController.modalPresentationStyle = .fullScreen
+                viewController.modalTransitionStyle = .crossDissolve
+                self.present(viewController, animated: false)
+            }
+            .disposed(by: disposeBag)
     }
     
     private func configureNavigation() {
