@@ -36,4 +36,12 @@ extension UIImage {
     static var xMark: UIImage {
         return UIImage(systemName: "xmark")!
     }
+    
+    static var bookmark: UIImage {
+        return UIImage(systemName: "bookmark")!
+    }
+    
+    static var bookmarkFill: UIImage {
+        return UIImage(systemName: "bookmark.fill")!
+    }
 }
