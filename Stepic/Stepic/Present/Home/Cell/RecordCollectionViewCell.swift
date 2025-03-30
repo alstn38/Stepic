@@ -85,7 +85,7 @@ final class RecordCollectionViewCell: UICollectionViewCell, ReusableViewProtocol
         emotionImageView.tintColor = .textPrimary
         
         emotionTitleLabel.text = .StringLiterals.Home.emotionTitle
-        emotionTitleLabel.textColor = .textPrimary
+        emotionTitleLabel.textColor = .textSecondary
         emotionTitleLabel.font = .captionRegular
         
         timeStackView.axis = .vertical
@@ -97,7 +97,7 @@ final class RecordCollectionViewCell: UICollectionViewCell, ReusableViewProtocol
         durationTimeLabel.font = .titleMedium
         
         timeTitleLabel.text = .StringLiterals.Home.timeTitle
-        timeTitleLabel.textColor = .textPrimary
+        timeTitleLabel.textColor = .textSecondary
         timeTitleLabel.font = .captionRegular
         
         distanceStackView.axis = .vertical
@@ -109,7 +109,7 @@ final class RecordCollectionViewCell: UICollectionViewCell, ReusableViewProtocol
         travelDistanceLabel.font = .titleMedium
         
         distanceTitleLabel.text = .StringLiterals.Home.distanceTitle
-        distanceTitleLabel.textColor = .textPrimary
+        distanceTitleLabel.textColor = .textSecondary
         distanceTitleLabel.font = .captionRegular
         
         lineView.backgroundColor = .textPlaceholder
