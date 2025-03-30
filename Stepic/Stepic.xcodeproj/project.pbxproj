@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F17442FF2D9976D30089D8AE /* RxGesture in Frameworks */ = {isa = PBXBuildFile; productRef = F17442FE2D9976D30089D8AE /* RxGesture */; };
 		F19FF8672D944A4E00098615 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = F19FF8662D944A4E00098615 /* RxCocoa */; };
 		F19FF8692D944A4E00098615 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = F19FF8682D944A4E00098615 /* RxSwift */; };
 		F19FF86C2D944A5F00098615 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = F19FF86B2D944A5F00098615 /* Lottie */; };
@@ -63,6 +64,7 @@
 			files = (
 				F19FF8692D944A4E00098615 /* RxSwift in Frameworks */,
 				F1A408B52D9577A300947B9F /* FSCalendar in Frameworks */,
+				F17442FF2D9976D30089D8AE /* RxGesture in Frameworks */,
 				F19FF8672D944A4E00098615 /* RxCocoa in Frameworks */,
 				F1A408B82D9577BE00947B9F /* SnapKit in Frameworks */,
 				F19FF86F2D944A9800098615 /* Toast in Frameworks */,
@@ -118,6 +120,7 @@
 				F1A408AF2D956D8700947B9F /* RealmSwift */,
 				F1A408B42D9577A300947B9F /* FSCalendar */,
 				F1A408B72D9577BE00947B9F /* SnapKit */,
+				F17442FE2D9976D30089D8AE /* RxGesture */,
 			);
 			productName = Stepic;
 			productReference = F19FF8432D9447B700098615 /* Stepic.app */;
@@ -155,6 +158,7 @@
 				F1A408AE2D956D8700947B9F /* XCRemoteSwiftPackageReference "realm-swift" */,
 				F1A408B32D9577A300947B9F /* XCRemoteSwiftPackageReference "FSCalendar" */,
 				F1A408B62D9577BE00947B9F /* XCRemoteSwiftPackageReference "SnapKit" */,
+				F17442FD2D9976D30089D8AE /* XCRemoteSwiftPackageReference "RxGesture" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = F19FF8442D9447B700098615 /* Products */;
@@ -398,6 +402,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		F17442FD2D9976D30089D8AE /* XCRemoteSwiftPackageReference "RxGesture" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/RxSwiftCommunity/RxGesture.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.0.4;
+			};
+		};
 		F19FF8652D944A4E00098615 /* XCRemoteSwiftPackageReference "RxSwift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ReactiveX/RxSwift.git";
@@ -449,6 +461,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		F17442FE2D9976D30089D8AE /* RxGesture */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F17442FD2D9976D30089D8AE /* XCRemoteSwiftPackageReference "RxGesture" */;
+			productName = RxGesture;
+		};
 		F19FF8662D944A4E00098615 /* RxCocoa */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = F19FF8652D944A4E00098615 /* XCRemoteSwiftPackageReference "RxSwift" */;
