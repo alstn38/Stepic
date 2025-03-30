@@ -34,5 +34,16 @@ extension String {
             static let timeTitle: String = localized("timeTitle")
             static let distanceTitle: String = localized("distanceTitle")
         }
+        
+        enum Detail {
+            static let walkInfoTitle: String = localized("walkInfoTitle")
+            static let weatherTitle: String = localized("weatherTitle")
+            static let startingPointTitle: String = localized("startingPointTitle")
+            static let endingPointTitle: String = localized("endingPointTitle")
+            static let startTimeTitle: String = localized("startTimeTitle")
+            static let endTimeTitle: String = localized("endTimeTitle")
+            static let durationTimeTitle: String = localized("durationTimeTitle")
+            static let distanceTitle: String = localized("distanceTitle")
+        }
     }
 }
