@@ -44,6 +44,15 @@ extension String {
             static let endTimeTitle: String = localized("endTimeTitle")
             static let durationTimeTitle: String = localized("durationTimeTitle")
             static let distanceTitle: String = localized("distanceTitle")
+            static let recordTitle: String = localized("recordTitle")
+            static let loveButtonTitle: String = localized("loveButtonTitle")
+            static let happyButtonTitle: String = localized("happyButtonTitle")
+            static let neutralButtonTitle: String = localized("neutralButtonTitle")
+            static let tiredButtonTitle: String = localized("tiredButtonTitle")
+            static let sadButtonTitle: String = localized("sadButtonTitle")
+            static let angryButtonTitle: String = localized("angryButtonTitle")
+            static let recordTitlePlaceholder: String = localized("recordTitlePlaceholder")
+            static let recordContentPlaceholder: String = localized("recordContentPlaceholder")
         }
     }
 }
