@@ -48,4 +48,24 @@ extension UIImage {
     static var photoBadgePlus: UIImage {
         return UIImage(systemName: "photo.badge.plus")!
     }
+    
+    static var gearShape: UIImage {
+        return UIImage(systemName: "gearshape")!
+    }
+    
+    static var timer: UIImage {
+        return UIImage(systemName: "timer")!
+    }
+    
+    static var figureWalk: UIImage {
+        return UIImage(systemName: "figure.walk")!
+    }
+    
+    static var squareGrid: UIImage {
+        return UIImage(systemName: "square.grid.2x2")!
+    }
+    
+    static var calendar: UIImage {
+        return UIImage(systemName: "calendar")!
+    }
 }
