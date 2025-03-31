@@ -14,6 +14,8 @@ import SnapKit
 
 final class WalkViewController: UIViewController {
     
+    private let disposeBag = DisposeBag()
+    
     private let weatherView = WeatherView()
     private let countDownView = CountDownView()
     private let durationStackView = UIStackView()
@@ -30,6 +32,7 @@ final class WalkViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        configureBind()
         configureView()
         configureHierarchy()
         configureLayout()
@@ -38,6 +41,18 @@ final class WalkViewController: UIViewController {
         countDownView.startAnimation {
             print("애니메이션 끝남")
         }
+    }
+    
+    private func configureBind() {
+        pauseButtonView.longTapGesture
+            .bind(with: self) { owner, _ in
+                let viewController = DetailViewController()
+                let navigationController = UINavigationController(rootViewController: viewController)
+                navigationController.modalPresentationStyle = .overFullScreen
+                navigationController.modalTransitionStyle = .crossDissolve
+                owner.present(navigationController, animated: true)
+            }
+            .disposed(by: disposeBag)
     }
     
     private func configureView() {
