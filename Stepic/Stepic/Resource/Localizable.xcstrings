@@ -103,6 +103,23 @@
         }
       }
     },
+    "endWalkButton" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "End Walking"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "산책 종료하기"
+          }
+        }
+      }
+    },
     "happyButtonTitle" : {
       "extractionState" : "manual",
       "localizations" : {

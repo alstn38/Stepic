@@ -55,6 +55,7 @@ extension String {
             static let recordContentPlaceholder: String = localized("recordContentPlaceholder")
             static let photoTitle: String = localized("photoTitle")
             static let routeTitle: String = localized("routeTitle")
+            static let endWalkButton: String = localized("endWalkButton")
         }
     }
 }
