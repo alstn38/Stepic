@@ -98,7 +98,7 @@ final class RecordView: UIView {
         emotionButtonDidTap
             .bind(with: self) { owner, type in
                 owner.emotionButtonArray.forEach {
-                    $0.configuration?.baseForegroundColor = .textSecondary
+                    $0.configuration?.baseForegroundColor = .accessoryBackground
                 }
                 owner.emotionButtonArray[type.rawValue].configuration?.baseForegroundColor = .textPrimary
             }
@@ -238,7 +238,7 @@ final class RecordView: UIView {
         configuration.image = resizedImage
         configuration.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(pointSize: 30)
         configuration.imagePadding = 4
-        configuration.baseForegroundColor = .textSecondary
+        configuration.baseForegroundColor = .accessoryBackground
         configuration.imagePlacement = .top
         
         return configuration
