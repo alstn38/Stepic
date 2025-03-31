@@ -23,6 +23,7 @@ final class DetailViewController: UIViewController {
     private let pictureSelectView = PictureSelectView()
     private let recordView = RecordView()
     private let routeView = RouteView()
+    private let recordButton = UIButton(type: .system)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -59,6 +60,9 @@ final class DetailViewController: UIViewController {
         view.backgroundColor = .backgroundPrimary
         
         scrollView.showsVerticalScrollIndicator = false
+        
+        recordButton.configuration = configureMainButtonButtonConfiguration(title: .StringLiterals.Detail.endWalkButton)
+        recordButton.layer.cornerRadius = 10
     }
     
     private func configureHierarchy() {
@@ -70,7 +74,8 @@ final class DetailViewController: UIViewController {
             walkInfoView,
             pictureSelectView,
             recordView,
-            routeView
+            routeView,
+            recordButton
         )
     }
     
@@ -102,7 +107,13 @@ final class DetailViewController: UIViewController {
         routeView.snp.makeConstraints {
             $0.top.equalTo(recordView.snp.bottom).offset(34)
             $0.horizontalEdges.equalToSuperview()
-            $0.bottom.equalToSuperview() // 항상 마지막 뷰는 해당 레이아웃 추가
+        }
+        
+        recordButton.snp.makeConstraints {
+            $0.top.equalTo(routeView.snp.bottom).offset(76)
+            $0.horizontalEdges.equalToSuperview().inset(22)
+            $0.height.equalTo(44)
+            $0.bottom.equalToSuperview().inset(54)
         }
     }
 }
