@@ -44,4 +44,8 @@ extension UIImage {
     static var bookmarkFill: UIImage {
         return UIImage(systemName: "bookmark.fill")!
     }
+    
+    static var photoBadgePlus: UIImage {
+        return UIImage(systemName: "photo.badge.plus")!
+    }
 }
