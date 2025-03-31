@@ -54,7 +54,6 @@ final class PictureSelectView: UIView {
     }
     
     private func configureLayout() {
-        
         title.snp.makeConstraints {
             $0.top.equalToSuperview()
             $0.leading.equalToSuperview().offset(22)
@@ -63,7 +62,7 @@ final class PictureSelectView: UIView {
         pictureCollectionView.snp.makeConstraints {
             $0.top.equalTo(title.snp.bottom).offset(8)
             $0.horizontalEdges.equalToSuperview()
-            $0.height.equalTo(195.adjustedHeight)
+            $0.height.equalTo(195)
             $0.bottom.equalToSuperview()
         }
     }
