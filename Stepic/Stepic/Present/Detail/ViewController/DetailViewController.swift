@@ -43,15 +43,15 @@ final class DetailViewController: UIViewController {
     }
     
     private func configureBind() {
-        scrollView.rx.didScroll
+        contentView.rx.tapGesture()
             .bind(with: self) { owner, _ in
                 owner.view.endEditing(true)
             }
             .disposed(by: disposeBag)
         
-        contentView.rx.tapGesture()
+        recordView.textDidEditing
             .bind(with: self) { owner, _ in
-                owner.view.endEditing(true)
+                owner.scrollToRecordView()
             }
             .disposed(by: disposeBag)
     }
@@ -115,5 +115,17 @@ final class DetailViewController: UIViewController {
             $0.height.equalTo(44)
             $0.bottom.equalToSuperview().inset(54)
         }
+    }
+    
+    private func scrollToRecordView() {
+        let visibleTopY = scrollView.contentOffset.y
+        let recordTopY = recordView.convert(CGPoint.zero, to: scrollView).y - 20
+        
+        guard visibleTopY < recordTopY else { return }
+        
+        scrollView.setContentOffset(
+            CGPoint(x: 0, y: recordTopY),
+            animated: true
+        )
     }
 }

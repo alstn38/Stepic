@@ -60,7 +60,12 @@ final class RecordView: UIView {
         return emotionButtonRelay.asObservable()
     }
     
+    var textDidEditing: Observable<Void> {
+        return textDidEditingRelay.asObservable()
+    }
+    
     private let emotionButtonRelay = PublishRelay<EmotionType>()
+    private let textDidEditingRelay = PublishRelay<Void>()
     private let disposeBag = DisposeBag()
     
     private let title = UILabel()
@@ -69,9 +74,9 @@ final class RecordView: UIView {
     private var emotionButtonArray = [UIButton]()
     private let recordView = UIView()
     private let recordLineView = UIView()
-    private let titleTextField = UITextField()
+    let titleTextField = UITextField()
     private let contentTextViewPlaceholder = UILabel()
-    private let contentTextView = UITextView()
+    let contentTextView = UITextView()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -108,6 +113,13 @@ final class RecordView: UIView {
             .map { !$0.isEmpty }
             .bind(to: contentTextViewPlaceholder.rx.isHidden)
             .disposed(by: disposeBag)
+        
+        Observable.merge(
+            titleTextField.rx.controlEvent(.editingDidBegin).asObservable(),
+            contentTextView.rx.didBeginEditing.asObservable()
+        )
+        .bind(to: textDidEditingRelay)
+        .disposed(by: disposeBag)
     }
     
     private func configureView() {
