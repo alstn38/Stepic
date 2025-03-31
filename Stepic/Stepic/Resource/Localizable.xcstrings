@@ -1,6 +1,23 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "allWalkTitle" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "All Walks"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "전체 산책"
+          }
+        }
+      }
+    },
     "angryButtonTitle" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -14,6 +31,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "화남"
+          }
+        }
+      }
+    },
+    "boomMarkTitle" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bookmarks"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "북마크"
           }
         }
       }
@@ -167,6 +201,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "행복"
+          }
+        }
+      }
+    },
+    "monthWalkTitle" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Monthly Walks"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이번 달 산책"
           }
         }
       }
@@ -388,6 +439,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "지침"
+          }
+        }
+      }
+    },
+    "totalDistanceTitle" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Total Distance"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "총 산책 거리"
+          }
+        }
+      }
+    },
+    "totalTimeTitle" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Total Time"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "총 시간"
           }
         }
       }

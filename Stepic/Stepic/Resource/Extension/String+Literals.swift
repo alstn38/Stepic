@@ -57,5 +57,13 @@ extension String {
             static let routeTitle: String = localized("routeTitle")
             static let endWalkButton: String = localized("endWalkButton")
         }
+        
+        enum MyPage {
+            static let totalTimeTitle: String = localized("totalTimeTitle")
+            static let totalDistanceTitle: String = localized("totalDistanceTitle")
+            static let allWalkTitle: String = localized("allWalkTitle")
+            static let monthWalkTitle: String = localized("monthWalkTitle")
+            static let boomMarkTitle: String = localized("boomMarkTitle")
+        }
     }
 }
