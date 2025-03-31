@@ -22,6 +22,7 @@ final class DetailViewController: UIViewController {
     private let walkInfoView = WalkInfoView()
     private let pictureSelectView = PictureSelectView()
     private let recordView = RecordView()
+    private let routeView = RouteView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -68,7 +69,8 @@ final class DetailViewController: UIViewController {
         contentView.addSubviews(
             walkInfoView,
             pictureSelectView,
-            recordView
+            recordView,
+            routeView
         )
     }
     
@@ -94,6 +96,11 @@ final class DetailViewController: UIViewController {
         
         recordView.snp.makeConstraints {
             $0.top.equalTo(pictureSelectView.snp.bottom).offset(34)
+            $0.horizontalEdges.equalToSuperview()
+        }
+        
+        routeView.snp.makeConstraints {
+            $0.top.equalTo(recordView.snp.bottom).offset(34)
             $0.horizontalEdges.equalToSuperview()
             $0.bottom.equalToSuperview() // 항상 마지막 뷰는 해당 레이아웃 추가
         }
