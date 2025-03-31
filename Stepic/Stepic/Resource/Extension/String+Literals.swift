@@ -53,6 +53,7 @@ extension String {
             static let angryButtonTitle: String = localized("angryButtonTitle")
             static let recordTitlePlaceholder: String = localized("recordTitlePlaceholder")
             static let recordContentPlaceholder: String = localized("recordContentPlaceholder")
+            static let photoTitle: String = localized("photoTitle")
         }
     }
 }
