@@ -54,6 +54,7 @@ extension String {
             static let recordTitlePlaceholder: String = localized("recordTitlePlaceholder")
             static let recordContentPlaceholder: String = localized("recordContentPlaceholder")
             static let photoTitle: String = localized("photoTitle")
+            static let routeTitle: String = localized("routeTitle")
         }
     }
 }

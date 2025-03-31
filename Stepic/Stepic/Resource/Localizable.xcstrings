@@ -239,6 +239,23 @@
         }
       }
     },
+    "routeTitle" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Route"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "경로"
+          }
+        }
+      }
+    },
     "sadButtonTitle" : {
       "extractionState" : "manual",
       "localizations" : {
