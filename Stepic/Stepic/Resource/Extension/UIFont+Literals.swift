@@ -14,6 +14,11 @@ extension UIFont {
     static var titleExtraLarge: UIFont {
         return UIFont.systemFont(ofSize: 32, weight: .bold)
     }
+    
+    /// 28, bold
+    static var titleExtraLargeMedium: UIFont {
+        return UIFont.systemFont(ofSize: 32, weight: .bold)
+    }
 
     /// 22, bold
     static var titleLarge: UIFont {
@@ -42,8 +47,13 @@ extension UIFont {
 
     /// Regular Fonts
     /// 18, regular
-    static var bodyRegular: UIFont {
+    static var mediumRegular: UIFont {
         return UIFont.systemFont(ofSize: 18, weight: .regular)
+    }
+    
+    /// 14, regular
+    static var bodyRegular: UIFont {
+        return UIFont.systemFont(ofSize: 14, weight: .regular)
     }
 
     /// 12, regular
