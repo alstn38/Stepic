@@ -67,7 +67,7 @@ final class WalkViewController: UIViewController {
         
         timeTitleLabel.text = .StringLiterals.Walk.timeTitle
         timeTitleLabel.textColor = .textPrimary
-        timeTitleLabel.font = .bodyRegular
+        timeTitleLabel.font = .mediumRegular
         
         durationDistanceLabel.text = "8.23km" // TODO: 이후 삭제
         durationDistanceLabel.textColor = .textPrimary
@@ -75,7 +75,7 @@ final class WalkViewController: UIViewController {
         
         distanceTitleLabel.text = .StringLiterals.Walk.distanceTitle
         distanceTitleLabel.textColor = .textPrimary
-        distanceTitleLabel.font = .bodyRegular
+        distanceTitleLabel.font = .mediumRegular
         
         pictureCollectionView.showsHorizontalScrollIndicator = false
         pictureCollectionView.backgroundColor = .clear
