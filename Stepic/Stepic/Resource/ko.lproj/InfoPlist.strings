@@ -1,0 +1,9 @@
+/* 
+  InfoPlist.strings
+  Stepic
+
+  Created by 강민수 on 4/2/25.
+  
+*/
+
+NSLocationWhenInUseUsageDescription = "산책 경로를 기록하고 날씨 및 도시 정보를 제공하기 위해 위치 정보가 필요합니다.";

@@ -1,0 +1,9 @@
+/* 
+  InfoPlist.strings
+  Stepic
+
+  Created by 강민수 on 4/2/25.
+  
+*/
+
+NSLocationWhenInUseUsageDescription = "We need your location to record your walking route and provide weather and city information.";
