@@ -28,16 +28,19 @@ final class WeatherView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func configureView(_ data: WeatherLocationEntity) {
+        weatherImageView.image = UIImage(systemName: data.symbolName)
+        locationLabel.text = data.city + " " + data.district
+        weatherLabel.text = data.description + " " + data.temperature
+    }
+    
     private func configureView() {
-        weatherImageView.image = UIImage(systemName: "sun.max") // TODO: 이후 삭제
         weatherImageView.contentMode = .scaleAspectFill
         weatherImageView.tintColor = .textPrimary
         
-        locationLabel.text = "서울특별시 광진구" // TODO: 이후 서버 연결
         locationLabel.textColor = .textPrimary
         locationLabel.font = .bodyBold
         
-        weatherLabel.text = "맑음 7°C" // TODO: 이후 서버 연결
         weatherLabel.textColor = .textPrimary
         weatherLabel.font = .captionRegular
     }
