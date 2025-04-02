@@ -22,7 +22,8 @@ final class StepicTabBarController: UITabBarController {
     }
     
     private func configureTabBarController() {
-        let homeViewController = HomeViewController()
+        let homeViewModel = HomeViewModel()
+        let homeViewController = HomeViewController(viewModel: homeViewModel)
         homeViewController.tabBarItem = UITabBarItem(
             title: .StringLiterals.TabBar.homeTitle,
             image: .homeImage,
