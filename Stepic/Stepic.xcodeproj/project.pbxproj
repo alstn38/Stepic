@@ -16,6 +16,8 @@
 		F1A408B12D956E3B00947B9F /* RealmSwift in Embed Frameworks */ = {isa = PBXBuildFile; productRef = F1A408AF2D956D8700947B9F /* RealmSwift */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		F1A408B52D9577A300947B9F /* FSCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = F1A408B42D9577A300947B9F /* FSCalendar */; };
 		F1A408B82D9577BE00947B9F /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = F1A408B72D9577BE00947B9F /* SnapKit */; };
+		F1EDF35C2D9D65AB00B8CD5F /* YPImagePicker in Frameworks */ = {isa = PBXBuildFile; productRef = F1EDF35B2D9D65AB00B8CD5F /* YPImagePicker */; };
+		F1EDF3682D9D6EC300B8CD5F /* RxDataSources in Frameworks */ = {isa = PBXBuildFile; productRef = F1EDF3672D9D6EC300B8CD5F /* RxDataSources */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -65,10 +67,12 @@
 				F19FF8692D944A4E00098615 /* RxSwift in Frameworks */,
 				F1A408B52D9577A300947B9F /* FSCalendar in Frameworks */,
 				F17442FF2D9976D30089D8AE /* RxGesture in Frameworks */,
+				F1EDF3682D9D6EC300B8CD5F /* RxDataSources in Frameworks */,
 				F19FF8672D944A4E00098615 /* RxCocoa in Frameworks */,
 				F1A408B82D9577BE00947B9F /* SnapKit in Frameworks */,
 				F19FF86F2D944A9800098615 /* Toast in Frameworks */,
 				F1A408B02D956D8700947B9F /* RealmSwift in Frameworks */,
+				F1EDF35C2D9D65AB00B8CD5F /* YPImagePicker in Frameworks */,
 				F19FF86C2D944A5F00098615 /* Lottie in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -121,6 +125,8 @@
 				F1A408B42D9577A300947B9F /* FSCalendar */,
 				F1A408B72D9577BE00947B9F /* SnapKit */,
 				F17442FE2D9976D30089D8AE /* RxGesture */,
+				F1EDF35B2D9D65AB00B8CD5F /* YPImagePicker */,
+				F1EDF3672D9D6EC300B8CD5F /* RxDataSources */,
 			);
 			productName = Stepic;
 			productReference = F19FF8432D9447B700098615 /* Stepic.app */;
@@ -159,6 +165,8 @@
 				F1A408B32D9577A300947B9F /* XCRemoteSwiftPackageReference "FSCalendar" */,
 				F1A408B62D9577BE00947B9F /* XCRemoteSwiftPackageReference "SnapKit" */,
 				F17442FD2D9976D30089D8AE /* XCRemoteSwiftPackageReference "RxGesture" */,
+				F1EDF35A2D9D65AB00B8CD5F /* XCRemoteSwiftPackageReference "YPImagePicker" */,
+				F1EDF3662D9D6EC300B8CD5F /* XCRemoteSwiftPackageReference "RxDataSources" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = F19FF8442D9447B700098615 /* Products */;
@@ -460,6 +468,22 @@
 				minimumVersion = 5.7.1;
 			};
 		};
+		F1EDF35A2D9D65AB00B8CD5F /* XCRemoteSwiftPackageReference "YPImagePicker" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Yummypets/YPImagePicker.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.2.2;
+			};
+		};
+		F1EDF3662D9D6EC300B8CD5F /* XCRemoteSwiftPackageReference "RxDataSources" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/RxSwiftCommunity/RxDataSources.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.2;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -502,6 +526,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = F1A408B62D9577BE00947B9F /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
+		};
+		F1EDF35B2D9D65AB00B8CD5F /* YPImagePicker */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F1EDF35A2D9D65AB00B8CD5F /* XCRemoteSwiftPackageReference "YPImagePicker" */;
+			productName = YPImagePicker;
+		};
+		F1EDF3672D9D6EC300B8CD5F /* RxDataSources */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F1EDF3662D9D6EC300B8CD5F /* XCRemoteSwiftPackageReference "RxDataSources" */;
+			productName = RxDataSources;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
