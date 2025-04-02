@@ -65,5 +65,13 @@ extension String {
             static let monthWalkTitle: String = localized("monthWalkTitle")
             static let boomMarkTitle: String = localized("boomMarkTitle")
         }
+        
+        enum Alert {
+            static let locationAlertTitle: String = localized("locationAlertTitle")
+            static let locationAlertMessage: String = localized("locationAlertMessage")
+            static let locationAlertGoToSetting: String = localized("locationAlertGoToSetting")
+            static let locationAlertCancel: String = localized("locationAlertCancel")
+            static let genericAlertConfirm: String = localized("genericAlertConfirm")
+        }
     }
 }

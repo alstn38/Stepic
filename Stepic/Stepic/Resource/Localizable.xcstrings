@@ -154,6 +154,23 @@
         }
       }
     },
+    "genericAlertConfirm" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "확인"
+          }
+        }
+      }
+    },
     "happyButtonTitle" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -184,6 +201,74 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "산책 시작하기"
+          }
+        }
+      }
+    },
+    "locationAlertCancel" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancel"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "취소"
+          }
+        }
+      }
+    },
+    "locationAlertGoToSetting" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Go to Settings"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "설정으로 이동"
+          }
+        }
+      }
+    },
+    "locationAlertMessage" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Location services are unavailable.\\nPlease enable them in \\\"Settings > Privacy\\\"."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "위치서비스를 사용할 수 없습니다.\\n기기의 \\\"설정 > 개인 정보 보호\\\"에서 위치서비스를 켜주세요."
+          }
+        }
+      }
+    },
+    "locationAlertTitle" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enable Location Services"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "위치 서비스 사용"
           }
         }
       }
