@@ -324,6 +324,40 @@
         }
       }
     },
+    "photoLimitAlertMessage" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You can add up to 10 photos."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "사진은 최대 10개만 가능합니다."
+          }
+        }
+      }
+    },
+    "photoLimitAlertTitle" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Maximum limit exceeded"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "최대 범위 초과"
+          }
+        }
+      }
+    },
     "photoTitle" : {
       "extractionState" : "manual",
       "localizations" : {

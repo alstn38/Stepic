@@ -72,6 +72,8 @@ extension String {
             static let locationAlertGoToSetting: String = localized("locationAlertGoToSetting")
             static let locationAlertCancel: String = localized("locationAlertCancel")
             static let genericAlertConfirm: String = localized("genericAlertConfirm")
+            static let photoLimitAlertTitle: String = localized("photoLimitAlertTitle")
+            static let photoLimitAlertMessage: String = localized("photoLimitAlertMessage")
         }
     }
 }
