@@ -14,6 +14,7 @@ import SnapKit
 
 final class HomeViewController: UIViewController {
     
+    private let viewModel: HomeViewModel
     private let disposeBag = DisposeBag()
     
     private let weatherView = WeatherView()
@@ -25,9 +26,20 @@ final class HomeViewController: UIViewController {
     private lazy var recordCollectionView = UICollectionView(frame: .zero, collectionViewLayout: configureCollectionLayout())
     private let recordButton = UIButton(type: .system)
     
+    init(viewModel: HomeViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    @available(*, unavailable)
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        configureBind()
         configureNavigation()
         configureView()
         configureHierarchy()
@@ -40,6 +52,29 @@ final class HomeViewController: UIViewController {
                 viewController.modalPresentationStyle = .fullScreen
                 viewController.modalTransitionStyle = .crossDissolve
                 self.present(viewController, animated: false)
+            }
+            .disposed(by: disposeBag)
+    }
+    
+    private func configureBind() {
+        let input = HomeViewModel.Input()
+        
+        let output = viewModel.transform(from: input)
+        
+        output.weatherLocationData
+            .drive(with: self) { owner, data in
+                owner.weatherView.configureView(data)
+            }
+            .disposed(by: disposeBag)
+        
+        output.presentAlert
+            .drive(with: self) { owner, alertType in
+                switch alertType {
+                case .messageError(let title, let message):
+                    owner.presentWarningAlert(title: title, message: message)
+                case .locationSetting:
+                    owner.presentToSettingAppWithLocation()
+                }
             }
             .disposed(by: disposeBag)
     }
