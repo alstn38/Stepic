@@ -61,7 +61,8 @@ final class HomeViewController: UIViewController {
         
         output.moveToWalkView
             .drive(with: self) { owner, _ in
-                let viewController = WalkViewController()
+                let viewModel = WalkViewModel()
+                let viewController = WalkViewController(viewModel: viewModel)
                 viewController.modalPresentationStyle = .fullScreen
                 viewController.modalTransitionStyle = .crossDissolve
                 self.present(viewController, animated: false)
