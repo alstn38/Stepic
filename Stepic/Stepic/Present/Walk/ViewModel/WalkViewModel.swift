@@ -15,18 +15,26 @@ final class WalkViewModel: InputOutputModel {
     struct Input {
         let viewDidLoad: Observable<Void>
         let startTrigger: Observable<Void>
+        let albumButtonDidTap: Observable<Void>
+        let didAddPhoto: Observable<[WalkPhotoEntity]>
+        let deletePhoto: Observable<Int>
     }
     
     struct Output {
         let weatherLocationData: Driver<WeatherLocationEntity>
         let timer: Driver<String>
         let distance: Driver<String>
+        let walkPhotoData: Driver<[WalkPhotoEntity]>
+        let presentAlbumView: Driver<Int>
         let presentAlert: Driver<AlertType>
     }
     
     private let locationPermissionManager: LocationPermissionManager
     private let weatherLocationRepository: WeatherLocationRepository
     private let walkTrackerManager: WalkTrackerManager
+    
+    private let maxPhotoCount: Int = 10
+    private let walkPhotoData = BehaviorRelay<[WalkPhotoEntity]>(value: [])
     private let disposeBag = DisposeBag()
     
     init(
@@ -42,6 +50,7 @@ final class WalkViewModel: InputOutputModel {
     func transform(from input: Input) -> Output {
         let weatherLocationDataRelay = BehaviorRelay(value: WeatherLocationEntity.loadingDummy())
         let startTimeRelay = BehaviorRelay<Date?>(value: nil)
+        let presentAlbumViewRelay = PublishRelay<Int>()
         let presentAlertRelay = PublishRelay<AlertType>()
         
         let weatherLocationUpdateRelay = PublishRelay<Void>()
@@ -56,6 +65,36 @@ final class WalkViewModel: InputOutputModel {
             .bind(with: self) { owner, _ in
                 owner.walkTrackerManager.startTracking()
                 startTimeRelay.accept(Date())
+            }
+            .disposed(by: disposeBag)
+        
+        input.albumButtonDidTap
+            .withUnretained(self)
+            .map { $0.0.maxPhotoCount - $0.0.walkPhotoData.value.count }
+            .bind { possibleCount in
+                if possibleCount > 0 {
+                    presentAlbumViewRelay.accept(possibleCount)
+                } else {
+                    presentAlertRelay.accept(.messageError(
+                        title: .StringLiterals.Alert.photoLimitAlertTitle,
+                        message: .StringLiterals.Alert.photoLimitAlertMessage
+                    ))
+                }
+            }
+            .disposed(by: disposeBag)
+        
+        input.didAddPhoto
+            .bind(with: self) { owner, inputPhotos in
+                let newPhotoData = owner.walkPhotoData.value + inputPhotos
+                owner.walkPhotoData.accept(newPhotoData)
+            }
+            .disposed(by: disposeBag)
+        
+        input.deletePhoto
+            .bind(with: self) { owner, index in
+                var newPhotoData = owner.walkPhotoData.value
+                _ = newPhotoData.remove(at: index)
+                owner.walkPhotoData.accept(newPhotoData)
             }
             .disposed(by: disposeBag)
         
@@ -118,6 +157,8 @@ final class WalkViewModel: InputOutputModel {
             weatherLocationData: weatherLocationDataRelay.asDriver(),
             timer: elapsedTime,
             distance: distance,
+            walkPhotoData: walkPhotoData.asDriver(),
+            presentAlbumView: presentAlbumViewRelay.asDriver(onErrorJustReturn: 0),
             presentAlert: presentAlertRelay.asDriver(onErrorJustReturn: .messageError(title: "", message: ""))
         )
     }
