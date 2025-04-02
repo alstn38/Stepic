@@ -44,26 +44,27 @@ final class HomeViewController: UIViewController {
         configureView()
         configureHierarchy()
         configureLayout()
-        
-        // TODO: 이후 위치 변경
-        recordButton.rx.tap
-            .bind(with: self) { owner, _ in
-                let viewController = WalkViewController()
-                viewController.modalPresentationStyle = .fullScreen
-                viewController.modalTransitionStyle = .crossDissolve
-                self.present(viewController, animated: false)
-            }
-            .disposed(by: disposeBag)
     }
     
     private func configureBind() {
-        let input = HomeViewModel.Input()
+        let input = HomeViewModel.Input(
+            recordButtonDidTap: recordButton.rx.tap.asObservable()
+        )
         
         let output = viewModel.transform(from: input)
         
         output.weatherLocationData
             .drive(with: self) { owner, data in
                 owner.weatherView.configureView(data)
+            }
+            .disposed(by: disposeBag)
+        
+        output.moveToWalkView
+            .drive(with: self) { owner, _ in
+                let viewController = WalkViewController()
+                viewController.modalPresentationStyle = .fullScreen
+                viewController.modalTransitionStyle = .crossDissolve
+                self.present(viewController, animated: false)
             }
             .disposed(by: disposeBag)
         

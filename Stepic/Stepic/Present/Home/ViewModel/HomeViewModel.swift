@@ -14,11 +14,12 @@ import RxSwift
 final class HomeViewModel: InputOutputModel {
     
     struct Input {
-        
+        let recordButtonDidTap: Observable<Void>
     }
     
     struct Output {
         let weatherLocationData: Driver<WeatherLocationEntity>
+        let moveToWalkView: Driver<Void>
         let presentAlert: Driver<AlertType>
     }
     
@@ -36,10 +37,21 @@ final class HomeViewModel: InputOutputModel {
     
     func transform(from input: Input) -> Output {
         let weatherLocationDataRelay = BehaviorRelay(value: WeatherLocationEntity.loadingDummy())
+        let moveToWalkViewRelay = PublishRelay<Void>()
         let presentAlertRelay = PublishRelay<AlertType>()
         
         let weatherLocationUpdateRelay = PublishRelay<Void>()
         
+        input.recordButtonDidTap
+            .bind(with: self) { owner, _ in
+                if owner.locationPermissionManager.isAuthorized() {
+                    moveToWalkViewRelay.accept(())
+                } else {
+                    presentAlertRelay.accept(AlertType.locationSetting)
+                }
+            }
+            .disposed(by: disposeBag)
+          
         weatherLocationUpdateRelay
             .bind(with: self) { owner, _ in
                 Task {
@@ -63,7 +75,7 @@ final class HomeViewModel: InputOutputModel {
                     owner.locationPermissionManager.requestAuthorization()
                 case .denied:
                     presentAlertRelay.accept(AlertType.locationSetting)
-                case .authorizedWhenInUse:
+                case .authorizedWhenInUse, .authorizedAlways:
                     weatherLocationUpdateRelay.accept(())
                 default:
                     presentAlertRelay.accept(AlertType.messageError(
@@ -76,6 +88,7 @@ final class HomeViewModel: InputOutputModel {
         
         return Output(
             weatherLocationData: weatherLocationDataRelay.asDriver(),
+            moveToWalkView: moveToWalkViewRelay.asDriver(onErrorJustReturn: ()),
             presentAlert: presentAlertRelay.asDriver(onErrorJustReturn: .locationSetting)
         )
     }
