@@ -7,12 +7,14 @@
 
 import UIKit
 
+import RxSwift
 import SnapKit
 
 final class WalkPictureCollectionViewCell: UICollectionViewCell, ReusableViewProtocol {
     
     private let imageView = UIImageView()
-    private let deleteButton = UIButton()
+    let deleteButton = UIButton()
+    var disposeBag = DisposeBag()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -27,6 +29,16 @@ final class WalkPictureCollectionViewCell: UICollectionViewCell, ReusableViewPro
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        self.disposeBag = DisposeBag()
+    }
+    
+    func configureView(_ data: WalkPhotoEntity) {
+        imageView.image = data.image
+    }
+    
     private func configureView() {
         contentView.layer.cornerRadius = 10
         contentView.layer.shadowColor = UIColor.backgroundButton.cgColor
@@ -35,7 +47,6 @@ final class WalkPictureCollectionViewCell: UICollectionViewCell, ReusableViewPro
         contentView.layer.shadowOffset = CGSize(width: 5, height: 10)
         contentView.layer.shadowPath = nil
         
-        imageView.backgroundColor = .yellow // TODO: 이후 제거
         imageView.layer.cornerRadius = 10
         imageView.clipsToBounds = true
         
