@@ -41,7 +41,7 @@ final class DefaultWeatherLocationRepository: WeatherLocationRepository {
             street: address.street,
             symbolName: weather.symbolName,
             description: weather.description,
-            temperature: String(format: "%.0f", weather.temperature) + " \(weather.unitSymbol)"
+            temperature: String(format: "%.0f", weather.temperature) + "\(weather.unitSymbol)"
         )
     }
 }
