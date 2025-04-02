@@ -6,16 +6,40 @@
 //
 
 import UIKit
+import Photos
 
 import Lottie
 import RxCocoa
+import RxDataSources
+import RxGesture
 import RxSwift
 import SnapKit
+import YPImagePicker
 
 final class WalkViewController: UIViewController {
     
     private let viewModel: WalkViewModel
+    private let photoDidDeleteRelay = PublishRelay<Int>()
     private let disposeBag = DisposeBag()
+    
+    private lazy var dataSource = RxCollectionViewSectionedReloadDataSource<WalkPictureSection>(
+        configureCell: { [weak self] _, collectionView, indexPath, item in
+            guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: WalkPictureCollectionViewCell.identifier,
+                for: indexPath
+            ) as? WalkPictureCollectionViewCell else { return UICollectionViewCell() }
+            
+            cell.deleteButton.rx.tap
+                .map { indexPath.item }
+                .bind { [weak self] index in
+                    self?.photoDidDeleteRelay.accept(index)
+                }
+                .disposed(by: cell.disposeBag)
+            
+            cell.configureView(item)
+            return cell
+        }
+    )
     
     private let weatherView = WeatherView()
     private let countDownView = CountDownView()
@@ -51,10 +75,14 @@ final class WalkViewController: UIViewController {
     
     private func configureBind() {
         let startTrigger = PublishRelay<Void>()
+        let didAddPhotoRelay = PublishRelay<[WalkPhotoEntity]>()
         
         let input = WalkViewModel.Input(
             viewDidLoad: Observable.just(()),
-            startTrigger: startTrigger.asObservable()
+            startTrigger: startTrigger.asObservable(),
+            albumButtonDidTap: albumButtonView.rx.tapGesture().map { _ in }.asObservable(),
+            didAddPhoto: didAddPhotoRelay.asObservable(),
+            deletePhoto: photoDidDeleteRelay.asObservable()
         )
         
         let output = viewModel.transform(from: input)
@@ -71,6 +99,19 @@ final class WalkViewController: UIViewController {
         
         output.distance
             .drive(durationDistanceLabel.rx.text)
+            .disposed(by: disposeBag)
+        
+        output.walkPhotoData
+            .map { [WalkPictureSection.main(items: $0)] }
+            .drive(pictureCollectionView.rx.items(dataSource: dataSource))
+            .disposed(by: disposeBag)
+            
+        output.presentAlbumView
+            .drive(with: self) { owner, maxCount in
+                owner.presentImagePicker(maxCount: maxCount) { selectPhotos in
+                    didAddPhotoRelay.accept(selectPhotos)
+                }
+            }
             .disposed(by: disposeBag)
         
         output.presentAlert
@@ -106,7 +147,6 @@ final class WalkViewController: UIViewController {
         durationStackView.axis = .horizontal
         durationStackView.distribution = .equalCentering
         
-        durationTimeLabel.text = "16:23" // TODO: 이후 삭제
         durationTimeLabel.textColor = .textPrimary
         durationTimeLabel.font = .titleExtraLarge
         
@@ -114,7 +154,6 @@ final class WalkViewController: UIViewController {
         timeTitleLabel.textColor = .textPrimary
         timeTitleLabel.font = .mediumRegular
         
-        durationDistanceLabel.text = "8.23km" // TODO: 이후 삭제
         durationDistanceLabel.textColor = .textPrimary
         durationDistanceLabel.font = .titleExtraLarge
         
@@ -128,8 +167,6 @@ final class WalkViewController: UIViewController {
             WalkPictureCollectionViewCell.self,
             forCellWithReuseIdentifier: WalkPictureCollectionViewCell.identifier
         )
-        pictureCollectionView.delegate = self // TODO: 이후 삭제
-        pictureCollectionView.dataSource = self // TODO: 이후 삭제
         
         walkAnimationView.loopMode = .loop
         walkAnimationView.play()
@@ -229,43 +266,40 @@ final class WalkViewController: UIViewController {
         
         return layout
     }
-}
-
-// MARK: - UIScrollViewDelegate
-extension WalkViewController: UIScrollViewDelegate {
     
-    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-        guard let layout = pictureCollectionView.collectionViewLayout as? CarouselLayout else { return }
+    private func presentImagePicker(maxCount: Int, onResult: @escaping ([WalkPhotoEntity]) -> Void) {
+        var config = YPImagePickerConfiguration()
+        config.library.mediaType = .photo
+        config.library.maxNumberOfItems = maxCount
+        config.startOnScreen = .library
+        config.screens = [.library]
+        config.showsPhotoFilters = false
+        config.library.preSelectItemOnMultipleSelection = false
+        config.library.defaultMultipleSelection = true
+        config.onlySquareImagesFromCamera = false
         
-        let pageWidth = layout.itemSize.width + layout.minimumLineSpacing
-        let nextPage: CGFloat
+        let picker = YPImagePicker(configuration: config)
         
-        if velocity.x > 0 {
-            nextPage = ceil(scrollView.contentOffset.x / pageWidth)
-        } else if velocity.x < 0 {
-            nextPage = floor(scrollView.contentOffset.x / pageWidth)
-        } else {
-            nextPage = round(scrollView.contentOffset.x / pageWidth)
+        picker.didFinishPicking { items, _ in
+            var walkPhotos: [WalkPhotoEntity] = []
+            
+            for item in items {
+                switch item {
+                case .photo(let photo):
+                    let image = photo.image
+                    let location = photo.asset?.location
+                    
+                    walkPhotos.append(WalkPhotoEntity(image: image, location: location))
+                    
+                default:
+                    break
+                }
+            }
+            
+            onResult(walkPhotos)
+            picker.dismiss(animated: true)
         }
         
-        let targetX = nextPage * pageWidth
-        targetContentOffset.pointee = CGPoint(x: targetX, y: targetContentOffset.pointee.y)
-    }
-}
-
-// TODO: 이후 삭제
-extension WalkViewController: UICollectionViewDelegate, UICollectionViewDataSource {
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 10
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: WalkPictureCollectionViewCell.identifier,
-            for: indexPath
-        ) as? WalkPictureCollectionViewCell else { return UICollectionViewCell() }
-        
-        return cell
+        self.present(picker, animated: true)
     }
 }
