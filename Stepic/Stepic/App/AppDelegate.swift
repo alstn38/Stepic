@@ -11,6 +11,7 @@ import UIKit
 final class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        register()
         return true
     }
 
@@ -20,4 +21,22 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func application(_ application: UIApplication, didDiscardSceneSessions sceneSessions: Set<UISceneSession>) { }
+}
+
+// MARK: - DIContainer
+extension AppDelegate {
+    
+    private func register() {
+        /// Service
+        DIContainer.shared.register(WeatherService.self, dependency: DefaultWeatherService())
+        DIContainer.shared.register(LocationService.self, dependency: DefaultLocationService())
+        DIContainer.shared.register(GeocoderService.self, dependency: DefaultGeocoderService())
+        
+        
+        /// Repository
+        DIContainer.shared.register(WeatherLocationRepository.self, dependency: DefaultWeatherLocationRepository())
+        
+        /// Manager
+        DIContainer.shared.register(LocationPermissionManager.self, dependency: DefaultLocationPermissionManager())
+    }
 }
