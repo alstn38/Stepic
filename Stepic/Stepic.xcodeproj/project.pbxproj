@@ -40,7 +40,7 @@
 		F19FF8552D9447B900098615 /* Exceptions for "Stepic" folder in "Stepic" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Resource/Info.plist,
+				"/Localized: Resource/Info.plist",
 			);
 			target = F19FF8422D9447B700098615 /* Stepic */;
 		};
@@ -142,7 +142,7 @@
 				};
 			};
 			buildConfigurationList = F19FF83E2D9447B700098615 /* Build configuration list for PBXProject "Stepic" */;
-			developmentRegion = en;
+			developmentRegion = ko;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
@@ -196,11 +196,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Stepic/Stepic.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 5YM44C4YT8;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Stepic/Resource/Info.plist;
+				INFOPLIST_FILE = Stepic/Resource/Base.lproj/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -228,11 +229,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Stepic/Stepic.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 5YM44C4YT8;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Stepic/Resource/Info.plist;
+				INFOPLIST_FILE = Stepic/Resource/Base.lproj/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
