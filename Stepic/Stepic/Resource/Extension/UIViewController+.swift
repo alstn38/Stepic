@@ -20,4 +20,45 @@ extension UIViewController {
         
         return configuration
     }
+    
+    func presentToSettingAppWithLocation() {
+        let alertController = UIAlertController(
+            title: .StringLiterals.Alert.locationAlertTitle,
+            message: .StringLiterals.Alert.locationAlertMessage,
+            preferredStyle: .alert
+        )
+        
+        let goToSettingAlertAction = UIAlertAction(
+            title: .StringLiterals.Alert.locationAlertGoToSetting,
+            style: .default
+        ) { _ in
+            guard let settingURL = URL(string: UIApplication.openSettingsURLString) else { return }
+            UIApplication.shared.open(settingURL)
+        }
+        
+        let cancelAlertAction = UIAlertAction(
+            title: .StringLiterals.Alert.locationAlertCancel,
+            style: .cancel
+        )
+        
+        alertController.addAction(goToSettingAlertAction)
+        alertController.addAction(cancelAlertAction)
+        present(alertController, animated: true)
+    }
+    
+    func presentWarningAlert(title: String, message: String) {
+        let alertController = UIAlertController(
+            title: title,
+            message: message,
+            preferredStyle: .alert
+        )
+        
+        let alertAction = UIAlertAction(
+            title: .StringLiterals.Alert.genericAlertConfirm,
+            style: .default
+        )
+        
+        alertController.addAction(alertAction)
+        present(alertController, animated: true)
+    }
 }
