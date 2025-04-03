@@ -52,6 +52,23 @@
         }
       }
     },
+    "dateFormat" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "EEEE, MMM d, yyyy"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "yyyy년 M월 d일 EEEE"
+          }
+        }
+      }
+    },
     "distanceTitle" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -528,6 +545,23 @@
         }
       }
     },
+    "timeFormat" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "h:mm a"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "a h시 mm분"
+          }
+        }
+      }
+    },
     "timeTitle" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -601,7 +635,7 @@
       "localizations" : {
         "en" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Press and hold the button for 2 seconds to end your walk."
           }
         },

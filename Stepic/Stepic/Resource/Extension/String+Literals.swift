@@ -79,5 +79,10 @@ extension String {
         enum Toast {
             static let walkFinishHoldMessage: String = localized("walkFinishHoldMessage")
         }
+        
+        enum Formatter {
+            static let timeFormat: String = localized("timeFormat")
+            static let dateFormat: String = localized("dateFormat")
+        }
     }
 }
