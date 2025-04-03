@@ -12,6 +12,7 @@ import SnapKit
 
 final class RouteView: UIView {
     
+    private let walkMapRenderer = WalkMapRenderer()
     private let title = UILabel()
     private let mapBackgroundView = UIView()
     private let mapView = MKMapView()
@@ -29,6 +30,14 @@ final class RouteView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func configureView(with pathCoordinates: [CLLocationCoordinate2D]) {
+        walkMapRenderer.renderPath(on: mapView, pathCoordinates: pathCoordinates)
+    }
+    
+    func configureView(with photos: [WalkPhotoEntity]) {
+        walkMapRenderer.renderPhotos(on: mapView, photos: photos)
+    }
+    
     private func configureView() {
         title.text = .StringLiterals.Detail.routeTitle
         title.textColor = .textPrimary
@@ -38,8 +47,10 @@ final class RouteView: UIView {
         mapBackgroundView.layer.cornerRadius = 10
         mapBackgroundView.clipsToBounds = true
         
+        mapView.isUserInteractionEnabled = false
         mapView.layer.cornerRadius = 10
         mapView.clipsToBounds = true
+        mapView.delegate = self
     }
     
     private func configureHierarchy() {
@@ -66,5 +77,42 @@ final class RouteView: UIView {
         mapView.snp.makeConstraints {
             $0.edges.equalTo(mapBackgroundView).inset(4)
         }
+    }
+}
+
+// MARK: - MKMapViewDelegate
+extension RouteView: MKMapViewDelegate {
+    
+    /// 경로 polyLine의 색상, 두께 등을 설정
+    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
+        if let polyLine = overlay as? MKPolyline {
+            let renderer = MKPolylineRenderer(polyline: polyLine)
+            renderer.strokeColor = .accentPrimary
+            renderer.lineWidth = 4
+            return renderer
+        }
+        return MKOverlayRenderer(overlay: overlay)
+    }
+    
+    /// 커스텀 애노테이션 뷰 반환 메서드
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        if annotation is MKUserLocation { return nil }
+        
+        if let photoAnnotation = annotation as? PhotoAnnotation {
+            var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: PhotoAnnotationView.identifier)
+            
+            if annotationView == nil {
+                annotationView = PhotoAnnotationView(
+                    annotation: photoAnnotation,
+                    reuseIdentifier: PhotoAnnotationView.identifier
+                )
+            } else {
+                annotationView?.annotation = photoAnnotation
+            }
+            
+            return annotationView
+        }
+        
+        return nil
     }
 }

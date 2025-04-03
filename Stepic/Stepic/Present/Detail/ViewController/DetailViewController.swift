@@ -112,6 +112,13 @@ final class DetailViewController: UIViewController {
         output.walkResultData
             .drive(with: self) { owner, data in
                 owner.walkInfoView.configureView(data)
+                owner.routeView.configureView(with: data.tracking.pathCoordinates)
+            }
+            .disposed(by: disposeBag)
+        
+        output.photoData
+            .drive(with: self) { owner, photos in
+                owner.routeView.configureView(with: photos)
             }
             .disposed(by: disposeBag)
         
