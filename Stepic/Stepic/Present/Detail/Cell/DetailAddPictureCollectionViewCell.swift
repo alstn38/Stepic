@@ -7,12 +7,14 @@
 
 import UIKit
 
+import RxSwift
 import SnapKit
 
 final class DetailAddPictureCollectionViewCell: UICollectionViewCell, ReusableViewProtocol {
     
     private let addPictureView = UIView()
-    private let addPictureButton = UIButton()
+    let addPictureButton = UIButton()
+    var disposeBag = DisposeBag()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -25,6 +27,12 @@ final class DetailAddPictureCollectionViewCell: UICollectionViewCell, ReusableVi
     @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        self.disposeBag = DisposeBag()
     }
     
     private func configureView() {
