@@ -93,8 +93,12 @@ final class DetailViewController: UIViewController {
             photoDidDelete: photoDidDeleteRelay.asObservable(),
             photoDidAdd: didAddPhotoRelay.asObservable(),
             cameraActionDidTap: cameraActionDidTap.asObservable(),
-            libraryActionDidTap: libraryActionDidTap.asObservable()
+            libraryActionDidTap: libraryActionDidTap.asObservable(),
+            emotionDidSelect: recordView.emotionButtonDidTap.asObservable(),
+            titleDidChange: recordView.titleTextField.rx.text.orEmpty.asObservable(),
+            contentDidChange: recordView.contentTextView.rx.text.orEmpty.asObservable()
         )
+        
         let output = viewModel.transform(from: input)
         
         output.walkResultData

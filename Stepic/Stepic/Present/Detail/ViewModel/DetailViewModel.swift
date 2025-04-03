@@ -17,6 +17,9 @@ final class DetailViewModel: InputOutputModel {
         let photoDidAdd: Observable<[WalkPhotoEntity]>
         let cameraActionDidTap: Observable<Void>
         let libraryActionDidTap: Observable<Void>
+        let emotionDidSelect: Observable<EmotionTypeEntity>
+        let titleDidChange: Observable<String>
+        let contentDidChange: Observable<String>
     }
     
     struct Output {
@@ -28,6 +31,7 @@ final class DetailViewModel: InputOutputModel {
     private let maxPhotoCount: Int = 10
     private let walkResultData: WalkResultEntity
     private let photoDataRelay: BehaviorRelay<[WalkPhotoEntity]>
+    private var walkRecordInfoData = WalkRecordInfoEntity()
     private let disposeBag = DisposeBag()
     
     init(walkResultData: WalkResultEntity, walkPhotoData: [WalkPhotoEntity]) {
@@ -69,6 +73,26 @@ final class DetailViewModel: InputOutputModel {
             }
             .disposed(by: disposeBag)
         
+        input.emotionDidSelect
+            .bind(with: self) { owner, emotionType in
+                owner.walkRecordInfoData.emotion = emotionType
+                print(emotionType.title)
+            }
+            .disposed(by: disposeBag)
+        
+        input.titleDidChange
+            .bind(with: self) { owner, title in
+                owner.walkRecordInfoData.title = title
+                print(title)
+            }
+            .disposed(by: disposeBag)
+        
+        input.contentDidChange
+            .bind(with: self) { owner, content in
+                owner.walkRecordInfoData.content = content
+                print(content)
+            }
+            .disposed(by: disposeBag)
         
         return Output(
             walkResultData: Observable.just(walkResultData).asDriver(onErrorDriveWith: .empty()),
