@@ -15,13 +15,14 @@ protocol WalkTrackerManager {
     var totalDistance: Observable<Double> { get }
 
     func startTracking()
-    func stopTracking() -> WalkTrackingEntity
+    func stopTracking() async throws -> WalkTrackingEntity
     func resetTracking()
 }
 
 final class DefaultWalkTrackerManager: WalkTrackerManager {
 
     private let locationService: LocationService
+    private let geocoderService: GeocoderService
 
     private var startTime: Date?
     private var endTime: Date?
@@ -36,9 +37,11 @@ final class DefaultWalkTrackerManager: WalkTrackerManager {
     }
 
     init(
-        locationService: LocationService = DIContainer.shared.resolve(LocationService.self)
+        locationService: LocationService = DIContainer.shared.resolve(LocationService.self),
+        geocoderService: GeocoderService = DIContainer.shared.resolve(GeocoderService.self)
     ) {
         self.locationService = locationService
+        self.geocoderService = geocoderService
     }
 
     func startTracking() {
@@ -61,18 +64,26 @@ final class DefaultWalkTrackerManager: WalkTrackerManager {
             .disposed(by: disposeBag)
     }
 
-    func stopTracking() -> WalkTrackingEntity {
-        locationService.stopUpdatingLocation()
+    func stopTracking() async throws -> WalkTrackingEntity {
+        defer { locationService.stopUpdatingLocation() }
 
         endTime = Date()
 
         let distance = totalDistanceRelay.value
         let duration = (endTime?.timeIntervalSince(startTime ?? Date())) ?? 0
         let date = Calendar.current.startOfDay(for: startTime ?? Date())
+        
+        let startCLLocation = CLLocation(latitude: pathCoordinates.first?.latitude ?? 0, longitude: pathCoordinates.first?.longitude ?? 0)
+        let endCLLocation = CLLocation(latitude: pathCoordinates.last?.latitude ?? 0, longitude: pathCoordinates.last?.longitude ?? 0)
+        async let startLocation = try geocoderService.reverseGeocode(location: startCLLocation)
+        async let endLocation = try geocoderService.reverseGeocode(location: endCLLocation)
+        let (start, end) = try await (startLocation, endLocation)
 
         return WalkTrackingEntity(
             startTime: startTime ?? Date(),
             endTime: endTime ?? Date(),
+            startLocation: start,
+            endLocation: end,
             duration: duration,
             distance: distance,
             pathCoordinates: pathCoordinates,
