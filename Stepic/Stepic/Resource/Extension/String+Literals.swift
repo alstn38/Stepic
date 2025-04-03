@@ -74,6 +74,8 @@ extension String {
             static let genericAlertConfirm: String = localized("genericAlertConfirm")
             static let photoLimitAlertTitle: String = localized("photoLimitAlertTitle")
             static let photoLimitAlertMessage: String = localized("photoLimitAlertMessage")
+            static let photoActionCamera: String = localized("photoActionCamera")
+            static let photoActionLibrary: String = localized("photoActionLibrary")
         }
         
         enum Toast {
