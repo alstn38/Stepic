@@ -596,6 +596,23 @@
         }
       }
     },
+    "walkFinishHoldMessage" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Press and hold the button for 2 seconds to end your walk."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "산책을 종료하려면 버튼을 2초간 눌러주세요."
+          }
+        }
+      }
+    },
     "walkInfoTitle" : {
       "extractionState" : "manual",
       "localizations" : {

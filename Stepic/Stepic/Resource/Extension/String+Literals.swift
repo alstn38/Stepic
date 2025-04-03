@@ -75,5 +75,9 @@ extension String {
             static let photoLimitAlertTitle: String = localized("photoLimitAlertTitle")
             static let photoLimitAlertMessage: String = localized("photoLimitAlertMessage")
         }
+        
+        enum Toast {
+            static let walkFinishHoldMessage: String = localized("walkFinishHoldMessage")
+        }
     }
 }
