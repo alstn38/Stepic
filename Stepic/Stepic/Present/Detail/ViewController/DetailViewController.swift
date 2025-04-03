@@ -90,6 +90,7 @@ final class DetailViewController: UIViewController {
         let didAddPhotoRelay = PublishRelay<[WalkPhotoEntity]>()
         
         let input = DetailViewModel.Input(
+            bookMarkButtonDidTap: bookMarkButton.rx.tap.asObservable(),
             photoDidDelete: photoDidDeleteRelay.asObservable(),
             photoDidAdd: didAddPhotoRelay.asObservable(),
             cameraActionDidTap: cameraActionDidTap.asObservable(),
@@ -100,6 +101,13 @@ final class DetailViewController: UIViewController {
         )
         
         let output = viewModel.transform(from: input)
+        
+        output.bookMarkState
+            .drive(with: self) { owner, isSelected in
+                let image: UIImage = isSelected ? .bookmarkFill : .bookmark
+                owner.bookMarkButton.image = image
+            }
+            .disposed(by: disposeBag)
         
         output.walkResultData
             .drive(with: self) { owner, data in

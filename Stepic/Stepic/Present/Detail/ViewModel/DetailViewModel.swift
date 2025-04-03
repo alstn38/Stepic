@@ -13,6 +13,7 @@ import RxCocoa
 final class DetailViewModel: InputOutputModel {
     
     struct Input {
+        let bookMarkButtonDidTap: Observable<Void>
         let photoDidDelete: Observable<Int>
         let photoDidAdd: Observable<[WalkPhotoEntity]>
         let cameraActionDidTap: Observable<Void>
@@ -23,12 +24,14 @@ final class DetailViewModel: InputOutputModel {
     }
     
     struct Output {
+        let bookMarkState: Driver<Bool>
         let walkResultData: Driver<WalkResultEntity>
         let photoData: Driver<[WalkPhotoEntity]>
         let presentPickerView: Driver<ImagePickerSource>
     }
     
     private let maxPhotoCount: Int = 10
+    private let bookMarkStateRelay = BehaviorRelay<Bool>(value: false)
     private let walkResultData: WalkResultEntity
     private let photoDataRelay: BehaviorRelay<[WalkPhotoEntity]>
     private var walkRecordInfoData = WalkRecordInfoEntity()
@@ -41,6 +44,14 @@ final class DetailViewModel: InputOutputModel {
     
     func transform(from input: Input) -> Output {
         let presentPickerViewRelay = PublishRelay<ImagePickerSource>()
+        
+        input.bookMarkButtonDidTap
+            .bind(with: self) { owner, _ in
+                var newState = owner.bookMarkStateRelay.value
+                newState.toggle()
+                owner.bookMarkStateRelay.accept(newState)
+            }
+            .disposed(by: disposeBag)
         
         input.photoDidDelete
             .bind(with: self) { owner, index in
@@ -95,9 +106,10 @@ final class DetailViewModel: InputOutputModel {
             .disposed(by: disposeBag)
         
         return Output(
+            bookMarkState: bookMarkStateRelay.asDriver(),
             walkResultData: Observable.just(walkResultData).asDriver(onErrorDriveWith: .empty()),
             photoData: photoDataRelay.asDriver(),
-            presentPickerView: presentPickerViewRelay.asDriver(onErrorDriveWith: .empty()),
+            presentPickerView: presentPickerViewRelay.asDriver(onErrorDriveWith: .empty())
         )
     }
 }
