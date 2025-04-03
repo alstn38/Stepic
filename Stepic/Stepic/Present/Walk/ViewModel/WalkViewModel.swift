@@ -16,6 +16,7 @@ final class WalkViewModel: InputOutputModel {
         let viewDidLoad: Observable<Void>
         let startTrigger: Observable<Void>
         let albumButtonDidTap: Observable<Void>
+        let photoButtonDidTap: Observable<Void>
         let didAddPhoto: Observable<[WalkPhotoEntity]>
         let deletePhoto: Observable<Int>
     }
@@ -25,7 +26,7 @@ final class WalkViewModel: InputOutputModel {
         let timer: Driver<String>
         let distance: Driver<String>
         let walkPhotoData: Driver<[WalkPhotoEntity]>
-        let presentAlbumView: Driver<Int>
+        let presentPickerView: Driver<ImagePickerSource>
         let presentAlert: Driver<AlertType>
     }
     
@@ -50,7 +51,7 @@ final class WalkViewModel: InputOutputModel {
     func transform(from input: Input) -> Output {
         let weatherLocationDataRelay = BehaviorRelay(value: WeatherLocationEntity.loadingDummy())
         let startTimeRelay = BehaviorRelay<Date?>(value: nil)
-        let presentAlbumViewRelay = PublishRelay<Int>()
+        let presentAlbumViewRelay = PublishRelay<ImagePickerSource>()
         let presentAlertRelay = PublishRelay<AlertType>()
         
         let weatherLocationUpdateRelay = PublishRelay<Void>()
@@ -73,7 +74,22 @@ final class WalkViewModel: InputOutputModel {
             .map { $0.0.maxPhotoCount - $0.0.walkPhotoData.value.count }
             .bind { possibleCount in
                 if possibleCount > 0 {
-                    presentAlbumViewRelay.accept(possibleCount)
+                    presentAlbumViewRelay.accept(.library(maxCount: possibleCount))
+                } else {
+                    presentAlertRelay.accept(.messageError(
+                        title: .StringLiterals.Alert.photoLimitAlertTitle,
+                        message: .StringLiterals.Alert.photoLimitAlertMessage
+                    ))
+                }
+            }
+            .disposed(by: disposeBag)
+        
+        input.photoButtonDidTap
+            .withUnretained(self)
+            .map { $0.0.maxPhotoCount - $0.0.walkPhotoData.value.count }
+            .bind { possibleCount in
+                if possibleCount > 0 {
+                    presentAlbumViewRelay.accept(.camera(maxCount: possibleCount))
                 } else {
                     presentAlertRelay.accept(.messageError(
                         title: .StringLiterals.Alert.photoLimitAlertTitle,
@@ -158,7 +174,7 @@ final class WalkViewModel: InputOutputModel {
             timer: elapsedTime,
             distance: distance,
             walkPhotoData: walkPhotoData.asDriver(),
-            presentAlbumView: presentAlbumViewRelay.asDriver(onErrorJustReturn: 0),
+            presentPickerView: presentAlbumViewRelay.asDriver(onErrorJustReturn: .camera(maxCount: 0)),
             presentAlert: presentAlertRelay.asDriver(onErrorJustReturn: .messageError(title: "", message: ""))
         )
     }
@@ -170,5 +186,9 @@ extension WalkViewModel {
         case messageError(title: String, message: String)
         case locationSetting
     }
+    
+    enum ImagePickerSource {
+        case library(maxCount: Int)
+        case camera(maxCount: Int)
+    }
 }
-

@@ -81,6 +81,7 @@ final class WalkViewController: UIViewController {
             viewDidLoad: Observable.just(()),
             startTrigger: startTrigger.asObservable(),
             albumButtonDidTap: albumButtonView.rx.tapGesture().map { _ in }.asObservable(),
+            photoButtonDidTap: cameraButtonView.rx.tapGesture().map { _ in }.asObservable(),
             didAddPhoto: didAddPhotoRelay.asObservable(),
             deletePhoto: photoDidDeleteRelay.asObservable()
         )
@@ -106,9 +107,9 @@ final class WalkViewController: UIViewController {
             .drive(pictureCollectionView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
             
-        output.presentAlbumView
-            .drive(with: self) { owner, maxCount in
-                owner.presentImagePicker(maxCount: maxCount) { selectPhotos in
+        output.presentPickerView
+            .drive(with: self) { owner, source in
+                owner.presentImagePicker(source: source) { selectPhotos in
                     didAddPhotoRelay.accept(selectPhotos)
                 }
             }
@@ -267,16 +268,24 @@ final class WalkViewController: UIViewController {
         return layout
     }
     
-    private func presentImagePicker(maxCount: Int, onResult: @escaping ([WalkPhotoEntity]) -> Void) {
+    private func presentImagePicker(source: WalkViewModel.ImagePickerSource, onResult: @escaping ([WalkPhotoEntity]) -> Void) {
         var config = YPImagePickerConfiguration()
         config.library.mediaType = .photo
-        config.library.maxNumberOfItems = maxCount
-        config.startOnScreen = .library
-        config.screens = [.library]
         config.showsPhotoFilters = false
         config.library.preSelectItemOnMultipleSelection = false
         config.library.defaultMultipleSelection = true
         config.onlySquareImagesFromCamera = false
+        
+        switch source {
+        case .library(let maxCount):
+            config.library.maxNumberOfItems = maxCount
+            config.startOnScreen = .library
+            config.screens = [.library]
+        case .camera(let maxCount):
+            config.library.maxNumberOfItems = maxCount
+            config.startOnScreen = .photo
+            config.screens = [.photo]
+        }
         
         let picker = YPImagePicker(configuration: config)
         
