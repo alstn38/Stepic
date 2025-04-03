@@ -104,13 +104,22 @@ final class WalkViewModel: InputOutputModel {
         
         input.pauseButtonLongDidPress
             .bind(with: self) { owner, _ in
-                let walkTrackingData = owner.walkTrackerManager.stopTracking()
-                let walkResult = WalkResultEntity(
-                    photos: owner.walkPhotoData.value,
-                    weather: weatherLocationDataRelay.value,
-                    tracking: walkTrackingData
-                )
-                moveToSummaryViewRelay.accept(walkResult)
+                Task {
+                    do {
+                        let walkTrackingData = try await owner.walkTrackerManager.stopTracking()
+                        let walkResult = WalkResultEntity(
+                            photos: owner.walkPhotoData.value,
+                            weather: weatherLocationDataRelay.value,
+                            tracking: walkTrackingData
+                        )
+                        moveToSummaryViewRelay.accept(walkResult)
+                    } catch {
+                        presentAlertRelay.accept(.messageError(
+                            title: "Error",
+                            message: error.localizedDescription
+                        ))
+                    }
+                }
             }
             .disposed(by: disposeBag)
         
