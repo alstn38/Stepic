@@ -11,52 +11,9 @@ import RxCocoa
 import RxSwift
 import SnapKit
 
-enum EmotionType: Int, CaseIterable {
-    case love
-    case happy
-    case neutral
-    case tired
-    case sad
-    case angry
-    
-    var title: String {
-        switch self {
-        case .love:
-            return .StringLiterals.Detail.loveButtonTitle
-        case .happy:
-            return .StringLiterals.Detail.happyButtonTitle
-        case .neutral:
-            return .StringLiterals.Detail.neutralButtonTitle
-        case .tired:
-            return .StringLiterals.Detail.tiredButtonTitle
-        case .sad:
-            return .StringLiterals.Detail.sadButtonTitle
-        case .angry:
-            return .StringLiterals.Detail.angryButtonTitle
-        }
-    }
-    
-    var image: UIImage {
-        switch self {
-        case .love:
-            return .loveEmoji
-        case .happy:
-            return .happyEmoji
-        case .neutral:
-            return .neutralEmoji
-        case .tired:
-            return .tiredEmoji
-        case .sad:
-            return .sadEmoji
-        case .angry:
-            return .angryEmoji
-        }
-    }
-}
-
 final class RecordView: UIView {
     
-    var emotionButtonDidTap: Observable<EmotionType> {
+    var emotionButtonDidTap: Observable<EmotionTypeEntity> {
         return emotionButtonRelay.asObservable()
     }
     
@@ -64,7 +21,7 @@ final class RecordView: UIView {
         return textDidEditingRelay.asObservable()
     }
     
-    private let emotionButtonRelay = PublishRelay<EmotionType>()
+    private let emotionButtonRelay = PublishRelay<EmotionTypeEntity>()
     private let textDidEditingRelay = PublishRelay<Void>()
     private let disposeBag = DisposeBag()
     
@@ -95,7 +52,7 @@ final class RecordView: UIView {
     private func configureBind() {
         emotionButtonArray.forEach { button in
             button.rx.tap
-                .map { EmotionType(rawValue: button.tag)! }
+                .map { EmotionTypeEntity(rawValue: button.tag)! }
                 .bind(to: emotionButtonRelay)
                 .disposed(by: disposeBag)
         }
@@ -136,7 +93,7 @@ final class RecordView: UIView {
         emotionStackView.axis = .horizontal
         emotionStackView.distribution = .equalSpacing
         
-        EmotionType.allCases.forEach { type in
+        EmotionTypeEntity.allCases.forEach { type in
             let button = UIButton()
             button.tag = type.rawValue
             button.configuration = configureButtonConfiguration(
@@ -149,6 +106,7 @@ final class RecordView: UIView {
         recordLineView.backgroundColor = .textPlaceholder
 
         titleTextField.tintColor = .textPrimary
+        titleTextField.font = UIFont.captionBold
         titleTextField.attributedPlaceholder = NSAttributedString(
             string: .StringLiterals.Detail.recordTitlePlaceholder,
             attributes: [
