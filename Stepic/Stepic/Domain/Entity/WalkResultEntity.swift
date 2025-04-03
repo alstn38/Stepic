@@ -8,7 +8,6 @@
 import Foundation
 
 struct WalkResultEntity {
-    var photos: [WalkPhotoEntity]
     var weather: WeatherLocationEntity
     var tracking: WalkTrackingEntity
 }

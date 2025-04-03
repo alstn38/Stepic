@@ -28,7 +28,7 @@ final class WalkViewModel: InputOutputModel {
         let distance: Driver<String>
         let walkPhotoData: Driver<[WalkPhotoEntity]>
         let presentPickerView: Driver<ImagePickerSource>
-        let moveToSummaryView: Driver<WalkResultEntity>
+        let moveToSummaryView: Driver<(WalkResultEntity, [WalkPhotoEntity])>
         let presentAlert: Driver<AlertType>
     }
     
@@ -54,7 +54,7 @@ final class WalkViewModel: InputOutputModel {
         let weatherLocationDataRelay = BehaviorRelay(value: WeatherLocationEntity.loadingDummy())
         let startTimeRelay = BehaviorRelay<Date?>(value: nil)
         let presentAlbumViewRelay = PublishRelay<ImagePickerSource>()
-        let moveToSummaryViewRelay = PublishRelay<WalkResultEntity>()
+        let moveToSummaryViewRelay = PublishRelay<(WalkResultEntity, [WalkPhotoEntity])>()
         let presentAlertRelay = PublishRelay<AlertType>()
         
         let weatherLocationUpdateRelay = PublishRelay<Void>()
@@ -107,12 +107,12 @@ final class WalkViewModel: InputOutputModel {
                 Task {
                     do {
                         let walkTrackingData = try await owner.walkTrackerManager.stopTracking()
+                        let photoData = owner.walkPhotoData.value
                         let walkResult = WalkResultEntity(
-                            photos: owner.walkPhotoData.value,
                             weather: weatherLocationDataRelay.value,
                             tracking: walkTrackingData
                         )
-                        moveToSummaryViewRelay.accept(walkResult)
+                        moveToSummaryViewRelay.accept((walkResult, photoData))
                     } catch {
                         presentAlertRelay.accept(.messageError(
                             title: "Error",

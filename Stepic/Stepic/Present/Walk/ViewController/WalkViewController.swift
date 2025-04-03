@@ -117,8 +117,9 @@ final class WalkViewController: UIViewController {
             .disposed(by: disposeBag)
         
         output.moveToSummaryView
-            .drive(with: self) { owner, walkResult in
-                let viewModel = DetailViewModel(walkResultData: walkResult)
+            .drive(with: self) { owner, data in
+                let (walkResult, photoData) = data
+                let viewModel = DetailViewModel(walkResultData: walkResult, walkPhotoData: photoData)
                 let viewController = DetailViewController(viewModel: viewModel)
                 let navigationController = UINavigationController(rootViewController: viewController)
                 navigationController.modalPresentationStyle = .overFullScreen
