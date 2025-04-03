@@ -53,21 +53,22 @@ final class WalkInfoView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func configureView(_ data: WalkResultEntity) {
+        weatherIconImageView.image = UIImage(systemName: data.weather.symbolName)
+        weatherStatusLabel.text = data.weather.description
+        weatherTemperatureLabel.text = data.weather.temperature
+        startLocationLabel.text = data.tracking.startLocation.district + " " + data.tracking.startLocation.street
+        startCityLabel.text = data.tracking.startLocation.city
+        arrivalLocationLabel.text = data.tracking.endLocation.district + " " + data.tracking.endLocation.street
+        arrivalCityLabel.text = data.tracking.endLocation.city
+        startTimeLabel.text = DateFormatManager.shared.formattedTime(from: data.tracking.startTime)
+        arrivalTimeLabel.text = DateFormatManager.shared.formattedTime(from: data.tracking.endTime)
+        durationTimeLabel.text = DateFormatManager.shared.formattedDurationTime(from: data.tracking.duration)
+        distanceLabel.text = String(format: "%.2f", data.tracking.distance) + "km"
+        todayDateLabel.text = DateFormatManager.shared.formattedDate(from: data.tracking.startDate)
+    }
+    
     private func configureView() {
-        
-        weatherIconImageView.image = UIImage(systemName: "sun.max") // TODO: 이후삭제
-        weatherStatusLabel.text = "맑음" // TODO: 이후 삭제
-        weatherTemperatureLabel.text = "7°C" // TODO: 이후 삭제
-        startLocationLabel.text = "광진구 능동로" // TODO: 이후 삭제
-        startCityLabel.text = "서울특별시" // TODO: 이후 삭제
-        arrivalLocationLabel.text = "강남구 테헤란로" // TODO: 이후 삭제
-        arrivalCityLabel.text = "서울특별시" // TODO: 이후 삭제
-        startTimeLabel.text = "오후 11시 15분" // TODO: 이후 삭제
-        arrivalTimeLabel.text = "오전 2시 15분" // TODO: 이후 삭제
-        durationTimeLabel.text = "1시간 45분 23초" // TODO: 이후 삭제
-        distanceLabel.text = "8.23km" // TODO: 이후 삭제
-        todayDateLabel.text = "2025년 3월 15일 화요일" // TODO: 이후 삭제
-        
         title.text = .StringLiterals.Detail.walkInfoTitle
         weatherTitleLabel.text = .StringLiterals.Detail.weatherTitle
         startCityTitleLabel.text = .StringLiterals.Detail.startingPointTitle
@@ -178,6 +179,7 @@ final class WalkInfoView: UIView {
         weatherStatusLabel.snp.makeConstraints {
             $0.top.equalTo(weatherIconImageView)
             $0.leading.equalTo(weatherIconImageView.snp.trailing).offset(8)
+            $0.trailing.equalTo(weatherView).inset(4.adjustedWidth)
         }
         
         weatherTemperatureLabel.snp.makeConstraints {
