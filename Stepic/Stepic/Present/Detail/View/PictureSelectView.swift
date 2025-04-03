@@ -32,8 +32,6 @@ final class PictureSelectView: UIView {
         title.textColor = .textPrimary
         title.font = .titleLarge
         
-        pictureCollectionView.delegate = self // TODO: 이후 삭제
-        pictureCollectionView.dataSource = self // TODO: 이후 삭제
         pictureCollectionView.backgroundColor = .clear
         pictureCollectionView.showsHorizontalScrollIndicator = false
         pictureCollectionView.register(
@@ -100,31 +98,5 @@ final class PictureSelectView: UIView {
         
         let layout = UICollectionViewCompositionalLayout(section: sectionLayout)
         return layout
-    }
-}
-
-// TODO: 이후 삭제
-extension PictureSelectView: UICollectionViewDelegate, UICollectionViewDataSource {
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 4
-    }
-
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if indexPath.row == 3 {
-            guard let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: DetailAddPictureCollectionViewCell.identifier,
-                for: indexPath
-            ) as? DetailAddPictureCollectionViewCell else { return UICollectionViewCell() }
-            
-            return cell
-        } else {
-            guard let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: DetailPictureCollectionViewCell.identifier,
-                for: indexPath
-            ) as? DetailPictureCollectionViewCell else { return UICollectionViewCell() }
-            
-            return cell
-        }
     }
 }
