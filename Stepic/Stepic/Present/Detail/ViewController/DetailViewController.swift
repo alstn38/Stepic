@@ -14,7 +14,18 @@ import SnapKit
 
 final class DetailViewController: UIViewController {
     
+    private let viewModel: DetailViewModel
     private let disposeBag = DisposeBag()
+    
+    init(viewModel: DetailViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    @available(*, unavailable)
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     private let bookMarkButton = UIBarButtonItem()
     private let scrollView = UIScrollView()
@@ -35,14 +46,17 @@ final class DetailViewController: UIViewController {
         configureLayout()
     }
     
-    private func configureNavigation() {
-        bookMarkButton.image = .bookmark
-        bookMarkButton.tintColor = .textPrimary
-        
-        navigationItem.rightBarButtonItem = bookMarkButton
-    }
-    
     private func configureBind() {
+        let input = DetailViewModel.Input()
+        let output = viewModel.transform(from: input)
+        
+        output.walkResultData
+            .drive(with: self) { owner, data in
+                owner.walkInfoView.configureView(data)
+            }
+            .disposed(by: disposeBag)
+        
+        /// View 전용 내부 로직
         contentView.rx.tapGesture()
             .bind(with: self) { owner, _ in
                 owner.view.endEditing(true)
@@ -54,6 +68,13 @@ final class DetailViewController: UIViewController {
                 owner.scrollToRecordView()
             }
             .disposed(by: disposeBag)
+    }
+    
+    private func configureNavigation() {
+        bookMarkButton.image = .bookmark
+        bookMarkButton.tintColor = .textPrimary
+        
+        navigationItem.rightBarButtonItem = bookMarkButton
     }
     
     private func configureView() {
