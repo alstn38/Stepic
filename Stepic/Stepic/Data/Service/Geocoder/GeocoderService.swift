@@ -11,27 +11,27 @@ import CoreLocation
 import RxSwift
 
 protocol GeocoderService {
-    func reverseGeocode(location: CLLocation) async throws -> AddressDTO
+    func reverseGeocode(location: CLLocation) async throws -> LocationEntity
 }
 
 final class DefaultGeocoderService: GeocoderService {
     
-    private let geocoder = CLGeocoder()
-    
-    func reverseGeocode(location: CLLocation) async throws -> AddressDTO {
+    func reverseGeocode(location: CLLocation) async throws -> LocationEntity {
+        let geocoder = CLGeocoder()
+        
         return try await withCheckedThrowingContinuation { continuation in
             geocoder.reverseGeocodeLocation(location) { placeMarks, error in
                 if let error = error {
                     continuation.resume(throwing: error)
                 } else if let placeMark = placeMarks?.first {
-                    let address = AddressDTO(
+                    let address = LocationEntity(
                         city: placeMark.locality ?? "Unknown",
                         district: placeMark.subLocality ?? "Unknown",
-                        street: placeMark.thoroughfare ?? "Unknown"
+                        street: placeMark.thoroughfare ?? ""
                     )
                     continuation.resume(returning: address)
                 } else {
-                    continuation.resume(returning: AddressDTO.dummy())
+                    continuation.resume(returning: LocationEntity.dummy())
                 }
             }
         }
