@@ -207,7 +207,8 @@ final class WalkInfoView: UIView {
         
         startLocationLabel.snp.makeConstraints {
             $0.top.equalTo(locationView).offset(22.adjustedHeight)
-            $0.centerX.equalTo(locationLineView.snp.leading).offset(60.adjustedWidth)
+            $0.leading.equalTo(locationView).offset(4)
+            $0.trailing.equalTo(locationLineView.snp.leading).inset(4)
         }
         
         startCityLabel.snp.makeConstraints {
@@ -222,7 +223,8 @@ final class WalkInfoView: UIView {
         
         arrivalLocationLabel.snp.makeConstraints {
             $0.top.equalTo(locationView).offset(22.adjustedHeight)
-            $0.centerX.equalTo(locationLineView.snp.trailing).inset(60.adjustedWidth)
+            $0.leading.equalTo(locationLineView.snp.trailing).offset(4)
+            $0.trailing.equalTo(locationView).inset(4)
         }
         
         arrivalCityLabel.snp.makeConstraints {
