@@ -7,11 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F151BD8C2D9E4E3800C1D0FA /* Toast in Frameworks */ = {isa = PBXBuildFile; productRef = F151BD8B2D9E4E3800C1D0FA /* Toast */; };
 		F17442FF2D9976D30089D8AE /* RxGesture in Frameworks */ = {isa = PBXBuildFile; productRef = F17442FE2D9976D30089D8AE /* RxGesture */; };
 		F19FF8672D944A4E00098615 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = F19FF8662D944A4E00098615 /* RxCocoa */; };
 		F19FF8692D944A4E00098615 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = F19FF8682D944A4E00098615 /* RxSwift */; };
 		F19FF86C2D944A5F00098615 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = F19FF86B2D944A5F00098615 /* Lottie */; };
-		F19FF86F2D944A9800098615 /* Toast in Frameworks */ = {isa = PBXBuildFile; productRef = F19FF86E2D944A9800098615 /* Toast */; };
 		F1A408B02D956D8700947B9F /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = F1A408AF2D956D8700947B9F /* RealmSwift */; };
 		F1A408B12D956E3B00947B9F /* RealmSwift in Embed Frameworks */ = {isa = PBXBuildFile; productRef = F1A408AF2D956D8700947B9F /* RealmSwift */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		F1A408B52D9577A300947B9F /* FSCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = F1A408B42D9577A300947B9F /* FSCalendar */; };
@@ -70,9 +70,9 @@
 				F1EDF3682D9D6EC300B8CD5F /* RxDataSources in Frameworks */,
 				F19FF8672D944A4E00098615 /* RxCocoa in Frameworks */,
 				F1A408B82D9577BE00947B9F /* SnapKit in Frameworks */,
-				F19FF86F2D944A9800098615 /* Toast in Frameworks */,
 				F1A408B02D956D8700947B9F /* RealmSwift in Frameworks */,
 				F1EDF35C2D9D65AB00B8CD5F /* YPImagePicker in Frameworks */,
+				F151BD8C2D9E4E3800C1D0FA /* Toast in Frameworks */,
 				F19FF86C2D944A5F00098615 /* Lottie in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -120,13 +120,13 @@
 				F19FF8662D944A4E00098615 /* RxCocoa */,
 				F19FF8682D944A4E00098615 /* RxSwift */,
 				F19FF86B2D944A5F00098615 /* Lottie */,
-				F19FF86E2D944A9800098615 /* Toast */,
 				F1A408AF2D956D8700947B9F /* RealmSwift */,
 				F1A408B42D9577A300947B9F /* FSCalendar */,
 				F1A408B72D9577BE00947B9F /* SnapKit */,
 				F17442FE2D9976D30089D8AE /* RxGesture */,
 				F1EDF35B2D9D65AB00B8CD5F /* YPImagePicker */,
 				F1EDF3672D9D6EC300B8CD5F /* RxDataSources */,
+				F151BD8B2D9E4E3800C1D0FA /* Toast */,
 			);
 			productName = Stepic;
 			productReference = F19FF8432D9447B700098615 /* Stepic.app */;
@@ -140,7 +140,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1620;
-				LastUpgradeCheck = 1620;
+				LastUpgradeCheck = 1630;
 				TargetAttributes = {
 					F19FF8422D9447B700098615 = {
 						CreatedOnToolsVersion = 16.2;
@@ -160,13 +160,13 @@
 			packageReferences = (
 				F19FF8652D944A4E00098615 /* XCRemoteSwiftPackageReference "RxSwift" */,
 				F19FF86A2D944A5F00098615 /* XCRemoteSwiftPackageReference "lottie-ios" */,
-				F19FF86D2D944A9800098615 /* XCRemoteSwiftPackageReference "Toast-Swift" */,
 				F1A408AE2D956D8700947B9F /* XCRemoteSwiftPackageReference "realm-swift" */,
 				F1A408B32D9577A300947B9F /* XCRemoteSwiftPackageReference "FSCalendar" */,
 				F1A408B62D9577BE00947B9F /* XCRemoteSwiftPackageReference "SnapKit" */,
 				F17442FD2D9976D30089D8AE /* XCRemoteSwiftPackageReference "RxGesture" */,
 				F1EDF35A2D9D65AB00B8CD5F /* XCRemoteSwiftPackageReference "YPImagePicker" */,
 				F1EDF3662D9D6EC300B8CD5F /* XCRemoteSwiftPackageReference "RxDataSources" */,
+				F151BD8A2D9E4E3800C1D0FA /* XCRemoteSwiftPackageReference "Toast-Swift" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = F19FF8442D9447B700098615 /* Products */;
@@ -207,7 +207,6 @@
 				CODE_SIGN_ENTITLEMENTS = Stepic/Stepic.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 5YM44C4YT8;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Stepic/Resource/Base.lproj/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -240,7 +239,6 @@
 				CODE_SIGN_ENTITLEMENTS = Stepic/Stepic.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 5YM44C4YT8;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Stepic/Resource/Base.lproj/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -301,6 +299,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 5YM44C4YT8;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -366,6 +365,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 5YM44C4YT8;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -412,6 +412,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		F151BD8A2D9E4E3800C1D0FA /* XCRemoteSwiftPackageReference "Toast-Swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/scalessec/Toast-Swift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.1.1;
+			};
+		};
 		F17442FD2D9976D30089D8AE /* XCRemoteSwiftPackageReference "RxGesture" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/RxSwiftCommunity/RxGesture.git";
@@ -434,14 +442,6 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 4.5.1;
-			};
-		};
-		F19FF86D2D944A9800098615 /* XCRemoteSwiftPackageReference "Toast-Swift" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/scalessec/Toast-Swift.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 5.1.1;
 			};
 		};
 		F1A408AE2D956D8700947B9F /* XCRemoteSwiftPackageReference "realm-swift" */ = {
@@ -487,6 +487,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		F151BD8B2D9E4E3800C1D0FA /* Toast */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F151BD8A2D9E4E3800C1D0FA /* XCRemoteSwiftPackageReference "Toast-Swift" */;
+			productName = Toast;
+		};
 		F17442FE2D9976D30089D8AE /* RxGesture */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = F17442FD2D9976D30089D8AE /* XCRemoteSwiftPackageReference "RxGesture" */;
@@ -506,11 +511,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = F19FF86A2D944A5F00098615 /* XCRemoteSwiftPackageReference "lottie-ios" */;
 			productName = Lottie;
-		};
-		F19FF86E2D944A9800098615 /* Toast */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = F19FF86D2D944A9800098615 /* XCRemoteSwiftPackageReference "Toast-Swift" */;
-			productName = Toast;
 		};
 		F1A408AF2D956D8700947B9F /* RealmSwift */ = {
 			isa = XCSwiftPackageProductDependency;
