@@ -108,10 +108,10 @@ final class WalkButtonView: UIView {
         switch gesture.state {
         case .began:
             startLongPressAnimation()
-        case .cancelled:
-            AlertToastManager.showToastAtPresentedView(message: .StringLiterals.Toast.walkFinishHoldMessage)
-            resetButton()
         case .ended, .cancelled:
+            if longPressTimer != nil {
+                AlertToastManager.showToastAtPresentedView(message: .StringLiterals.Toast.walkFinishHoldMessage)
+            }
             resetButton()
         default:
             break
