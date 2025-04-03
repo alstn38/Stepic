@@ -82,6 +82,7 @@ final class WalkViewController: UIViewController {
             startTrigger: startTrigger.asObservable(),
             albumButtonDidTap: albumButtonView.rx.tapGesture().map { _ in }.asObservable(),
             photoButtonDidTap: cameraButtonView.rx.tapGesture().map { _ in }.asObservable(),
+            pauseButtonLongDidPress: pauseButtonView.longTapGesture.asObservable(),
             didAddPhoto: didAddPhotoRelay.asObservable(),
             deletePhoto: photoDidDeleteRelay.asObservable()
         )
@@ -115,6 +116,17 @@ final class WalkViewController: UIViewController {
             }
             .disposed(by: disposeBag)
         
+        output.moveToSummaryView
+            .drive(with: self) { owner, walkResult in
+                let viewModel = DetailViewModel(walkResultData: walkResult)
+                let viewController = DetailViewController(viewModel: viewModel)
+                let navigationController = UINavigationController(rootViewController: viewController)
+                navigationController.modalPresentationStyle = .overFullScreen
+                navigationController.modalTransitionStyle = .crossDissolve
+                owner.present(navigationController, animated: true)
+            }
+            .disposed(by: disposeBag)
+        
         output.presentAlert
             .drive(with: self) { owner, alertType in
                 switch alertType {
@@ -129,17 +141,6 @@ final class WalkViewController: UIViewController {
         countDownView.startAnimation {
             startTrigger.accept(())
         }
-        
-        // TODO: 이후 위치 변경
-        pauseButtonView.longTapGesture
-            .bind(with: self) { owner, _ in
-                let viewController = DetailViewController()
-                let navigationController = UINavigationController(rootViewController: viewController)
-                navigationController.modalPresentationStyle = .overFullScreen
-                navigationController.modalTransitionStyle = .crossDissolve
-                owner.present(navigationController, animated: true)
-            }
-            .disposed(by: disposeBag)
     }
     
     private func configureView() {

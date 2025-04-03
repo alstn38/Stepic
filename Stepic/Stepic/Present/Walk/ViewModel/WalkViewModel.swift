@@ -17,6 +17,7 @@ final class WalkViewModel: InputOutputModel {
         let startTrigger: Observable<Void>
         let albumButtonDidTap: Observable<Void>
         let photoButtonDidTap: Observable<Void>
+        let pauseButtonLongDidPress: Observable<Void>
         let didAddPhoto: Observable<[WalkPhotoEntity]>
         let deletePhoto: Observable<Int>
     }
@@ -27,6 +28,7 @@ final class WalkViewModel: InputOutputModel {
         let distance: Driver<String>
         let walkPhotoData: Driver<[WalkPhotoEntity]>
         let presentPickerView: Driver<ImagePickerSource>
+        let moveToSummaryView: Driver<WalkResultEntity>
         let presentAlert: Driver<AlertType>
     }
     
@@ -52,6 +54,7 @@ final class WalkViewModel: InputOutputModel {
         let weatherLocationDataRelay = BehaviorRelay(value: WeatherLocationEntity.loadingDummy())
         let startTimeRelay = BehaviorRelay<Date?>(value: nil)
         let presentAlbumViewRelay = PublishRelay<ImagePickerSource>()
+        let moveToSummaryViewRelay = PublishRelay<WalkResultEntity>()
         let presentAlertRelay = PublishRelay<AlertType>()
         
         let weatherLocationUpdateRelay = PublishRelay<Void>()
@@ -96,6 +99,18 @@ final class WalkViewModel: InputOutputModel {
                         message: .StringLiterals.Alert.photoLimitAlertMessage
                     ))
                 }
+            }
+            .disposed(by: disposeBag)
+        
+        input.pauseButtonLongDidPress
+            .bind(with: self) { owner, _ in
+                let walkTrackingData = owner.walkTrackerManager.stopTracking()
+                let walkResult = WalkResultEntity(
+                    photos: owner.walkPhotoData.value,
+                    weather: weatherLocationDataRelay.value,
+                    tracking: walkTrackingData
+                )
+                moveToSummaryViewRelay.accept(walkResult)
             }
             .disposed(by: disposeBag)
         
@@ -174,8 +189,9 @@ final class WalkViewModel: InputOutputModel {
             timer: elapsedTime,
             distance: distance,
             walkPhotoData: walkPhotoData.asDriver(),
-            presentPickerView: presentAlbumViewRelay.asDriver(onErrorJustReturn: .camera(maxCount: 0)),
-            presentAlert: presentAlertRelay.asDriver(onErrorJustReturn: .messageError(title: "", message: ""))
+            presentPickerView: presentAlbumViewRelay.asDriver(onErrorDriveWith: .empty()),
+            moveToSummaryView: moveToSummaryViewRelay.asDriver(onErrorDriveWith: .empty()),
+            presentAlert: presentAlertRelay.asDriver(onErrorDriveWith: .empty())
         )
     }
 }
