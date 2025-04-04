@@ -21,6 +21,7 @@ final class DetailViewModel: InputOutputModel {
         let emotionDidSelect: Observable<EmotionTypeEntity>
         let titleDidChange: Observable<String>
         let contentDidChange: Observable<String>
+        let recordButtonDidTap: Observable<Void>
     }
     
     struct Output {
@@ -130,6 +131,30 @@ final class DetailViewModel: InputOutputModel {
             .bind(with: self) { owner, content in
                 owner.walkRecordInfoData.content = content
                 print(content)
+            }
+            .disposed(by: disposeBag)
+        
+        input.recordButtonDidTap
+            .bind(with: self) { owner, _ in
+                /// 감정 입력
+                guard owner.walkRecordInfoData.emotion != nil else {
+                    presentAlertRelay.accept((
+                        title: .StringLiterals.Detail.inputRequiredTitle,
+                        message: .StringLiterals.Detail.walkEmotionSelectMessage
+                    ))
+                    return
+                }
+                
+                /// 제목 입력
+                guard !owner.walkRecordInfoData.title.isEmpty else {
+                    presentAlertRelay.accept((
+                        title: .StringLiterals.Detail.inputRequiredTitle,
+                        message: .StringLiterals.Detail.walkTitleSettingMessage
+                    ))
+                    return
+                }
+                
+                // TODO: 저장 로직 구현
             }
             .disposed(by: disposeBag)
         

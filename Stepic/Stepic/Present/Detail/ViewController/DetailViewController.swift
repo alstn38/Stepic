@@ -97,7 +97,8 @@ final class DetailViewController: UIViewController {
             libraryActionDidTap: libraryActionDidTap.asObservable(),
             emotionDidSelect: recordView.emotionButtonDidTap.asObservable(),
             titleDidChange: recordView.titleTextField.rx.text.orEmpty.asObservable(),
-            contentDidChange: recordView.contentTextView.rx.text.orEmpty.asObservable()
+            contentDidChange: recordView.contentTextView.rx.text.orEmpty.asObservable(),
+            recordButtonDidTap: recordButton.rx.tap.asObservable()
         )
         
         let output = viewModel.transform(from: input)
@@ -138,6 +139,13 @@ final class DetailViewController: UIViewController {
                 owner.presentImagePicker(source: source) { selectPhotos in
                     didAddPhotoRelay.accept(selectPhotos)
                 }
+            }
+            .disposed(by: disposeBag)
+        
+        output.presentAlert
+            .drive(with: self) { owner, alert in
+                let (title, message) = alert
+                owner.presentWarningAlert(title: title, message: message)
             }
             .disposed(by: disposeBag)
         
