@@ -98,6 +98,7 @@ final class DetailViewController: UIViewController {
             emotionDidSelect: recordView.emotionButtonDidTap.asObservable(),
             titleDidChange: recordView.titleTextField.rx.text.orEmpty.asObservable(),
             contentDidChange: recordView.contentTextView.rx.text.orEmpty.asObservable(),
+            routeViewDidUpdate: routeView.mapViewDidCapture,
             recordButtonDidTap: recordButton.rx.tap.asObservable()
         )
         

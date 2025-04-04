@@ -8,9 +8,18 @@
 import UIKit
 
 import MapKit
+import RxSwift
+import RxCocoa
 import SnapKit
 
 final class RouteView: UIView {
+    
+    var mapViewDidCapture: Observable<UIImage> {
+        return mapViewDidCaptureRelay.asObservable()
+    }
+    
+    private let mapViewDidCaptureRelay = PublishRelay<UIImage>()
+    private let disposeBag = DisposeBag()
     
     private let walkMapRenderer = WalkMapRenderer()
     private let title = UILabel()
@@ -32,10 +41,22 @@ final class RouteView: UIView {
     
     func configureView(with pathCoordinates: [CLLocationCoordinate2D]) {
         walkMapRenderer.renderPath(on: mapView, pathCoordinates: pathCoordinates)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            if let snapshot = self.mapView.captureSnapshot() {
+                self.mapViewDidCaptureRelay.accept(snapshot)
+            }
+        }
     }
     
     func configureView(with photos: [WalkPhotoEntity]) {
         walkMapRenderer.renderPhotos(on: mapView, photos: photos)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            if let snapshot = self.mapView.captureSnapshot() {
+                self.mapViewDidCaptureRelay.accept(snapshot)
+            }
+        }
     }
     
     private func configureView() {
@@ -47,7 +68,6 @@ final class RouteView: UIView {
         mapBackgroundView.layer.cornerRadius = 10
         mapBackgroundView.clipsToBounds = true
         
-        mapView.isUserInteractionEnabled = false
         mapView.layer.cornerRadius = 10
         mapView.clipsToBounds = true
         mapView.delegate = self

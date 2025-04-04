@@ -5,7 +5,7 @@
 //  Created by 강민수 on 4/3/25.
 //
 
-import Foundation
+import UIKit
 
 import RxSwift
 import RxCocoa
@@ -21,6 +21,7 @@ final class DetailViewModel: InputOutputModel {
         let emotionDidSelect: Observable<EmotionTypeEntity>
         let titleDidChange: Observable<String>
         let contentDidChange: Observable<String>
+        let routeViewDidUpdate: Observable<UIImage>
         let recordButtonDidTap: Observable<Void>
     }
     
@@ -39,6 +40,7 @@ final class DetailViewModel: InputOutputModel {
     private let walkResultData: WalkResultEntity
     private let photoDataRelay: BehaviorRelay<[WalkPhotoEntity]>
     private var walkRecordInfoData = WalkRecordInfoEntity()
+    private var routeViewImage: UIImage?
     private let disposeBag = DisposeBag()
     
     init(
@@ -131,6 +133,12 @@ final class DetailViewModel: InputOutputModel {
             .bind(with: self) { owner, content in
                 owner.walkRecordInfoData.content = content
                 print(content)
+            }
+            .disposed(by: disposeBag)
+        
+        input.routeViewDidUpdate
+            .bind(with: self) { owner, image in
+                owner.routeViewImage = image
             }
             .disposed(by: disposeBag)
         
