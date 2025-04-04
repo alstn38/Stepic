@@ -9,7 +9,9 @@ import Foundation
 
 enum StorageError: Error, LocalizedError {
     case realmSaveFailed
+    case realmLoadFailed
     case imageSaveFailed
+    case imageLoadFailed
 }
 
 extension StorageError {
@@ -17,8 +19,12 @@ extension StorageError {
         switch self {
         case .realmSaveFailed:
             return .StringLiterals.Storage.realmSaveFailedMessage
+        case .realmLoadFailed:
+            return .StringLiterals.Storage.realmLoadFailedMessage
         case .imageSaveFailed:
             return .StringLiterals.Storage.imageSaveFailedMessage
+        case .imageLoadFailed:
+            return .StringLiterals.Storage.imageLoadFailedMessage
         }
     }
 }
