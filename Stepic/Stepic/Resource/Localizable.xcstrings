@@ -613,6 +613,23 @@
         }
       }
     },
+    "selectDateTitle" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select Date"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "날짜 선택"
+          }
+        }
+      }
+    },
     "startingPointTitle" : {
       "extractionState" : "manual",
       "localizations" : {

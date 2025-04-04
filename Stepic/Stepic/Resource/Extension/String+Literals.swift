@@ -81,6 +81,7 @@ extension String {
             static let photoActionLibrary: String = localized("photoActionLibrary")
             static let storageErrorAlertTitle: String = localized("storageErrorAlertTitle")
             static let mapThumbnailSaveFailedMessage: String = localized("mapThumbnailSaveFailedMessage")
+            static let selectDateTitle: String = localized("selectDateTitle")
         }
         
         enum Toast {
