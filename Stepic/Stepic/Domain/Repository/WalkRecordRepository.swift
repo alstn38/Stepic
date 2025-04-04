@@ -8,14 +8,8 @@
 import UIKit
 
 protocol WalkRecordRepository {
-    func save(
-        walkTrackingEntity: WalkTrackingEntity,
-        weather: WeatherLocationEntity,
-        photos: [WalkPhotoEntity],
-        emotion: Int,
-        title: String,
-        content: String?,
-        isBookmarked: Bool,
-        thumbnailImage: UIImage
-    ) throws
+    func save(entity: WalkDiaryEntity) throws
+    func fetchAll() -> [WalkDiaryEntity]
+    func fetch(byYear year: Int, month: Int) -> [WalkDiaryEntity]
+    func fetchBookmarked() -> [WalkDiaryEntity]
 }
