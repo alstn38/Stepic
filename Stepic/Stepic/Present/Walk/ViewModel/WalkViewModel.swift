@@ -125,8 +125,27 @@ final class WalkViewModel: InputOutputModel {
         
         input.didAddPhoto
             .bind(with: self) { owner, inputPhotos in
-                let newPhotoData = owner.walkPhotoData.value + inputPhotos
-                owner.walkPhotoData.accept(newPhotoData)
+                Task {
+                    do {
+                        let currentLocation = try await owner.walkTrackerManager.getCurrentTrackingLocation()
+                        
+                        let photos = inputPhotos.map { photo in
+                            if photo.location == nil {
+                                return WalkPhotoEntity(image: photo.image, location: currentLocation)
+                            } else {
+                                return photo
+                            }
+                        }
+                        
+                        let newPhotoData = owner.walkPhotoData.value + photos
+                        owner.walkPhotoData.accept(newPhotoData)
+                    } catch {
+                        presentAlertRelay.accept(.messageError(
+                            title: "Error",
+                            message: error.localizedDescription
+                        ))
+                    }
+                }
             }
             .disposed(by: disposeBag)
         
