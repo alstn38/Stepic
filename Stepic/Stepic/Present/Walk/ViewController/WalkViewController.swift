@@ -277,6 +277,7 @@ final class WalkViewController: UIViewController {
         config.library.preSelectItemOnMultipleSelection = false
         config.library.defaultMultipleSelection = true
         config.onlySquareImagesFromCamera = false
+        config.showsPhotoFilters = true
         
         switch source {
         case .library(let maxCount):
