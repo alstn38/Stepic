@@ -222,6 +222,23 @@
         }
       }
     },
+    "inputRequiredTitle" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Input Needed"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "입력이 필요해요"
+          }
+        }
+      }
+    },
     "locationAlertCancel" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -664,6 +681,23 @@
         }
       }
     },
+    "walkEmotionSelectMessage" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Please select how you felt during your walk."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "산책의 감정을 남겨주세요."
+          }
+        }
+      }
+    },
     "walkFinishHoldMessage" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -694,6 +728,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "산책 정보"
+          }
+        }
+      }
+    },
+    "walkTitleSettingMessage" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Please set a title."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "제목을 설정해주세요."
           }
         }
       }

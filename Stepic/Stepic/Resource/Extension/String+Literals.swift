@@ -56,6 +56,9 @@ extension String {
             static let photoTitle: String = localized("photoTitle")
             static let routeTitle: String = localized("routeTitle")
             static let endWalkButton: String = localized("endWalkButton")
+            static let inputRequiredTitle: String = localized("inputRequiredTitle")
+            static let walkEmotionSelectMessage: String = localized("walkEmotionSelectMessage")
+            static let walkTitleSettingMessage: String = localized("walkTitleSettingMessage")
         }
         
         enum MyPage {
