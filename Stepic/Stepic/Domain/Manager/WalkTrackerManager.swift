@@ -17,6 +17,7 @@ protocol WalkTrackerManager {
     func startTracking()
     func stopTracking() async throws -> WalkTrackingEntity
     func resetTracking()
+    func getCurrentTrackingLocation() async throws -> CLLocation
 }
 
 final class DefaultWalkTrackerManager: WalkTrackerManager {
@@ -98,5 +99,9 @@ final class DefaultWalkTrackerManager: WalkTrackerManager {
         pathCoordinates = []
         totalDistanceRelay.accept(0)
         disposeBag = DisposeBag()
+    }
+    
+    func getCurrentTrackingLocation() async throws -> CLLocation {
+        return try await locationService.getCurrentTrackingLocation()
     }
 }

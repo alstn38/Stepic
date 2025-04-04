@@ -12,4 +12,5 @@ import RxSwift
 
 protocol WeatherLocationRepository {
     func fetchCurrentWeatherLocationInfo() async throws -> WeatherLocationEntity
+    func getCurrentLocation() async throws -> CLLocation
 }

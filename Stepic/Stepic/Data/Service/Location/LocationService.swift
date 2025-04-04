@@ -14,6 +14,7 @@ protocol LocationService {
     var currentLocation: Observable<CLLocation> { get }
     
     func getCurrentLocation() async throws -> CLLocation
+    func getCurrentTrackingLocation() async throws -> CLLocation
     func startUpdatingLocation()
     func stopUpdatingLocation()
 }
@@ -38,9 +39,18 @@ final class DefaultLocationService: NSObject, LocationService {
         locationManager.requestWhenInUseAuthorization()
     }
     
+    /// 위치를 한번만 요청하고 위치 연결을 해제하는 메서드
     func getCurrentLocation() async throws -> CLLocation {
         startUpdatingLocation()
         defer { stopUpdatingLocation() }
+        return try await currentLocation
+            .take(1)
+            .asSingle()
+            .value
+    }
+    
+    /// 이동중에 위치를 요청하는 메서드 위치 연결을 해제하지 않는다.
+    func getCurrentTrackingLocation() async throws -> CLLocation {
         return try await currentLocation
             .take(1)
             .asSingle()

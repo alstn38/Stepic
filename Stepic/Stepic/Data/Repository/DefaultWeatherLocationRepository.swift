@@ -44,4 +44,9 @@ final class DefaultWeatherLocationRepository: WeatherLocationRepository {
             temperature: String(format: "%.0f", weather.temperature) + "\(weather.unitSymbol)"
         )
     }
+    
+    /// 위치를 한번만 요청하고 위치 연결을 해제하는 메서드
+    func getCurrentLocation() async throws -> CLLocation {
+        return try await locationService.getCurrentLocation()
+    }
 }
