@@ -28,7 +28,10 @@ final class DetailViewModel: InputOutputModel {
         let walkResultData: Driver<WalkResultEntity>
         let photoData: Driver<[WalkPhotoEntity]>
         let presentPickerView: Driver<ImagePickerSource>
+        let presentAlert: Driver<(title: String, message: String)>
     }
+    
+    private let weatherLocationRepository: WeatherLocationRepository
     
     private let maxPhotoCount: Int = 10
     private let bookMarkStateRelay = BehaviorRelay<Bool>(value: false)
@@ -37,13 +40,19 @@ final class DetailViewModel: InputOutputModel {
     private var walkRecordInfoData = WalkRecordInfoEntity()
     private let disposeBag = DisposeBag()
     
-    init(walkResultData: WalkResultEntity, walkPhotoData: [WalkPhotoEntity]) {
+    init(
+        weatherLocationRepository: WeatherLocationRepository = DIContainer.shared.resolve(WeatherLocationRepository.self),
+        walkResultData: WalkResultEntity,
+        walkPhotoData: [WalkPhotoEntity])
+    {
+        self.weatherLocationRepository = weatherLocationRepository
         self.walkResultData = walkResultData
         self.photoDataRelay = BehaviorRelay(value: walkPhotoData)
     }
     
     func transform(from input: Input) -> Output {
         let presentPickerViewRelay = PublishRelay<ImagePickerSource>()
+        let presentAlertRelay = PublishRelay<(title: String, message: String)>()
         
         input.bookMarkButtonDidTap
             .bind(with: self) { owner, _ in
@@ -63,8 +72,27 @@ final class DetailViewModel: InputOutputModel {
         
         input.photoDidAdd
             .bind(with: self) { owner, inputPhotos in
-                let newPhotoData = owner.photoDataRelay.value + inputPhotos
-                owner.photoDataRelay.accept(newPhotoData)
+                Task {
+                    do {
+                        let currentLocation = try await owner.weatherLocationRepository.getCurrentLocation()
+                        
+                        let photos = inputPhotos.map { photo in
+                            if photo.location == nil {
+                                return WalkPhotoEntity(image: photo.image, location: currentLocation)
+                            } else {
+                                return photo
+                            }
+                        }
+                        
+                        let newPhotoData = owner.photoDataRelay.value + photos
+                        owner.photoDataRelay.accept(newPhotoData)
+                    } catch {
+                        presentAlertRelay.accept((
+                            title: "Photo Location Error",
+                            message: error.localizedDescription
+                        ))
+                    }
+                }
             }
             .disposed(by: disposeBag)
         
@@ -109,7 +137,8 @@ final class DetailViewModel: InputOutputModel {
             bookMarkState: bookMarkStateRelay.asDriver(),
             walkResultData: Observable.just(walkResultData).asDriver(onErrorDriveWith: .empty()),
             photoData: photoDataRelay.asDriver(),
-            presentPickerView: presentPickerViewRelay.asDriver(onErrorDriveWith: .empty())
+            presentPickerView: presentPickerViewRelay.asDriver(onErrorDriveWith: .empty()),
+            presentAlert: presentAlertRelay.asDriver(onErrorDriveWith: .empty())
         )
     }
 }
