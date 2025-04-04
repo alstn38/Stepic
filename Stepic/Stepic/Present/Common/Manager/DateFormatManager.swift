@@ -17,10 +17,12 @@ final class DateFormatManager {
     
     private let dateFormatter = DateFormatter()
     private let timeFormatter = DateFormatter()
+    private let selectMonthFormatter = DateFormatter()
     
     private func configureFormatters() {
         dateFormatter.dateFormat = .StringLiterals.Formatter.dateFormat
         timeFormatter.dateFormat = .StringLiterals.Formatter.timeFormat
+        selectMonthFormatter.setLocalizedDateFormatFromTemplate("yyyyMMMM")
     }
 
     func formattedDate(from date: Date) -> String {
@@ -36,5 +38,14 @@ final class DateFormatManager {
         formatter.unitsStyle = .abbreviated
         formatter.allowedUnits = [.hour, .minute, .second]
         return formatter.string(from: timeInterval) ?? "No Data"
+    }
+    
+    func selectMonthTitle(year: Int, month: Int) -> String {
+        var components = DateComponents()
+        components.year = year
+        components.month = month
+        let calendar = Calendar.current
+        guard let date = calendar.date(from: components) else { return "" }
+        return selectMonthFormatter.string(from: date)
     }
 }
