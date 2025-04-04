@@ -47,7 +47,11 @@ final class HomeViewController: UIViewController {
     }
     
     private func configureBind() {
+        let selectDateDidChangeRelay = PublishRelay<YearMonth>()
+        
         let input = HomeViewModel.Input(
+            viewDidLoad: Observable.just(()),
+            selectDateDidChange: selectDateDidChangeRelay.asObservable(),
             recordButtonDidTap: recordButton.rx.tap.asObservable()
         )
         
@@ -56,6 +60,16 @@ final class HomeViewController: UIViewController {
         output.weatherLocationData
             .drive(with: self) { owner, data in
                 owner.weatherView.configureView(data)
+            }
+            .disposed(by: disposeBag)
+        
+        output.selectedDateTitle
+            .drive(calendarTitleLabel.rx.text)
+            .disposed(by: disposeBag)
+        
+        output.walkDiaryData
+            .drive(with: self) { owner, data in
+                
             }
             .disposed(by: disposeBag)
         
@@ -79,6 +93,26 @@ final class HomeViewController: UIViewController {
                 }
             }
             .disposed(by: disposeBag)
+        
+        /// 뷰 내부 로직
+        calendarButton.rx.tap
+            .bind(with: self) { owner, _ in
+                let monthPicker = MonthPickerViewController() { selected in
+                    selectDateDidChangeRelay.accept(selected)
+                }
+                
+                monthPicker.modalPresentationStyle = .pageSheet
+                if let sheet = monthPicker.sheetPresentationController {
+                    sheet.detents = [
+                        .custom(resolver: { context in
+                            return context.maximumDetentValue * 0.3
+                        })
+                    ]
+                }
+                
+                owner.present(monthPicker, animated: true)
+            }
+            .disposed(by: disposeBag)
     }
     
     private func configureNavigation() {
@@ -90,7 +124,6 @@ final class HomeViewController: UIViewController {
         
         scrollView.showsVerticalScrollIndicator = false
         
-        calendarTitleLabel.text = "2025년 3월" // TODO: 이후 서버 연결
         calendarTitleLabel.textColor = .textPrimary
         calendarTitleLabel.font = .titleLarge
         
