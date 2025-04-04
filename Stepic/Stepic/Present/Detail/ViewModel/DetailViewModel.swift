@@ -31,8 +31,10 @@ final class DetailViewModel: InputOutputModel {
         let photoData: Driver<[WalkPhotoEntity]>
         let presentPickerView: Driver<ImagePickerSource>
         let presentAlert: Driver<(title: String, message: String)>
+        let dismissToRoot: Driver<Void>
     }
     
+    private let walkRecordRepository: WalkRecordRepository
     private let weatherLocationRepository: WeatherLocationRepository
     
     private let maxPhotoCount: Int = 10
@@ -44,10 +46,12 @@ final class DetailViewModel: InputOutputModel {
     private let disposeBag = DisposeBag()
     
     init(
+        walkRecordRepository: WalkRecordRepository = DIContainer.shared.resolve(WalkRecordRepository.self),
         weatherLocationRepository: WeatherLocationRepository = DIContainer.shared.resolve(WeatherLocationRepository.self),
         walkResultData: WalkResultEntity,
         walkPhotoData: [WalkPhotoEntity])
     {
+        self.walkRecordRepository = walkRecordRepository
         self.weatherLocationRepository = weatherLocationRepository
         self.walkResultData = walkResultData
         self.photoDataRelay = BehaviorRelay(value: walkPhotoData)
@@ -56,6 +60,7 @@ final class DetailViewModel: InputOutputModel {
     func transform(from input: Input) -> Output {
         let presentPickerViewRelay = PublishRelay<ImagePickerSource>()
         let presentAlertRelay = PublishRelay<(title: String, message: String)>()
+        let dismissToRootRelay = PublishRelay<Void>()
         
         input.bookMarkButtonDidTap
             .bind(with: self) { owner, _ in
@@ -118,21 +123,18 @@ final class DetailViewModel: InputOutputModel {
         input.emotionDidSelect
             .bind(with: self) { owner, emotionType in
                 owner.walkRecordInfoData.emotion = emotionType
-                print(emotionType.title)
             }
             .disposed(by: disposeBag)
         
         input.titleDidChange
             .bind(with: self) { owner, title in
                 owner.walkRecordInfoData.title = title
-                print(title)
             }
             .disposed(by: disposeBag)
         
         input.contentDidChange
             .bind(with: self) { owner, content in
                 owner.walkRecordInfoData.content = content
-                print(content)
             }
             .disposed(by: disposeBag)
         
@@ -143,7 +145,10 @@ final class DetailViewModel: InputOutputModel {
             .disposed(by: disposeBag)
         
         input.recordButtonDidTap
-            .bind(with: self) { owner, _ in
+            .throttle(.seconds(1), latest: false, scheduler: MainScheduler.instance)
+            .bind(with: self) {
+                owner,
+                _ in
                 /// 감정 입력
                 guard owner.walkRecordInfoData.emotion != nil else {
                     presentAlertRelay.accept((
@@ -162,7 +167,33 @@ final class DetailViewModel: InputOutputModel {
                     return
                 }
                 
-                // TODO: 저장 로직 구현
+                /// 지도 썸네일 저장
+                guard let routeViewImage = owner.routeViewImage else {
+                    presentAlertRelay.accept((
+                        title: .StringLiterals.Storage.imageSaveFailedMessage,
+                        message: .StringLiterals.Alert.mapThumbnailSaveFailedMessage
+                    ))
+                    return
+                }
+                
+                do {
+                    try owner.walkRecordRepository.save(
+                        walkTrackingEntity: owner.walkResultData.tracking,
+                        weather: owner.walkResultData.weather,
+                        photos: owner.photoDataRelay.value,
+                        emotion: owner.walkRecordInfoData.emotion?.rawValue ?? 0,
+                        title: owner.walkRecordInfoData.title,
+                        content: owner.walkRecordInfoData.content,
+                        isBookmarked: owner.bookMarkStateRelay.value,
+                        thumbnailImage: routeViewImage
+                    )
+                    dismissToRootRelay.accept(())
+                } catch {
+                    presentAlertRelay.accept((
+                        title: .StringLiterals.Alert.storageErrorAlertTitle,
+                        message: error.localizedDescription
+                    ))
+                }
             }
             .disposed(by: disposeBag)
         
@@ -171,7 +202,8 @@ final class DetailViewModel: InputOutputModel {
             walkResultData: Observable.just(walkResultData).asDriver(onErrorDriveWith: .empty()),
             photoData: photoDataRelay.asDriver(),
             presentPickerView: presentPickerViewRelay.asDriver(onErrorDriveWith: .empty()),
-            presentAlert: presentAlertRelay.asDriver(onErrorDriveWith: .empty())
+            presentAlert: presentAlertRelay.asDriver(onErrorDriveWith: .empty()),
+            dismissToRoot: dismissToRootRelay.asDriver(onErrorDriveWith: .empty())
         )
     }
 }

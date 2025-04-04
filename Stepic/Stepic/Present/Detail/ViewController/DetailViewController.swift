@@ -150,6 +150,12 @@ final class DetailViewController: UIViewController {
             }
             .disposed(by: disposeBag)
         
+        output.dismissToRoot
+            .drive(with: self) { owner, _ in
+                owner.dismissToRoot()
+            }
+            .disposed(by: disposeBag)
+        
         /// View 전용 내부 로직
         contentView.rx.tapGesture()
             .bind(with: self) { owner, _ in
