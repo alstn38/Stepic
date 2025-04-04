@@ -177,16 +177,27 @@ final class DetailViewModel: InputOutputModel {
                 }
                 
                 do {
-                    try owner.walkRecordRepository.save(
-                        walkTrackingEntity: owner.walkResultData.tracking,
-                        weather: owner.walkResultData.weather,
+                    let newData = WalkDiaryEntity(
+                        id: UUID().uuidString,
+                        isBookmarked: owner.bookMarkStateRelay.value,
+                        weatherSymbol: owner.walkResultData.weather.symbolName,
+                        weatherDescription: owner.walkResultData.weather.description,
+                        temperature: owner.walkResultData.weather.temperature,
+                        startTime: owner.walkResultData.tracking.startTime,
+                        endTime: owner.walkResultData.tracking.endTime,
+                        startLocation: owner.walkResultData.tracking.startLocation,
+                        endLocation: owner.walkResultData.tracking.endLocation,
+                        duration: owner.walkResultData.tracking.duration,
+                        distance: owner.walkResultData.tracking.distance,
+                        startDate: owner.walkResultData.tracking.startDate,
+                        pathCoordinates: owner.walkResultData.tracking.pathCoordinates,
                         photos: owner.photoDataRelay.value,
                         emotion: owner.walkRecordInfoData.emotion?.rawValue ?? 0,
-                        title: owner.walkRecordInfoData.title,
+                        recordTitle: owner.walkRecordInfoData.title,
                         content: owner.walkRecordInfoData.content,
-                        isBookmarked: owner.bookMarkStateRelay.value,
                         thumbnailImage: routeViewImage
                     )
+                    try owner.walkRecordRepository.save(entity: newData)
                     dismissToRootRelay.accept(())
                 } catch {
                     presentAlertRelay.accept((
