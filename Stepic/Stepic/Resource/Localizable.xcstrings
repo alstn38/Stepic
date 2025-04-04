@@ -52,6 +52,23 @@
         }
       }
     },
+    "dataLoadFailedMessage" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Failed to load data."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "데이터 로드에 실패했습니다."
+          }
+        }
+      }
+    },
     "dateFormat" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -473,6 +490,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "사진"
+          }
+        }
+      }
+    },
+    "realmLoadFailedMessage" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Failed to load image."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이미지 로드에 실패했습니다."
           }
         }
       }

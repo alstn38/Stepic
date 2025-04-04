@@ -94,7 +94,9 @@ extension String {
         
         enum Storage {
             static let realmSaveFailedMessage: String = localized("realmSaveFailedMessage")
+            static let realmLoadFailedMessage: String = localized("realmLoadFailedMessage")
             static let imageSaveFailedMessage: String = localized("imageSaveFailedMessage")
+            static let imageLoadFailedMessage: String = localized("imageLoadFailedMessage")
         }
     }
 }
