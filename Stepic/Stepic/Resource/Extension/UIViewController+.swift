@@ -61,4 +61,13 @@ extension UIViewController {
         alertController.addAction(alertAction)
         present(alertController, animated: true)
     }
+    
+    func dismissToRoot() {
+        var presentingVC = self
+        while let parent = presentingVC.presentingViewController {
+            presentingVC = parent
+        }
+        
+        presentingVC.dismiss(animated: true)
+    }
 }
