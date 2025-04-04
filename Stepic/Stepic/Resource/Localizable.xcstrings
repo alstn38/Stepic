@@ -194,7 +194,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hey"
+            "value" : "Hpy"
           }
         },
         "ko" : {
@@ -218,6 +218,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "산책 시작하기"
+          }
+        }
+      }
+    },
+    "imageSaveFailedMessage" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Failed to save image."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이미지 저장에 실패했습니다."
           }
         }
       }
@@ -320,6 +337,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "행복"
+          }
+        }
+      }
+    },
+    "mapThumbnailSaveFailedMessage" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unable to save the map thumbnail."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "지도 썸네일 저장에 오류가 발생했습니다."
           }
         }
       }
@@ -443,6 +477,23 @@
         }
       }
     },
+    "realmSaveFailedMessage" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Failed to save data."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "데이터를 저장하는 데 실패했습니다."
+          }
+        }
+      }
+    },
     "recordContentPlaceholder" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -558,6 +609,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "시작시간"
+          }
+        }
+      }
+    },
+    "storageErrorAlertTitle" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Failed to Save"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "저장에 실패했습니다."
           }
         }
       }

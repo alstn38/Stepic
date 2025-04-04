@@ -79,6 +79,8 @@ extension String {
             static let photoLimitAlertMessage: String = localized("photoLimitAlertMessage")
             static let photoActionCamera: String = localized("photoActionCamera")
             static let photoActionLibrary: String = localized("photoActionLibrary")
+            static let storageErrorAlertTitle: String = localized("storageErrorAlertTitle")
+            static let mapThumbnailSaveFailedMessage: String = localized("mapThumbnailSaveFailedMessage")
         }
         
         enum Toast {
@@ -88,6 +90,11 @@ extension String {
         enum Formatter {
             static let timeFormat: String = localized("timeFormat")
             static let dateFormat: String = localized("dateFormat")
+        }
+        
+        enum Storage {
+            static let realmSaveFailedMessage: String = localized("realmSaveFailedMessage")
+            static let imageSaveFailedMessage: String = localized("imageSaveFailedMessage")
         }
     }
 }
