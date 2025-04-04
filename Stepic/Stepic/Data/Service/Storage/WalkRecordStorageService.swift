@@ -11,9 +11,13 @@ import RealmSwift
 
 protocol WalkRecordStorageService {
     func save(_ object: WalkRecordObject) throws
+    func fetchAll() -> [WalkRecordObject]
+    func fetch(byYear year: Int, month: Int) -> [WalkRecordObject]
+    func fetchBookmarked() -> [WalkRecordObject]
 }
 
 final class DefaultWalkRecordStorageService: WalkRecordStorageService {
+    
     private let realm = try! Realm()
     
     func save(_ object: WalkRecordObject) throws {
@@ -24,5 +28,28 @@ final class DefaultWalkRecordStorageService: WalkRecordStorageService {
         } catch {
             throw StorageError.realmSaveFailed
         }
+    }
+    
+    func fetchAll() -> [WalkRecordObject] {
+        return Array(realm.objects(WalkRecordObject.self))
+    }
+    
+    func fetch(byYear year: Int, month: Int) -> [WalkRecordObject] {
+        let calendar = Calendar.current
+        guard
+            let startDate = calendar.date(from: DateComponents(year: year, month: month, day: 1)),
+            let endDate = calendar.date(byAdding: .month, value: 1, to: startDate)?.addingTimeInterval(-1)
+        else { return [] }
+        let results = realm.objects(WalkRecordObject.self)
+            .where { $0.startDate >= startDate && $0.startDate <= endDate }
+        
+        return Array(results)
+    }
+    
+    func fetchBookmarked() -> [WalkRecordObject] {
+        let results = realm.objects(WalkRecordObject.self)
+            .where { $0.isBookmarked == true }
+
+        return Array(results)
     }
 }
