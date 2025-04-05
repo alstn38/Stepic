@@ -58,6 +58,15 @@ final class WalkSummaryViewController: UIViewController {
             .map { [WalkSummarySection(items: $0)] }
             .drive(walkSummaryCollectionView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
+        
+        /// 뷰 내부 로직
+        walkSummaryCollectionView.rx.modelSelected(WalkDiaryEntity.self)
+            .bind(with: self) { owner, diaryData in
+                let viewModel = DetailViewModel(detailViewType: .viewer(walkDiary: diaryData))
+                let viewController = DetailViewController(viewModel: viewModel)
+                owner.navigationController?.pushViewController(viewController, animated: true)
+            }
+            .disposed(by: disposeBag)
     }
     
     private func configureView() {

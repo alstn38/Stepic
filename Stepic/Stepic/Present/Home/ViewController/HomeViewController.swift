@@ -67,11 +67,11 @@ final class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        configureBind()
         configureNavigation()
         configureView()
         configureHierarchy()
         configureLayout()
+        configureBind()
     }
     
     private func configureBind() {
@@ -163,10 +163,19 @@ final class HomeViewController: UIViewController {
                 owner.present(monthPicker, animated: true)
             }
             .disposed(by: disposeBag)
+        
+        recordCollectionView.rx.modelSelected(WalkDiaryEntity.self)
+            .bind(with: self) { owner, diaryData in
+                let viewModel = DetailViewModel(detailViewType: .viewer(walkDiary: diaryData))
+                let viewController = DetailViewController(viewModel: viewModel)
+                owner.navigationController?.pushViewController(viewController, animated: true)
+            }
+            .disposed(by: disposeBag)
     }
     
     private func configureNavigation() {
-        navigationItem.titleView = weatherView
+        let leftItem = UIBarButtonItem(customView: weatherView)
+        navigationItem.leftBarButtonItem = leftItem
     }
     
     private func configureView() {
