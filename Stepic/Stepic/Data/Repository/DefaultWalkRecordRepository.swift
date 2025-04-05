@@ -65,6 +65,10 @@ final class DefaultWalkRecordRepository: WalkRecordRepository {
         try storageService.save(record)
     }
     
+    func updateBookmark(entity: WalkDiaryEntity) throws {
+        try storageService.updateBookmark(id: entity.id, isBookmarked: entity.isBookmarked)
+    }
+    
     func fetchAll() -> [WalkDiaryEntity] {
         let objects = storageService.fetchAll()
         return objects.compactMap { convert(object: $0) }
@@ -78,6 +82,14 @@ final class DefaultWalkRecordRepository: WalkRecordRepository {
     func fetchBookmarked() -> [WalkDiaryEntity] {
         let objects = storageService.fetchBookmarked()
         return objects.compactMap { convert(object: $0) }
+    }
+    
+    func fetch(by id: String) throws -> WalkDiaryEntity {
+        let object = try storageService.fetch(by: id)
+        guard let entity = convert(object: object) else {
+            throw StorageError.realmLoadFailed
+        }
+        return entity
     }
     
     private func convert(object: WalkRecordObject) -> WalkDiaryEntity? {
