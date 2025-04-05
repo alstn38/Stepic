@@ -16,13 +16,15 @@ final class HomeViewModel: InputOutputModel {
     struct Input {
         let viewDidLoad: Observable<Void>
         let selectDateDidChange: Observable<YearMonth>
+        let calendarDidSelect: Observable<Date>
         let recordButtonDidTap: Observable<Void>
     }
     
     struct Output {
         let weatherLocationData: Driver<WeatherLocationEntity>
-        let selectedDateTitle: Driver<String>
+        let selectedDate: Driver<YearMonth>
         let walkDiaryData: Driver<[WalkDiaryEntity]>
+        let selectDiaryData: Driver<[WalkDiaryEntity]>
         let moveToWalkView: Driver<Void>
         let presentAlert: Driver<AlertType>
     }
@@ -44,8 +46,9 @@ final class HomeViewModel: InputOutputModel {
     
     func transform(from input: Input) -> Output {
         let weatherLocationDataRelay = BehaviorRelay(value: WeatherLocationEntity.loadingDummy())
-        let selectedDateTitleRelay = BehaviorRelay<String>(value: "")
+        let selectedDateRelay = BehaviorRelay<YearMonth>(value: YearMonth(year: 0, month: 0))
         let walkDiaryDataRelay = BehaviorRelay<[WalkDiaryEntity]>(value: [])
+        let selectDiaryDataRelay = BehaviorRelay<[WalkDiaryEntity]>(value: [])
         let moveToWalkViewRelay = PublishRelay<Void>()
         let presentAlertRelay = PublishRelay<AlertType>()
         
@@ -54,21 +57,34 @@ final class HomeViewModel: InputOutputModel {
         input.viewDidLoad
             .bind(with: self) { owner, _ in
                 let todayDate = owner.getTodayDate()
-                let dateTitle = DateFormatManager.shared.selectMonthTitle(year: todayDate.year, month: todayDate.month)
-                selectedDateTitleRelay.accept(dateTitle)
+                let yearMonth = YearMonth(year: todayDate.year, month: todayDate.month)
+                selectedDateRelay.accept(yearMonth)
                 
                 let walkDiaryData = owner.walkRecordRepository.fetch(byYear: todayDate.year, month: todayDate.month)
                 walkDiaryDataRelay.accept(walkDiaryData)
+                
+                let calendar = Calendar.current
+                let filtered = walkDiaryDataRelay.value
+                    .filter { calendar.isDate($0.startDate, inSameDayAs: Date()) }
+                selectDiaryDataRelay.accept(filtered)
             }
             .disposed(by: disposeBag)
         
         input.selectDateDidChange
             .bind(with: self) { owner, yearMonth in
-                let dateTitle = DateFormatManager.shared.selectMonthTitle(year: yearMonth.year, month: yearMonth.month)
-                selectedDateTitleRelay.accept(dateTitle)
+                selectedDateRelay.accept(yearMonth)
                 
                 let walkDiaryData = owner.walkRecordRepository.fetch(byYear: yearMonth.year, month: yearMonth.month)
                 walkDiaryDataRelay.accept(walkDiaryData)
+            }
+            .disposed(by: disposeBag)
+        
+        input.calendarDidSelect
+            .bind(with: self) { owner, selectDate in
+                let calendar = Calendar.current
+                let filtered = walkDiaryDataRelay.value
+                    .filter { calendar.isDate($0.startDate, inSameDayAs: selectDate) }
+                selectDiaryDataRelay.accept(filtered)
             }
             .disposed(by: disposeBag)
         
@@ -118,8 +134,9 @@ final class HomeViewModel: InputOutputModel {
         
         return Output(
             weatherLocationData: weatherLocationDataRelay.asDriver(),
-            selectedDateTitle: selectedDateTitleRelay.asDriver(),
+            selectedDate: selectedDateRelay.asDriver(),
             walkDiaryData: walkDiaryDataRelay.asDriver(),
+            selectDiaryData: selectDiaryDataRelay.asDriver(),
             moveToWalkView: moveToWalkViewRelay.asDriver(onErrorJustReturn: ()),
             presentAlert: presentAlertRelay.asDriver(onErrorJustReturn: .locationSetting)
         )

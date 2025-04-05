@@ -10,12 +10,40 @@ import UIKit
 import FSCalendar
 import RxSwift
 import RxCocoa
+import RxDataSources
 import SnapKit
 
 final class HomeViewController: UIViewController {
     
     private let viewModel: HomeViewModel
+    private var walkDiaryData: [WalkDiaryEntity] = []
+    private let calendarDidSelectRelay = PublishRelay<Date>()
     private let disposeBag = DisposeBag()
+    
+    private lazy var dataSource = RxCollectionViewSectionedReloadDataSource<HomeRecordSection>(
+        configureCell: { _, collectionView, indexPath, item in
+            guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: RecordCollectionViewCell.identifier,
+                for: indexPath
+            ) as? RecordCollectionViewCell else { return UICollectionViewCell() }
+            
+            cell.configureView(item)
+            return cell
+        },
+        configureSupplementaryView: { dataSource, collectionView, kind, indexPath in
+            guard kind == UICollectionView.elementKindSectionHeader else {
+                return UICollectionReusableView()
+            }
+
+            guard let header = collectionView.dequeueReusableSupplementaryView(
+                ofKind: kind,
+                withReuseIdentifier: RecordCollectionHeaderView.identifier,
+                for: indexPath
+            ) as? RecordCollectionHeaderView else { return UICollectionReusableView() }
+            
+            return header
+        }
+    )
     
     private let weatherView = WeatherView()
     private let scrollView = UIScrollView()
@@ -52,6 +80,7 @@ final class HomeViewController: UIViewController {
         let input = HomeViewModel.Input(
             viewDidLoad: Observable.just(()),
             selectDateDidChange: selectDateDidChangeRelay.asObservable(),
+            calendarDidSelect: calendarDidSelectRelay.asObservable(),
             recordButtonDidTap: recordButton.rx.tap.asObservable()
         )
         
@@ -63,16 +92,37 @@ final class HomeViewController: UIViewController {
             }
             .disposed(by: disposeBag)
         
-        output.selectedDateTitle
-            .drive(calendarTitleLabel.rx.text)
+        output.selectedDate
+            .drive(with: self) { owner, yearMonth in
+                let calendarTitle = DateFormatManager.shared.selectMonthTitle(
+                    year: yearMonth.year,
+                    month: yearMonth.month
+                )
+                owner.calendarTitleLabel.text = calendarTitle
+                owner.moveCalendar(toYear: yearMonth.year, month: yearMonth.month)
+            }
             .disposed(by: disposeBag)
         
         output.walkDiaryData
             .drive(with: self) { owner, data in
-                
+                owner.walkDiaryData = data
+                owner.calendar.reloadData()
             }
             .disposed(by: disposeBag)
         
+        output.selectDiaryData
+            .map { [HomeRecordSection(items: $0)] }
+            .drive(recordCollectionView.rx.items(dataSource: dataSource))
+            .disposed(by: disposeBag)
+        
+        output.selectDiaryData
+            .map { $0.isEmpty }
+            .distinctUntilChanged()
+            .drive(with: self) { owner, isEmpty in
+                owner.updateRecordCollectionViewLayout(isHidden: isEmpty)
+            }
+            .disposed(by: disposeBag)
+
         output.moveToWalkView
             .drive(with: self) { owner, _ in
                 let viewModel = WalkViewModel()
@@ -153,8 +203,6 @@ final class HomeViewController: UIViewController {
         calendar.register(CalendarCell.self, forCellReuseIdentifier: CalendarCell.identifier)
         
         recordCollectionView.backgroundColor = .clear
-        recordCollectionView.delegate = self // TODO: 이후 삭제
-        recordCollectionView.dataSource = self // TODO: 이후 삭제
         recordCollectionView.register(
             RecordCollectionViewCell.self,
             forCellWithReuseIdentifier: RecordCollectionViewCell.identifier
@@ -269,36 +317,17 @@ final class HomeViewController: UIViewController {
         
         return configuration
     }
-}
+    
+    /// FSCalendar 위치 이동 메서드
+    private func moveCalendar(toYear year: Int, month: Int) {
+        var components = DateComponents()
+        components.year = year
+        components.month = month
+        components.day = 1
 
-// MARK: - TODO: 이후 삭제
-extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSource {
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 10
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: RecordCollectionViewCell.identifier,
-            for: indexPath
-        ) as? RecordCollectionViewCell else { return UICollectionViewCell() }
-        
-        return cell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        guard kind == UICollectionView.elementKindSectionHeader else {
-            return UICollectionReusableView()
+        if let targetDate = Calendar.current.date(from: components) {
+            calendar.setCurrentPage(targetDate, animated: true)
         }
-        
-        guard let headerView = collectionView.dequeueReusableSupplementaryView(
-            ofKind: kind,
-            withReuseIdentifier: RecordCollectionHeaderView.identifier,
-            for: indexPath
-        ) as? RecordCollectionHeaderView else { return UICollectionReusableView() }
-                
-        return headerView
     }
 }
 
@@ -306,9 +335,13 @@ extension HomeViewController: FSCalendarDelegate, FSCalendarDataSource {
     
     /// 캘린더의 이미지 설정
     func calendar(_ calendar: FSCalendar, imageFor date: Date) -> UIImage? {
-        let image = UIImage(systemName: "circle.fill")
+        let calendar = Calendar.current
         
-        return resizeImage(image: image, targetSize: CGSize(width: 38, height: 38))
+        return walkDiaryData
+            .first { calendar.isDate($0.startDate, inSameDayAs: date) }
+            .flatMap { EmotionTypeEntity(rawValue: $0.emotion)?.image }
+            .flatMap { resizeImage(image: $0, targetSize: CGSize(width: 30, height: 30)) }
+            .map { $0.withTintColor(.textPrimary) }
     }
     
     func calendar(_ calendar: FSCalendar, cellFor date: Date, at position: FSCalendarMonthPosition) -> FSCalendarCell {
@@ -320,12 +353,31 @@ extension HomeViewController: FSCalendarDelegate, FSCalendarDataSource {
         return cell
     }
     
+    func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
+        calendarDidSelectRelay.accept(date)
+    }
+    
     /// 이미지 크기 조절 (파일 위치 변경 가능)
     private func resizeImage(image: UIImage?, targetSize: CGSize) -> UIImage? {
         guard let image = image else { return nil }
         let renderer = UIGraphicsImageRenderer(size: targetSize)
         return renderer.image { _ in
             image.draw(in: CGRect(origin: .zero, size: targetSize))
+        }
+    }
+    
+    /// collectionView Hidden 애니메이션 메서드
+    private func updateRecordCollectionViewLayout(isHidden: Bool) {
+        let screenWidth = UIScreen.main.bounds.width
+        let visibleHeight = (screenWidth - 56) / 2 + 174 + 38
+        let newHeight = isHidden ? 0 : visibleHeight
+
+        UIView.animate(withDuration: 0.3) {
+            self.recordCollectionView.snp.updateConstraints {
+                $0.height.equalTo(newHeight)
+            }
+            self.recordCollectionView.alpha = isHidden ? 0 : 1
+            self.view.layoutIfNeeded()
         }
     }
 }
