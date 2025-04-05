@@ -49,6 +49,13 @@ final class RecordView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func configureView(_ data: WalkRecordInfoEntity) {
+        emotionButtonArray[data.emotion?.rawValue ?? 0].configuration?.baseForegroundColor = .textPrimary
+        titleTextField.text = data.title
+        contentTextView.text = data.content
+        contentTextViewPlaceholder.isHidden = true
+    }
+    
     private func configureBind() {
         emotionButtonArray.forEach { button in
             button.rx.tap
