@@ -30,7 +30,8 @@ final class StepicTabBarController: UITabBarController {
             selectedImage: .homeImage
         )
         
-        let myPageViewController = MyPageViewController()
+        let myPageViewModel = MyPageViewModel()
+        let myPageViewController = MyPageViewController(viewModel: myPageViewModel)
         myPageViewController.tabBarItem = UITabBarItem(
             title: .StringLiterals.TabBar.myPageTitle,
             image: .personImage,
