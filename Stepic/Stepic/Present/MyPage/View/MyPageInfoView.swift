@@ -27,9 +27,9 @@ final class MyPageInfoView: UIView {
     private let recordView = UIView()
     private let recordLeftLineView = UIView()
     private let recordRightLineView = UIView()
-    private let totalWalkButton = PageInfoButtonView(image: .squareGrid, title: .StringLiterals.MyPage.allWalkTitle)
-    private let monthWalkButton = PageInfoButtonView(image: .calendar, title: .StringLiterals.MyPage.monthWalkTitle)
-    private let bookmarkButton = PageInfoButtonView(image: .bookmarkFill, title: .StringLiterals.MyPage.boomMarkTitle)
+    let totalWalkButton = PageInfoButtonView(image: .squareGrid, title: .StringLiterals.MyPage.allWalkTitle)
+    let monthWalkButton = PageInfoButtonView(image: .calendar, title: .StringLiterals.MyPage.monthWalkTitle)
+    let bookmarkButton = PageInfoButtonView(image: .bookmarkFill, title: .StringLiterals.MyPage.boomMarkTitle)
     
     override init(frame: CGRect) {
         super.init(frame: frame)
