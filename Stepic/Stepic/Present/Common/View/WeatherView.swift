@@ -54,6 +54,11 @@ final class WeatherView: UIView {
     }
     
     private func configureLayout() {
+        self.snp.makeConstraints {
+            $0.width.equalTo(300)
+            $0.height.equalTo(44)
+        }
+        
         weatherImageView.snp.makeConstraints {
             $0.centerY.equalToSuperview()
             $0.leading.equalToSuperview()
