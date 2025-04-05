@@ -43,6 +43,27 @@ final class RecordCollectionViewCell: UICollectionViewCell, ReusableViewProtocol
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        walkImageView.isHidden = true
+    }
+    
+    func configureView(_ data: WalkDiaryEntity) {
+        if let photo = data.photos.first?.image {
+            walkImageView.isHidden = false
+            walkImageView.image = photo
+        }
+        
+        mapImageView.image = data.thumbnailImage
+        weatherImageView.image = UIImage(systemName: data.weatherSymbol)
+        cityNameLabel.text = data.startLocation.city + " " + data.startLocation.district
+        weatherLabel.text = data.weatherDescription + " " + data.temperature
+        emotionImageView.image = EmotionTypeEntity(rawValue: data.emotion)?.image
+        durationTimeLabel.text = DateFormatManager.shared.formattedDurationTime(from: data.duration)
+        travelDistanceLabel.text = String(format: "%.2fkm", data.distance)
+        dateLabel.text = DateFormatManager.shared.formattedDate(from: data.startDate)
+    }
+    
     private func configureView() {
         contentView.backgroundColor = .backgroundSecondary
         contentView.layer.cornerRadius = 10
@@ -55,21 +76,16 @@ final class RecordCollectionViewCell: UICollectionViewCell, ReusableViewProtocol
         
         walkImageView.layer.cornerRadius = 10
         walkImageView.clipsToBounds = true
-        walkImageView.backgroundColor = .yellow // TODO: 이후 삭제
         
         mapImageView.layer.cornerRadius = 10
         mapImageView.clipsToBounds = true
-        mapImageView.backgroundColor = .blue // TODO: 이후 삭제
         
-        weatherImageView.image = UIImage(systemName: "sun.max") // TODO: 이후 삭제
         weatherImageView.contentMode = .scaleAspectFill
         weatherImageView.tintColor = .textPrimary
         
-        cityNameLabel.text = "서울특별시 광진구" // TODO: 이후 서버 연결
         cityNameLabel.textColor = .textPrimary
         cityNameLabel.font = .titleSmall
         
-        weatherLabel.text = "맑음 7°C" // TODO: 이후 서버 연결
         weatherLabel.textColor = .textPrimary
         weatherLabel.font = .captionRegular
         
@@ -80,7 +96,6 @@ final class RecordCollectionViewCell: UICollectionViewCell, ReusableViewProtocol
         emotionStackView.alignment = .center
         emotionStackView.distribution = .equalCentering
         
-        emotionImageView.image = .loveEmoji // TODO: 이후 삭제
         emotionImageView.contentMode = .scaleAspectFill
         emotionImageView.tintColor = .textPrimary
         
@@ -92,7 +107,6 @@ final class RecordCollectionViewCell: UICollectionViewCell, ReusableViewProtocol
         timeStackView.alignment = .center
         timeStackView.distribution = .equalCentering
         
-        durationTimeLabel.text = "16:23" // TODO: 이후 삭제
         durationTimeLabel.textColor = .textPrimary
         durationTimeLabel.font = .titleMedium
         
@@ -104,7 +118,6 @@ final class RecordCollectionViewCell: UICollectionViewCell, ReusableViewProtocol
         distanceStackView.alignment = .center
         distanceStackView.distribution = .equalCentering
         
-        travelDistanceLabel.text = "3.21km" // TODO: 이후 삭제
         travelDistanceLabel.textColor = .textPrimary
         travelDistanceLabel.font = .titleMedium
         
@@ -114,7 +127,6 @@ final class RecordCollectionViewCell: UICollectionViewCell, ReusableViewProtocol
         
         lineView.backgroundColor = .textPlaceholder
         
-        dateLabel.text = "2025년 3월 18일 화요일" // TODO: 이후 삭제
         dateLabel.textColor = .textSecondary
         dateLabel.font = .captionRegular
     }
