@@ -381,13 +381,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Monthly Walks"
+            "value" : "Walks This Month"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "이번 달 산책"
+            "value" : "해당 달의 산책"
           }
         }
       }
@@ -796,6 +796,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "총 시간"
+          }
+        }
+      }
+    },
+    "walkCountFormat" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "walks"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "회"
           }
         }
       }

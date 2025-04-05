@@ -67,6 +67,7 @@ extension String {
             static let allWalkTitle: String = localized("allWalkTitle")
             static let monthWalkTitle: String = localized("monthWalkTitle")
             static let boomMarkTitle: String = localized("boomMarkTitle")
+            static let walkCountFormat: String = localized("walkCountFormat")
         }
         
         enum Alert {
