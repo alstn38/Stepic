@@ -49,12 +49,36 @@ final class WalkSummaryCollectionViewCell: UICollectionViewCell, ReusableViewPro
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        walkImageView.isHidden = true
+    }
+    
+    func configureView(_ data: WalkDiaryEntity) {
+        monthLabel.text = DateFormatManager.shared.formattedOnlyMonth(from: data.startDate)
+        dayLabel.text = dayNumber(from: data.startDate)
+        
+        if let photo = data.photos.first?.image {
+            walkImageView.isHidden = false
+            walkImageView.image = photo
+        }
+        
+        mapImageView.image = data.thumbnailImage
+        weatherImageView.image = UIImage(systemName: data.weatherSymbol)
+        cityNameLabel.text = data.startLocation.city + " " + data.startLocation.district
+        weatherLabel.text = data.weatherDescription + " " + data.temperature
+        emotionImageView.image = EmotionTypeEntity(rawValue: data.emotion)?.image
+        durationTimeLabel.text = DateFormatManager.shared.formattedDurationTime(from: data.duration)
+        travelDistanceLabel.text = String(format: "%.2fkm", data.distance)
+        titleLabel.text = data.recordTitle
+        contentLabel.text = data.content
+        bookmarkButton.configuration?.image = data.isBookmarked ? .bookmarkFill : .bookmark
+    }
+    
     private func configureView() {
-        monthLabel.text = "3월" // TODO: 이후 삭제
         monthLabel.textColor = .textPrimary
         monthLabel.font = .bodyRegular
         
-        dayLabel.text = "25" // TODO: 이후 삭제
         dayLabel.textColor = .textPrimary
         dayLabel.font = .titleExtraLargeMedium
         
@@ -65,23 +89,18 @@ final class WalkSummaryCollectionViewCell: UICollectionViewCell, ReusableViewPro
         
         walkImageView.layer.cornerRadius = 10
         walkImageView.clipsToBounds = true
-        walkImageView.backgroundColor = .yellow // TODO: 이후 삭제
         
         mapImageView.layer.cornerRadius = 10
         mapImageView.clipsToBounds = true
-        mapImageView.backgroundColor = .blue // TODO: 이후 삭제
         
-        weatherImageView.image = UIImage(systemName: "sun.max") // TODO: 이후 삭제
         weatherImageView.contentMode = .scaleAspectFill
         weatherImageView.tintColor = .textPrimary
         
-        cityNameLabel.text = "서울특별시 광진구" // TODO: 이후 서버 연결
         cityNameLabel.textColor = .textPrimary
         cityNameLabel.font = .titleSmall
         
         bookmarkButton.configuration = configureButtonConfiguration()
         
-        weatherLabel.text = "맑음 7°C" // TODO: 이후 서버 연결
         weatherLabel.textColor = .textPrimary
         weatherLabel.font = .captionRegular
         
@@ -92,7 +111,6 @@ final class WalkSummaryCollectionViewCell: UICollectionViewCell, ReusableViewPro
         emotionStackView.alignment = .center
         emotionStackView.distribution = .equalCentering
         
-        emotionImageView.image = .loveEmoji // TODO: 이후 삭제
         emotionImageView.contentMode = .scaleAspectFill
         emotionImageView.tintColor = .textPrimary
         
@@ -104,7 +122,6 @@ final class WalkSummaryCollectionViewCell: UICollectionViewCell, ReusableViewPro
         timeStackView.alignment = .center
         timeStackView.distribution = .equalCentering
         
-        durationTimeLabel.text = "16:23" // TODO: 이후 삭제
         durationTimeLabel.textColor = .textPrimary
         durationTimeLabel.font = .titleMedium
         
@@ -116,7 +133,6 @@ final class WalkSummaryCollectionViewCell: UICollectionViewCell, ReusableViewPro
         distanceStackView.alignment = .center
         distanceStackView.distribution = .equalCentering
         
-        travelDistanceLabel.text = "3.21km" // TODO: 이후 삭제
         travelDistanceLabel.textColor = .textPrimary
         travelDistanceLabel.font = .titleMedium
         
@@ -126,12 +142,10 @@ final class WalkSummaryCollectionViewCell: UICollectionViewCell, ReusableViewPro
         
         lineView.backgroundColor = .textPlaceholder
         
-        titleLabel.text = "제목을 말합니다" // TODO: 이후 삭제
         titleLabel.textColor = .textPrimary
         titleLabel.font = .captionBold
         titleLabel.numberOfLines = 1
         
-        contentLabel.text = "길게쓰는\n말이아무거나일단\n두줄이나와야하기때문\n에나은" // TODO: 이후 삭제
         contentLabel.textColor = .textPrimary
         contentLabel.font = .captionRegular
         contentLabel.numberOfLines = 2
@@ -262,5 +276,9 @@ final class WalkSummaryCollectionViewCell: UICollectionViewCell, ReusableViewPro
         configuration.baseForegroundColor = .textPrimary
         
         return configuration
+    }
+    
+    private func dayNumber(from date: Date) -> String {
+        return String(Calendar.current.component(.day, from: date))
     }
 }
