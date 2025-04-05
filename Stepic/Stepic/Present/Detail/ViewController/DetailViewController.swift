@@ -25,13 +25,13 @@ final class DetailViewController: UIViewController {
     private lazy var dataSource = RxCollectionViewSectionedReloadDataSource<DetailPhotoSection>(
         configureCell: { [weak self] _, collectionView, indexPath, item in
             switch item {
-            case .photo(let data):
+            case .photo(let data, let viewMode):
                 guard let cell = collectionView.dequeueReusableCell(
                     withReuseIdentifier: DetailPictureCollectionViewCell.identifier,
                     for: indexPath
                 ) as? DetailPictureCollectionViewCell else { return UICollectionViewCell() }
                 
-                cell.configureView(data)
+                cell.configureView(data, viewMode: viewMode)
                 cell.deleteButton.rx.tap
                     .map { indexPath.item }
                     .bind { [weak self] index in
@@ -90,6 +90,7 @@ final class DetailViewController: UIViewController {
         let didAddPhotoRelay = PublishRelay<[WalkPhotoEntity]>()
         
         let input = DetailViewModel.Input(
+            viewDidLoad: Observable.just(()),
             bookMarkButtonDidTap: bookMarkButton.rx.tap.asObservable(),
             photoDidDelete: photoDidDeleteRelay.asObservable(),
             photoDidAdd: didAddPhotoRelay.asObservable(),
@@ -103,6 +104,31 @@ final class DetailViewController: UIViewController {
         )
         
         let output = viewModel.transform(from: input)
+        
+        
+        output.viewMode
+            .drive(with: self) { owner, viewMode in
+                switch viewMode {
+                case .create:
+                    break
+                case .viewer:
+                    owner.recordView.isUserInteractionEnabled = false
+                    owner.recordButton.isHidden = true
+                }
+            }
+            .disposed(by: disposeBag)
+        
+        output.walkDiaryEntity
+            .compactMap { $0 }
+            .drive(with: self) { owner, walkDiary in
+                let walkRecord = WalkRecordInfoEntity(
+                    emotion: EmotionTypeEntity(rawValue: walkDiary.emotion),
+                    title: walkDiary.recordTitle,
+                    content: walkDiary.content ?? ""
+                )
+                owner.recordView.configureView(walkRecord)
+            }
+            .disposed(by: disposeBag)
         
         output.bookMarkState
             .drive(with: self) { owner, isSelected in
@@ -125,11 +151,14 @@ final class DetailViewController: UIViewController {
             .disposed(by: disposeBag)
         
         output.photoData
-            .map { data in
-                var items = data.map { DetailPhotoItem.photo($0) }
-                if items.count < 10 {
-                    items.append(.addPlaceholder)
+            .withLatestFrom(output.viewMode) { ($0, $1) }
+            .map { data, viewMode in
+                var items = data.map { DetailPhotoItem.photo($0, viewMode: viewMode) }
+                
+                if case .create = viewMode {
+                    if items.count < 10 { items.append(.addPlaceholder) }
                 }
+                
                 return [DetailPhotoSection(items: items)]
             }
             .drive(pictureSelectView.pictureCollectionView.rx.items(dataSource: dataSource))
@@ -171,9 +200,7 @@ final class DetailViewController: UIViewController {
     }
     
     private func configureNavigation() {
-        bookMarkButton.image = .bookmark
         bookMarkButton.tintColor = .textPrimary
-        
         navigationItem.rightBarButtonItem = bookMarkButton
     }
     
