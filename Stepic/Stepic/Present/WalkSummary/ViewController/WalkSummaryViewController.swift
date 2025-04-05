@@ -7,18 +7,57 @@
 
 import UIKit
 
+import RxCocoa
+import RxDataSources
+import RxSwift
 import SnapKit
 
 final class WalkSummaryViewController: UIViewController {
     
+    private let viewModel: WalkSummaryViewModel
+    private let disposeBag = DisposeBag()
+    
+    private lazy var dataSource = RxCollectionViewSectionedReloadDataSource<WalkSummarySection>(
+        configureCell: { _, collectionView, indexPath, item in
+            guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: WalkSummaryCollectionViewCell.identifier,
+                for: indexPath
+            ) as? WalkSummaryCollectionViewCell else { return UICollectionViewCell() }
+
+            cell.configureView(item)
+            return cell
+        }
+    )
+    
     private lazy var walkSummaryCollectionView = UICollectionView(frame: .zero, collectionViewLayout: configureCollectionViewLayout())
+    
+    init(viewModel: WalkSummaryViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    @available(*, unavailable)
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        configureBind()
         configureView()
         configureHierarchy()
         configureLayout()
+    }
+    
+    private func configureBind() {
+        let input = WalkSummaryViewModel.Input(viewDidLoad: Observable.just(()))
+        let output = viewModel.transform(from: input)
+        
+        output.walkDiaryData
+            .map { [WalkSummarySection(items: $0)] }
+            .drive(walkSummaryCollectionView.rx.items(dataSource: dataSource))
+            .disposed(by: disposeBag)
     }
     
     private func configureView() {
@@ -26,8 +65,6 @@ final class WalkSummaryViewController: UIViewController {
         
         walkSummaryCollectionView.backgroundColor = .backgroundPrimary
         walkSummaryCollectionView.showsVerticalScrollIndicator = false
-        walkSummaryCollectionView.delegate = self // TODO: 이후 삭제
-        walkSummaryCollectionView.dataSource = self // TODO: 이후 삭제
         walkSummaryCollectionView.register(
             WalkSummaryCollectionViewCell.self,
             forCellWithReuseIdentifier: WalkSummaryCollectionViewCell.identifier
@@ -69,22 +106,5 @@ final class WalkSummaryViewController: UIViewController {
         
         let layout = UICollectionViewCompositionalLayout(section: sectionLayout)
         return layout
-    }
-}
-
-// TODO: 이후 삭제
-extension WalkSummaryViewController: UICollectionViewDelegate, UICollectionViewDataSource {
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 5
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: WalkSummaryCollectionViewCell.identifier,
-            for: indexPath
-        ) as? WalkSummaryCollectionViewCell else { return UICollectionViewCell() }
-        
-        return cell
     }
 }
