@@ -119,7 +119,7 @@ final class WalkViewController: UIViewController {
         output.moveToSummaryView
             .drive(with: self) { owner, data in
                 let (walkResult, photoData) = data
-                let viewModel = DetailViewModel(walkResultData: walkResult, walkPhotoData: photoData)
+                let viewModel = DetailViewModel(detailViewType: .create(walkResult: walkResult, walkPhotos: photoData))
                 let viewController = DetailViewController(viewModel: viewModel)
                 let navigationController = UINavigationController(rootViewController: viewController)
                 navigationController.modalPresentationStyle = .overFullScreen
