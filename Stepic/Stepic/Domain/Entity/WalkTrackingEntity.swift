@@ -19,3 +19,19 @@ struct WalkTrackingEntity {
     let pathCoordinates: [CLLocationCoordinate2D]
     let startDate: Date
 }
+
+extension WalkTrackingEntity {
+    
+    static func dummy() -> WalkTrackingEntity {
+        return WalkTrackingEntity(
+            startTime: Date(),
+            endTime: Date(),
+            startLocation: .dummy(),
+            endLocation: .dummy(),
+            duration: 0,
+            distance: 0,
+            pathCoordinates: [],
+            startDate: Date()
+        )
+    }
+}

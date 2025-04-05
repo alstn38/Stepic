@@ -34,3 +34,29 @@ struct WalkDiaryEntity: Identifiable {
 
     let thumbnailImage: UIImage
 }
+
+extension WalkDiaryEntity {
+    
+    func changeBookMark(_ isBookmark: Bool) -> WalkDiaryEntity {
+        return WalkDiaryEntity(
+            id: id,
+            isBookmarked: isBookmark,
+            weatherSymbol: weatherSymbol,
+            weatherDescription: weatherDescription,
+            temperature: temperature,
+            startTime: startTime,
+            endTime: endTime,
+            startLocation: startLocation,
+            endLocation: endLocation,
+            duration: duration,
+            distance: distance,
+            startDate: startDate,
+            pathCoordinates: pathCoordinates,
+            photos: photos,
+            emotion: emotion,
+            recordTitle: recordTitle,
+            content: content,
+            thumbnailImage: thumbnailImage
+        )
+    }
+}

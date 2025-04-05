@@ -11,3 +11,13 @@ struct WalkResultEntity {
     var weather: WeatherLocationEntity
     var tracking: WalkTrackingEntity
 }
+
+extension WalkResultEntity {
+    
+    static func dummy() -> WalkResultEntity {
+        return WalkResultEntity(
+            weather: .loadingDummy(),
+            tracking: .dummy()
+        )
+    }
+}
