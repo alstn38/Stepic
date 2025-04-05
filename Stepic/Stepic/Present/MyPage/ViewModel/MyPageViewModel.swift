@@ -15,11 +15,15 @@ final class MyPageViewModel: InputOutputModel {
     struct Input {
         let viewDidLoad: Observable<Void>
         let selectDateDidChange: Observable<YearMonth>
+        let totalWalkButtonDidTap: Observable<Void>
+        let monthWalkButtonDidTap: Observable<Void>
+        let bookmarkButtonDidTap: Observable<Void>
     }
     
     struct Output {
         let selectedDate: Driver<YearMonth>
         let myPageInfoItems: Driver<MyPageInfoViewItem>
+        let moveToSummaryView: Driver<WalkSummaryViewModel.WalkSummaryViewType>
     }
     
     private var walkDiaryData: [WalkDiaryEntity] = []
@@ -35,6 +39,7 @@ final class MyPageViewModel: InputOutputModel {
     func transform(from input: Input) -> Output {
         let selectedDateRelay = BehaviorRelay<YearMonth>(value: YearMonth(year: 0, month: 0))
         let myPageInfoItemsRelay = BehaviorRelay<MyPageInfoViewItem>(value: MyPageInfoViewItem.dummy())
+        let moveToSummaryViewRelay = PublishRelay<WalkSummaryViewModel.WalkSummaryViewType>()
         
         input.viewDidLoad
             .bind(with: self) { owner, _ in
@@ -65,9 +70,26 @@ final class MyPageViewModel: InputOutputModel {
             }
             .disposed(by: disposeBag)
         
+        input.totalWalkButtonDidTap
+            .map { WalkSummaryViewModel.WalkSummaryViewType.entire }
+            .bind(to: moveToSummaryViewRelay)
+            .disposed(by: disposeBag)
+        
+        input.monthWalkButtonDidTap
+            .withLatestFrom(selectedDateRelay)
+            .map { WalkSummaryViewModel.WalkSummaryViewType.monthly(select: $0) }
+            .bind(to: moveToSummaryViewRelay)
+            .disposed(by: disposeBag)
+        
+        input.bookmarkButtonDidTap
+            .map { WalkSummaryViewModel.WalkSummaryViewType.bookMark }
+            .bind(to: moveToSummaryViewRelay)
+            .disposed(by: disposeBag)
+        
         return Output(
             selectedDate: selectedDateRelay.asDriver(),
-            myPageInfoItems: myPageInfoItemsRelay.asDriver()
+            myPageInfoItems: myPageInfoItemsRelay.asDriver(),
+            moveToSummaryView: moveToSummaryViewRelay.asDriver(onErrorDriveWith: .empty())
         )
     }
     

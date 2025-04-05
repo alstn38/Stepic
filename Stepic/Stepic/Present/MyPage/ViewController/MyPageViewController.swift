@@ -8,6 +8,7 @@
 import UIKit
 
 import RxCocoa
+import RxGesture
 import RxSwift
 import SnapKit
 
@@ -44,7 +45,10 @@ final class MyPageViewController: UIViewController {
         
         let input = MyPageViewModel.Input(
             viewDidLoad: Observable.just(()),
-            selectDateDidChange: selectDateDidChangeRelay.asObservable()
+            selectDateDidChange: selectDateDidChangeRelay.asObservable(),
+            totalWalkButtonDidTap: myPageInfoView.totalWalkButton.rx.tapGesture().map { _ in }.asObservable(),
+            monthWalkButtonDidTap: myPageInfoView.monthWalkButton.rx.tapGesture().map { _ in }.asObservable(),
+            bookmarkButtonDidTap: myPageInfoView.bookmarkButton.rx.tapGesture().map { _ in }.asObservable()
         )
         
         let output = viewModel.transform(from: input)
@@ -58,6 +62,14 @@ final class MyPageViewController: UIViewController {
         output.myPageInfoItems
             .drive(with: self) { owner, myPageInfoItem in
                 owner.myPageInfoView.configureView(myPageInfoItem)
+            }
+            .disposed(by: disposeBag)
+        
+        output.moveToSummaryView
+            .drive(with: self) { owner, type in
+                let viewModel = WalkSummaryViewModel(viewType: type)
+                let viewController = WalkSummaryViewController(viewModel: viewModel)
+                owner.navigationController?.pushViewController(viewController, animated: true)
             }
             .disposed(by: disposeBag)
         
