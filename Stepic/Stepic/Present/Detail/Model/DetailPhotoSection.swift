@@ -10,7 +10,7 @@ import Foundation
 import RxDataSources
 
 enum DetailPhotoItem {
-    case photo(WalkPhotoEntity)
+    case photo(WalkPhotoEntity, viewMode: DetailViewModel.DetailViewType)
     case addPlaceholder
 }
 

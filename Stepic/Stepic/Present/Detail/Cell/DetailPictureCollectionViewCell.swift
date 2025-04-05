@@ -35,8 +35,18 @@ final class DetailPictureCollectionViewCell: UICollectionViewCell, ReusableViewP
         self.disposeBag = DisposeBag()
     }
     
-    func configureView(_ data: WalkPhotoEntity) {
+    func configureView(
+        _ data: WalkPhotoEntity,
+        viewMode: DetailViewModel.DetailViewType
+    ) {
         imageView.image = data.image
+        
+        switch viewMode {
+        case .create:
+            deleteButton.isHidden = false
+        case .viewer:
+            deleteButton.isHidden = true
+        }
     }
     
     private func configureView() {
