@@ -20,7 +20,7 @@ struct WalkDiaryEntity: Identifiable {
     let endTime: Date
     let startLocation: LocationEntity
     let endLocation: LocationEntity
-    let duration: Double
+    let duration: TimeInterval
     let distance: Double
     let startDate: Date
 
