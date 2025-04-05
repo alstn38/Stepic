@@ -107,7 +107,6 @@ final class MyPageViewModel: InputOutputModel {
         month: Int
     ) -> MyPageInfoViewItem {
         let calendar = Calendar.current
-        let now = Date()
         
         /// 전달받은 연/월에 해당하는 산책 리스트 필터링
         let selectedMonthWalks = diaryList.filter {
