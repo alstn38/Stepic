@@ -44,8 +44,29 @@ final class MyPageInfoView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func configureView(_ yearMonth: YearMonth) {
+        let calendarTitle = DateFormatManager.shared.selectMonthTitle(
+            year: yearMonth.year,
+            month: yearMonth.month
+        )
+        
+        calendarTitleLabel.text = calendarTitle
+    }
+    
+    func configureView(_ data: MyPageInfoViewItem) {
+        timeDescriptionLabel.text = DateFormatManager.shared.formattedDurationTime(from: data.totalTime)
+        walkDescriptionLabel.text = String(format: "%.2fkm", data.totalDistance)
+        
+        let totalCountString = String(data.totalWalkCount) + .StringLiterals.MyPage.walkCountFormat
+        let monthCountString = String(data.monthWalkCount) + .StringLiterals.MyPage.walkCountFormat
+        let bookMarkCountString = String(data.bookMarkWalkCount) + .StringLiterals.MyPage.walkCountFormat
+        
+        totalWalkButton.configureView(subTitle: totalCountString)
+        monthWalkButton.configureView(subTitle: monthCountString)
+        bookmarkButton.configureView(subTitle: bookMarkCountString)
+    }
+    
     private func configureView() {
-        calendarTitleLabel.text = "2025년 3월" // TODO: 이후 서버 연결
         calendarTitleLabel.textColor = .textPrimary
         calendarTitleLabel.font = .titleLarge
         
@@ -69,7 +90,6 @@ final class MyPageInfoView: UIView {
         timeTitleLabel.textColor = .textSecondary
         timeTitleLabel.font = .captionRegular
         
-        timeDescriptionLabel.text = "4시간 16분" // TODO: 이후 삭제
         timeDescriptionLabel.textColor = .textPrimary
         timeDescriptionLabel.font = .bodyBold
         
@@ -81,13 +101,8 @@ final class MyPageInfoView: UIView {
         walkTitleLabel.textColor = .textSecondary
         walkTitleLabel.font = .captionRegular
         
-        walkDescriptionLabel.text = "12.48km" // TODO: 이후 삭제
         walkDescriptionLabel.textColor = .textPrimary
         walkDescriptionLabel.font = .bodyBold
-        
-        totalWalkButton.configureView(subTitle: "43개") // TODO: 이후 삭제
-        monthWalkButton.configureView(subTitle: "21개") // TODO: 이후 삭제
-        bookmarkButton.configureView(subTitle: "4개") // TODO: 이후 삭제
     }
     
     private func configureHierarchy() {
