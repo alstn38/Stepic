@@ -62,6 +62,49 @@ extension UIViewController {
         present(alertController, animated: true)
     }
     
+    func presentGenericAlert(title: String, message: String, closure: @escaping () -> Void) {
+        let alertController = UIAlertController(
+            title: title,
+            message: message,
+            preferredStyle: .alert
+        )
+
+        let confirmAction = UIAlertAction(
+            title: .StringLiterals.Alert.genericAlertConfirm,
+            style: .default
+        ) { _ in
+            closure()
+        }
+
+        alertController.addAction(confirmAction)
+        present(alertController, animated: true)
+    }
+    
+    func presentGenericCancelAlert(title: String, message: String, closure: @escaping () -> Void) {
+        let alertController = UIAlertController(
+            title: title,
+            message: message,
+            preferredStyle: .alert
+        )
+
+        let confirmAction = UIAlertAction(
+            title: .StringLiterals.Alert.genericAlertConfirm,
+            style: .destructive
+        ) { _ in
+            closure()
+        }
+
+        let cancelAction = UIAlertAction(
+            title: .StringLiterals.Alert.locationAlertCancel,
+            style: .cancel
+        )
+        
+        alertController.addAction(confirmAction)
+        alertController.addAction(cancelAction)
+        
+        present(alertController, animated: true)
+    }
+    
     func dismissToRoot() {
         var presentingVC = self
         while let parent = presentingVC.presentingViewController {
