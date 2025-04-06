@@ -88,6 +88,7 @@ final class DetailViewController: UIViewController {
     
     private func configureBind() {
         let didAddPhotoRelay = PublishRelay<[WalkPhotoEntity]>()
+        let saveButtonDidTapRelay = PublishRelay<Void>()
         
         let input = DetailViewModel.Input(
             viewDidLoad: Observable.just(()),
@@ -100,7 +101,7 @@ final class DetailViewController: UIViewController {
             titleDidChange: recordView.titleTextField.rx.text.orEmpty.asObservable(),
             contentDidChange: recordView.contentTextView.rx.text.orEmpty.asObservable(),
             routeViewDidUpdate: routeView.mapViewDidCapture,
-            recordButtonDidTap: recordButton.rx.tap.asObservable()
+            recordButtonDidTap: saveButtonDidTapRelay.asObservable()
         )
         
         let output = viewModel.transform(from: input)
@@ -195,6 +196,17 @@ final class DetailViewController: UIViewController {
         recordView.textDidEditing
             .bind(with: self) { owner, _ in
                 owner.scrollToRecordView()
+            }
+            .disposed(by: disposeBag)
+        
+        recordButton.rx.tap
+            .bind(with: self) { owner, _ in
+                owner.presentSaveConfirmationAlert(
+                    title: .StringLiterals.Detail.endWalkButton,
+                    message: .StringLiterals.Alert.walkSaveWarningMessage
+                ) {
+                    saveButtonDidTapRelay.accept(())
+                }
             }
             .disposed(by: disposeBag)
     }
