@@ -35,6 +35,23 @@
         }
       }
     },
+    "appInfoSectionTitle" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "App Info"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "앱 정보"
+          }
+        }
+      }
+    },
     "boomMarkTitle" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -48,6 +65,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "북마크"
+          }
+        }
+      }
+    },
+    "contactUsTitle" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contact Us"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "문의하기"
           }
         }
       }
@@ -494,6 +528,23 @@
         }
       }
     },
+    "privacyPolicyTitle" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Privacy Policy"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "개인정보 처리방침"
+          }
+        }
+      }
+    },
     "realmLoadFailedMessage" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -630,6 +681,23 @@
         }
       }
     },
+    "settingsTitle" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Settings"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "설정"
+          }
+        }
+      }
+    },
     "startingPointTitle" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -715,6 +783,40 @@
         }
       }
     },
+    "termsAndContactSectionTitle" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Terms & Support"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "약관 및 문의"
+          }
+        }
+      }
+    },
+    "termsOfServiceTitle" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Terms of Service"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이용약관"
+          }
+        }
+      }
+    },
     "timeFormat" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -796,6 +898,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "총 시간"
+          }
+        }
+      }
+    },
+    "versionLabel" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Version"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "버전"
           }
         }
       }

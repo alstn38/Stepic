@@ -100,5 +100,15 @@ extension String {
             static let imageSaveFailedMessage: String = localized("imageSaveFailedMessage")
             static let imageLoadFailedMessage: String = localized("imageLoadFailedMessage")
         }
+        
+        enum Setting {
+            static let settingsTitle: String = localized("settingsTitle")
+            static let termsOfServiceTitle: String = localized("termsOfServiceTitle")
+            static let privacyPolicyTitle: String = localized("privacyPolicyTitle")
+            static let contactUsTitle: String = localized("contactUsTitle")
+            static let termsAndContactSectionTitle: String = localized("termsAndContactSectionTitle")
+            static let appInfoSectionTitle: String = localized("appInfoSectionTitle")
+            static let versionLabel: String = localized("versionLabel")
+        }
     }
 }
