@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 
 import RxCocoa
 import RxGesture
@@ -18,7 +19,11 @@ final class MyPageViewController: UIViewController {
     private let disposeBag = DisposeBag()
     
     private let settingButton = UIBarButtonItem()
+    private let scrollView = UIScrollView()
+    private let contentView = UIView()
     private let myPageInfoView = MyPageInfoView()
+    private let emotionBarChartController = UIHostingController(rootView: EmotionBarChartView(emotions: []))
+    private let statisticsLabel = UILabel()
     
     init(viewModel: MyPageViewModel) {
         self.viewModel = viewModel
@@ -73,6 +78,12 @@ final class MyPageViewController: UIViewController {
             }
             .disposed(by: disposeBag)
         
+        output.emotionStaticData
+            .drive(with: self) { owner, data in
+                owner.emotionBarChartController.rootView = EmotionBarChartView(emotions: data)
+            }
+            .disposed(by: disposeBag)
+        
         /// 뷰 내부 로직
         myPageInfoView.calendarButton.rx.tap
             .bind(with: self) { owner, _ in
@@ -110,18 +121,56 @@ final class MyPageViewController: UIViewController {
     
     private func configureView() {
         view.backgroundColor = .backgroundPrimary
+        
+        scrollView.showsVerticalScrollIndicator = false
+        
+        emotionBarChartController.view.layer.cornerRadius = 10
+        emotionBarChartController.view.clipsToBounds = true
+        
+        statisticsLabel.text = .StringLiterals.MyPage.statisticsTitle
+        statisticsLabel.textColor = .textPrimary
+        statisticsLabel.font = .titleLarge
     }
     
     private func configureHierarchy() {
-        view.addSubviews(
-            myPageInfoView
+        view.addSubview(scrollView)
+        scrollView.addSubview(contentView)
+        
+        contentView.addSubviews(
+            myPageInfoView,
+            statisticsLabel,
+            emotionBarChartController.view
         )
+        
+        addChild(emotionBarChartController)
+        emotionBarChartController.didMove(toParent: self)
     }
     
     private func configureLayout() {
+        scrollView.snp.makeConstraints {
+            $0.edges.equalTo(view.safeAreaLayoutGuide)
+        }
+        
+        contentView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+            $0.width.equalToSuperview()
+        }
+        
         myPageInfoView.snp.makeConstraints {
-            $0.top.equalTo(view.safeAreaLayoutGuide)
+            $0.top.equalToSuperview()
             $0.horizontalEdges.equalToSuperview()
+        }
+        
+        statisticsLabel.snp.makeConstraints {
+            $0.top.equalTo(myPageInfoView.snp.bottom).offset(34)
+            $0.leading.equalTo(22)
+        }
+        
+        emotionBarChartController.view.snp.makeConstraints {
+            $0.top.equalTo(statisticsLabel.snp.bottom).offset(8)
+            $0.horizontalEdges.equalToSuperview().inset(22)
+            $0.height.equalTo(230)
+            $0.bottom.equalToSuperview() // 마지막 뷰에 추가
         }
     }
 }

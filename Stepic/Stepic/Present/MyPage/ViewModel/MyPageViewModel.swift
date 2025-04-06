@@ -24,9 +24,10 @@ final class MyPageViewModel: InputOutputModel {
         let selectedDate: Driver<YearMonth>
         let myPageInfoItems: Driver<MyPageInfoViewItem>
         let moveToSummaryView: Driver<WalkSummaryViewModel.WalkSummaryViewType>
+        let emotionStaticData: Driver<[EmotionCount]>
     }
     
-    private var walkDiaryData: [WalkDiaryEntity] = []
+    private let walkDiaryDataRelay = BehaviorRelay<[WalkDiaryEntity]>(value: [])
     private let walkRecordRepository: WalkRecordRepository
     private let disposeBag = DisposeBag()
     
@@ -40,6 +41,7 @@ final class MyPageViewModel: InputOutputModel {
         let selectedDateRelay = BehaviorRelay<YearMonth>(value: YearMonth(year: 0, month: 0))
         let myPageInfoItemsRelay = BehaviorRelay<MyPageInfoViewItem>(value: MyPageInfoViewItem.dummy())
         let moveToSummaryViewRelay = PublishRelay<WalkSummaryViewModel.WalkSummaryViewType>()
+        let emotionStaticDataRelay = BehaviorRelay<[EmotionCount]>(value: [])
         
         input.viewDidLoad
             .bind(with: self) { owner, _ in
@@ -47,9 +49,10 @@ final class MyPageViewModel: InputOutputModel {
                 let yearMonth = YearMonth(year: todayDate.year, month: todayDate.month)
                 selectedDateRelay.accept(yearMonth)
                 
-                owner.walkDiaryData = owner.walkRecordRepository.fetchAll()
+                let allData = owner.walkRecordRepository.fetchAll()
+                owner.walkDiaryDataRelay.accept(allData)
                 let myPageInfo = owner.createMyPageInfo(
-                    from: owner.walkDiaryData,
+                    from: owner.walkDiaryDataRelay.value,
                     year: todayDate.year,
                     month: todayDate.month
                 )
@@ -62,7 +65,7 @@ final class MyPageViewModel: InputOutputModel {
                 selectedDateRelay.accept(yearMonth)
                 
                 let myPageInfo = owner.createMyPageInfo(
-                    from: owner.walkDiaryData,
+                    from: owner.walkDiaryDataRelay.value,
                     year: yearMonth.year,
                     month: yearMonth.month
                 )
@@ -86,10 +89,23 @@ final class MyPageViewModel: InputOutputModel {
             .bind(to: moveToSummaryViewRelay)
             .disposed(by: disposeBag)
         
+        walkDiaryDataRelay
+            .withLatestFrom(selectedDateRelay) { ($0, $1) }
+            .bind(with: self) { owner,  data in
+                let (walkDiaryList, yearMonth) = data
+                let emotionData = owner.createEmotionCounts(
+                    from: walkDiaryList,
+                    yearMonth: yearMonth
+                )
+                emotionStaticDataRelay.accept(emotionData)
+            }
+            .disposed(by: disposeBag)
+        
         return Output(
             selectedDate: selectedDateRelay.asDriver(),
             myPageInfoItems: myPageInfoItemsRelay.asDriver(),
-            moveToSummaryView: moveToSummaryViewRelay.asDriver(onErrorDriveWith: .empty())
+            moveToSummaryView: moveToSummaryViewRelay.asDriver(onErrorDriveWith: .empty()),
+            emotionStaticData: emotionStaticDataRelay.asDriver()
         )
     }
     
@@ -122,5 +138,36 @@ final class MyPageViewModel: InputOutputModel {
             monthWalkCount: selectedMonthWalks.count,
             bookMarkWalkCount: diaryList.filter { $0.isBookmarked }.count
         )
+    }
+    
+    private func createEmotionCounts(
+        from diaryList: [WalkDiaryEntity],
+        yearMonth: YearMonth
+    ) -> [EmotionCount] {
+        let calendar = Calendar.current
+        
+        let filtered = diaryList.filter {
+            calendar.component(.year, from: $0.startDate) == yearMonth.year &&
+            calendar.component(.month, from: $0.startDate) == yearMonth.month
+        }
+        
+        var emotionDict: [EmotionTypeEntity: Int] = [:]
+        EmotionTypeEntity.allCases.forEach { emotionDict[$0] = 0 }
+
+        for diary in filtered {
+            if let emotion = EmotionTypeEntity(rawValue: diary.emotion) {
+                emotionDict[emotion, default: 0] += 1
+            }
+        }
+
+        let maxCount = emotionDict.values.max() ?? 0
+
+        return EmotionTypeEntity.allCases.map { emotion in
+            EmotionCount(
+                emotion: emotion,
+                count: emotionDict[emotion] ?? 0,
+                isMostFrequent: (emotionDict[emotion] == maxCount) && maxCount > 0
+            )
+        }
     }
 }
