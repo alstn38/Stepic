@@ -26,6 +26,7 @@ final class MyPageViewModel: InputOutputModel {
         let moveToSummaryView: Driver<WalkSummaryViewModel.WalkSummaryViewType>
         let emotionStaticData: Driver<[EmotionCount]>
         let durationChartData: Driver<[DurationChartPoint]>
+        let distanceChartData: Driver<[DistanceChartPoint]>
     }
     
     private let walkDiaryDataRelay = BehaviorRelay<[WalkDiaryEntity]>(value: [])
@@ -44,6 +45,7 @@ final class MyPageViewModel: InputOutputModel {
         let moveToSummaryViewRelay = PublishRelay<WalkSummaryViewModel.WalkSummaryViewType>()
         let emotionStaticDataRelay = BehaviorRelay<[EmotionCount]>(value: [])
         let durationChartDataRelay = BehaviorRelay<[DurationChartPoint]>(value: [])
+        let distanceChartDataRelay = BehaviorRelay<[DistanceChartPoint]>(value: [])
         
         input.viewDidLoad
             .bind(with: self) { owner, _ in
@@ -106,6 +108,12 @@ final class MyPageViewModel: InputOutputModel {
                     for: yearMonth
                 )
                 durationChartDataRelay.accept(durationChartData)
+                
+                let distanceChartData = owner.createDistanceChartPoints(
+                    from: walkDiaryList,
+                    for: yearMonth
+                )
+                distanceChartDataRelay.accept(distanceChartData)
             }
             .disposed(by: disposeBag)
         
@@ -114,7 +122,8 @@ final class MyPageViewModel: InputOutputModel {
             myPageInfoItems: myPageInfoItemsRelay.asDriver(),
             moveToSummaryView: moveToSummaryViewRelay.asDriver(onErrorDriveWith: .empty()),
             emotionStaticData: emotionStaticDataRelay.asDriver(),
-            durationChartData: durationChartDataRelay.asDriver()
+            durationChartData: durationChartDataRelay.asDriver(),
+            distanceChartData: distanceChartDataRelay.asDriver()
         )
     }
     
@@ -203,8 +212,39 @@ final class MyPageViewModel: InputOutputModel {
         let result = durationByDay.map { (day, duration) in
             DurationChartPoint(
                 day: day,
-                duration: duration / 60, // 초 → 분
+                duration: duration / 60,
                 isMax: duration == maxDuration
+            )
+        }
+
+        return result.sorted { $0.day < $1.day }
+    }
+    
+    func createDistanceChartPoints(
+        from diaryList: [WalkDiaryEntity],
+        for yearMonth: YearMonth
+    ) -> [DistanceChartPoint] {
+        let calendar = Calendar.current
+
+        let monthDiaryList = diaryList.filter {
+            let date = $0.startDate
+            return calendar.component(.year, from: date) == yearMonth.year &&
+                   calendar.component(.month, from: date) == yearMonth.month
+        }
+
+        var distanceByDay: [Int: Double] = [:]
+        for diary in monthDiaryList {
+            let day = calendar.component(.day, from: diary.startDate)
+            distanceByDay[day, default: 0] += diary.distance
+        }
+
+        let maxDistance = distanceByDay.values.max() ?? 0
+
+        let result = distanceByDay.map { (day, distance) in
+            DistanceChartPoint(
+                day: day,
+                distance: distance,
+                isMax: distance == maxDistance
             )
         }
 

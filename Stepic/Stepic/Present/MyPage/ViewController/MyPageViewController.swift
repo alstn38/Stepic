@@ -25,6 +25,7 @@ final class MyPageViewController: UIViewController {
     private let statisticsLabel = UILabel()
     private let emotionBarChartController = UIHostingController(rootView: EmotionBarChartView(emotions: []))
     private let walkDurationChartController = UIHostingController(rootView: WalkDurationChartView(data: []))
+    private let distanceChartController = UIHostingController(rootView: DistanceChartView(data: []))
     
     init(viewModel: MyPageViewModel) {
         self.viewModel = viewModel
@@ -91,6 +92,12 @@ final class MyPageViewController: UIViewController {
             }
             .disposed(by: disposeBag)
         
+        output.distanceChartData
+            .drive(with: self) { owner, data in
+                owner.distanceChartController.rootView = DistanceChartView(data: data)
+            }
+            .disposed(by: disposeBag)
+        
         /// 뷰 내부 로직
         myPageInfoView.calendarButton.rx.tap
             .bind(with: self) { owner, _ in
@@ -137,6 +144,9 @@ final class MyPageViewController: UIViewController {
         walkDurationChartController.view.layer.cornerRadius = 10
         walkDurationChartController.view.clipsToBounds = true
         
+        distanceChartController.view.layer.cornerRadius = 10
+        distanceChartController.view.clipsToBounds = true
+        
         statisticsLabel.text = .StringLiterals.MyPage.statisticsTitle
         statisticsLabel.textColor = .textPrimary
         statisticsLabel.font = .titleLarge
@@ -150,13 +160,16 @@ final class MyPageViewController: UIViewController {
             myPageInfoView,
             statisticsLabel,
             emotionBarChartController.view,
-            walkDurationChartController.view
+            walkDurationChartController.view,
+            distanceChartController.view
         )
         
         addChild(emotionBarChartController)
         emotionBarChartController.didMove(toParent: self)
         addChild(walkDurationChartController)
         walkDurationChartController.didMove(toParent: self)
+        addChild(distanceChartController)
+        distanceChartController.didMove(toParent: self)
     }
     
     private func configureLayout() {
@@ -189,6 +202,11 @@ final class MyPageViewController: UIViewController {
             $0.top.equalTo(emotionBarChartController.view.snp.bottom).offset(10)
             $0.horizontalEdges.equalToSuperview().inset(22)
             $0.height.equalTo(160)
+        }
+        
+        distanceChartController.view.snp.makeConstraints {
+            $0.top.equalTo(walkDurationChartController.view.snp.bottom).offset(10)
+            $0.horizontalEdges.equalToSuperview().inset(22)
             $0.bottom.equalToSuperview().inset(54)
         }
     }
