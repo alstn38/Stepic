@@ -10,6 +10,7 @@ import UIKit
 protocol ImageFileStorageService {
     func saveImage(_ image: UIImage, fileName: String) throws -> String
     func loadImage(from path: String) throws -> UIImage
+    func deleteImage(fileName: String) throws
 }
 
 final class DefaultImageFileStorageService: ImageFileStorageService {
@@ -64,5 +65,23 @@ final class DefaultImageFileStorageService: ImageFileStorageService {
         }
         
         return image
+    }
+    
+    func deleteImage(fileName: String) throws {
+        do {
+            let documentsDirectory = try fileManager.url(
+                for: .documentDirectory,
+                in: .userDomainMask,
+                appropriateFor: nil,
+                create: false
+            )
+            let fileURL = documentsDirectory.appendingPathComponent("\(directoryName)/\(fileName).jpg")
+
+            if fileManager.fileExists(atPath: fileURL.path) {
+                try fileManager.removeItem(at: fileURL)
+            }
+        } catch {
+            throw StorageError.imageDeleteFailed
+        }
     }
 }
