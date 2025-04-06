@@ -68,4 +68,8 @@ extension UIImage {
     static var calendar: UIImage {
         return UIImage(systemName: "calendar")!
     }
+    
+    static var ellipsis: UIImage {
+        return UIImage(systemName: "ellipsis")!
+    }
 }
