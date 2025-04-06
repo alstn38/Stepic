@@ -13,7 +13,7 @@ import RxSwift
 final class WalkSummaryViewModel: InputOutputModel {
     
     struct Input {
-        let viewDidLoad: Observable<Void>
+        let viewWillAppear: Observable<Void>
     }
     
     struct Output {
@@ -35,7 +35,7 @@ final class WalkSummaryViewModel: InputOutputModel {
     func transform(from input: Input) -> Output {
         let walkDiaryDataRelay = BehaviorRelay<[WalkDiaryEntity]>(value: [])
         
-        input.viewDidLoad
+        input.viewWillAppear
             .bind(with: self) { owner, _ in
                 let sectionItems: [WalkDiaryEntity]
                 

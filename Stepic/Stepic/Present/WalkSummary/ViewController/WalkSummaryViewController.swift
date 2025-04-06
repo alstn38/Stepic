@@ -15,6 +15,7 @@ import SnapKit
 final class WalkSummaryViewController: UIViewController {
     
     private let viewModel: WalkSummaryViewModel
+    private let viewWillAppearRelay = PublishRelay<Void>()
     private let disposeBag = DisposeBag()
     
     private lazy var dataSource = RxCollectionViewSectionedReloadDataSource<WalkSummarySection>(
@@ -50,8 +51,17 @@ final class WalkSummaryViewController: UIViewController {
         configureLayout()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        viewWillAppearRelay.accept(())
+    }
+    
     private func configureBind() {
-        let input = WalkSummaryViewModel.Input(viewDidLoad: Observable.just(()))
+        let input = WalkSummaryViewModel.Input(
+            viewWillAppear: viewWillAppearRelay.asObservable()
+        )
+        
         let output = viewModel.transform(from: input)
         
         output.walkDiaryData
