@@ -15,6 +15,7 @@ final class DetailViewModel: InputOutputModel {
     struct Input {
         let viewDidLoad: Observable<Void>
         let bookMarkButtonDidTap: Observable<Void>
+        let deleteButtonDidTap: Observable<Void>
         let photoDidDelete: Observable<Int>
         let photoDidAdd: Observable<[WalkPhotoEntity]>
         let cameraActionDidTap: Observable<Void>
@@ -35,6 +36,7 @@ final class DetailViewModel: InputOutputModel {
         let presentPickerView: Driver<ImagePickerSource>
         let presentAlert: Driver<(title: String, message: String)>
         let dismissToRoot: Driver<Void>
+        let popToRoot: Driver<Void>
     }
     
     private let detailViewType: DetailViewType
@@ -65,6 +67,7 @@ final class DetailViewModel: InputOutputModel {
         let presentPickerViewRelay = PublishRelay<ImagePickerSource>()
         let presentAlertRelay = PublishRelay<(title: String, message: String)>()
         let dismissToRootRelay = PublishRelay<Void>()
+        let popToRootRelay = PublishRelay<Void>()
         
         input.viewDidLoad
             .bind(with: self) { owner, _ in
@@ -112,6 +115,27 @@ final class DetailViewModel: InputOutputModel {
                             message: error.localizedDescription
                         ))
                     }
+                }
+            }
+            .disposed(by: disposeBag)
+        
+        input.deleteButtonDidTap
+            .bind(with: self) { owner, _ in
+                guard let originalData = owner.walkDiaryEntity else {
+                    presentAlertRelay.accept((
+                        title: .StringLiterals.Alert.storageErrorAlertTitle,
+                        message: StorageError.imageDeleteFailed.localizedDescription
+                    ))
+                    return
+                }
+                do {
+                    try owner.walkRecordRepository.delete(entity: originalData)
+                    popToRootRelay.accept(())
+                } catch {
+                    presentAlertRelay.accept((
+                        title: .StringLiterals.Alert.storageErrorAlertTitle,
+                        message: error.localizedDescription
+                    ))
                 }
             }
             .disposed(by: disposeBag)
@@ -262,7 +286,8 @@ final class DetailViewModel: InputOutputModel {
             photoData: photoDataRelay.asDriver(),
             presentPickerView: presentPickerViewRelay.asDriver(onErrorDriveWith: .empty()),
             presentAlert: presentAlertRelay.asDriver(onErrorDriveWith: .empty()),
-            dismissToRoot: dismissToRootRelay.asDriver(onErrorDriveWith: .empty())
+            dismissToRoot: dismissToRootRelay.asDriver(onErrorDriveWith: .empty()),
+            popToRoot: popToRootRelay.asDriver(onErrorDriveWith: .empty())
         )
     }
     

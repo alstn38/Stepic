@@ -20,6 +20,7 @@ final class DetailViewController: UIViewController {
     private let photoDidDeleteRelay = PublishRelay<Int>()
     private let cameraActionDidTap = PublishRelay<Void>()
     private let libraryActionDidTap = PublishRelay<Void>()
+    private let deleteButtonDidTapRelay = PublishRelay<Void>()
     private let disposeBag = DisposeBag()
     
     private lazy var dataSource = RxCollectionViewSectionedReloadDataSource<DetailPhotoSection>(
@@ -57,6 +58,7 @@ final class DetailViewController: UIViewController {
         }
     )
     
+    private let moreButton = UIBarButtonItem()
     private let bookMarkButton = UIBarButtonItem()
     private let scrollView = UIScrollView()
     private let contentView = UIView()
@@ -79,11 +81,11 @@ final class DetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        configureBind()
         configureNavigation()
         configureView()
         configureHierarchy()
         configureLayout()
+        configureBind()
     }
     
     private func configureBind() {
@@ -93,6 +95,7 @@ final class DetailViewController: UIViewController {
         let input = DetailViewModel.Input(
             viewDidLoad: Observable.just(()),
             bookMarkButtonDidTap: bookMarkButton.rx.tap.asObservable(),
+            deleteButtonDidTap: deleteButtonDidTapRelay.asObservable(),
             photoDidDelete: photoDidDeleteRelay.asObservable(),
             photoDidAdd: didAddPhotoRelay.asObservable(),
             cameraActionDidTap: cameraActionDidTap.asObservable(),
@@ -106,7 +109,6 @@ final class DetailViewController: UIViewController {
         
         let output = viewModel.transform(from: input)
         
-        
         output.viewMode
             .drive(with: self) { owner, viewMode in
                 switch viewMode {
@@ -115,6 +117,7 @@ final class DetailViewController: UIViewController {
                 case .viewer:
                     owner.recordView.isUserInteractionEnabled = false
                     owner.recordButton.isHidden = true
+                    owner.navigationItem.rightBarButtonItems?.insert(owner.moreButton, at: 0)
                 }
             }
             .disposed(by: disposeBag)
@@ -186,6 +189,17 @@ final class DetailViewController: UIViewController {
             }
             .disposed(by: disposeBag)
         
+        output.popToRoot
+            .drive(with: self) { owner, _ in
+                owner.presentGenericAlert(
+                    title: .StringLiterals.Alert.deleteActionTitle,
+                    message: .StringLiterals.Alert.deleteSuccessMessage
+                ) {
+                    owner.navigationController?.popToRootViewController(animated: true)
+                }
+            }
+            .disposed(by: disposeBag)
+        
         /// View 전용 내부 로직
         contentView.rx.tapGesture()
             .bind(with: self) { owner, _ in
@@ -209,11 +223,20 @@ final class DetailViewController: UIViewController {
                 }
             }
             .disposed(by: disposeBag)
+        
+        moreButton.rx.tap
+            .bind(with: self) { owner, _ in
+                owner.presentMoreActionSheet()
+            }
+            .disposed(by: disposeBag)
     }
     
     private func configureNavigation() {
         bookMarkButton.tintColor = .textPrimary
-        navigationItem.rightBarButtonItem = bookMarkButton
+        navigationItem.rightBarButtonItems = [bookMarkButton]
+        
+        moreButton.image = .ellipsis
+        moreButton.tintColor = .textPrimary
     }
     
     private func configureView() {
@@ -301,6 +324,32 @@ final class DetailViewController: UIViewController {
 
         alert.addAction(cameraAction)
         alert.addAction(libraryAction)
+        alert.addAction(cancelAction)
+
+        present(alert, animated: true)
+    }
+    
+    private func presentMoreActionSheet() {
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+
+        let deleteAction = UIAlertAction(
+            title: .StringLiterals.Alert.deleteActionTitle,
+            style: .destructive
+        ) { [weak self] _ in
+            self?.presentGenericCancelAlert(
+                title: .StringLiterals.Alert.deleteAlertTitle,
+                message: .StringLiterals.Alert.deleteAlertMessage
+            ) { [weak self] in
+                self?.deleteButtonDidTapRelay.accept(())
+            }
+        }
+
+        let cancelAction = UIAlertAction(
+            title: .StringLiterals.Alert.locationAlertCancel,
+            style: .cancel
+        )
+
+        alert.addAction(deleteAction)
         alert.addAction(cancelAction)
 
         present(alert, animated: true)
