@@ -16,6 +16,7 @@ protocol WalkRecordStorageService {
     func fetchBookmarked() -> [WalkRecordObject]
     func fetch(by id: String) throws -> WalkRecordObject
     func updateBookmark(id: String, isBookmarked: Bool) throws
+    func delete(by id: String) throws
 }
 
 final class DefaultWalkRecordStorageService: WalkRecordStorageService {
@@ -73,6 +74,19 @@ final class DefaultWalkRecordStorageService: WalkRecordStorageService {
             }
         } catch {
             throw StorageError.realmSaveFailed
+        }
+    }
+    
+    func delete(by id: String) throws {
+        guard let object = realm.object(ofType: WalkRecordObject.self, forPrimaryKey: id) else {
+            throw StorageError.realmLoadFailed
+        }
+        do {
+            try realm.write {
+                realm.delete(object)
+            }
+        } catch {
+            throw StorageError.realmDeleteFailed
         }
     }
 }
