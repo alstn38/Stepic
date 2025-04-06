@@ -2,7 +2,15 @@
   "sourceLanguage" : "ko",
   "strings" : {
     "%@km" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@km"
+          }
+        }
+      },
+      "shouldTranslate" : false
     },
     "%lld" : {
       "shouldTranslate" : false
@@ -139,6 +147,74 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "yyyy년 M월 d일 EEEE"
+          }
+        }
+      }
+    },
+    "deleteActionTitle" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "삭제하기"
+          }
+        }
+      }
+    },
+    "deleteAlertMessage" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deleted data cannot be recovered."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "삭제한 데이터는 복구할 수 없습니다."
+          }
+        }
+      }
+    },
+    "deleteAlertTitle" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Do you want to delete?"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "삭제하시겠습니까?"
+          }
+        }
+      }
+    },
+    "deleteSuccessMessage" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Data has been deleted successfully."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "데이터를 성공적으로 삭제했습니다."
           }
         }
       }
@@ -296,6 +372,23 @@
         }
       }
     },
+    "imageDeleteFailedMessage" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Failed to delete image."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이미지 삭제에 실패했습니다."
+          }
+        }
+      }
+    },
     "imageSaveFailedMessage" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -438,7 +531,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Walks This Month"
+            "value" : "Monthly Walks"
           }
         },
         "ko" : {
@@ -564,6 +657,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "개인정보 처리방침"
+          }
+        }
+      }
+    },
+    "realmDeleteFailed" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Failed to delete data."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "데이터 삭제에 실패했습니다."
           }
         }
       }

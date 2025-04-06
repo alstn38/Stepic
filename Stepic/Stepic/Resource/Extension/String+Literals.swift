@@ -89,6 +89,10 @@ extension String {
             static let selectDateTitle: String = localized("selectDateTitle")
             static let alertSave: String = localized("alertSave")
             static let walkSaveWarningMessage: String = localized("walkSaveWarningMessage")
+            static let deleteActionTitle: String = localized("deleteActionTitle")
+            static let deleteSuccessMessage: String = localized("deleteSuccessMessage")
+            static let deleteAlertTitle: String = localized("deleteAlertTitle")
+            static let deleteAlertMessage: String = localized("deleteAlertMessage")
         }
         
         enum Toast {
@@ -103,8 +107,10 @@ extension String {
         enum Storage {
             static let realmSaveFailedMessage: String = localized("realmSaveFailedMessage")
             static let realmLoadFailedMessage: String = localized("realmLoadFailedMessage")
+            static let realmDeleteFailed: String = localized("realmDeleteFailed")
             static let imageSaveFailedMessage: String = localized("imageSaveFailedMessage")
             static let imageLoadFailedMessage: String = localized("imageLoadFailedMessage")
+            static let imageDeleteFailedMessage: String = localized("imageDeleteFailedMessage")
         }
         
         enum Setting {
