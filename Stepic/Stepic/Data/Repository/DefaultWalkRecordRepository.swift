@@ -92,6 +92,26 @@ final class DefaultWalkRecordRepository: WalkRecordRepository {
         return entity
     }
     
+    func delete(entity: WalkDiaryEntity) throws {
+        do {
+            let thumbPath = "\(entity.id)_thumbnail"
+            try fileStorageService.deleteImage(fileName: thumbPath)
+
+            for (index, _) in entity.photos.enumerated() {
+                let photoPath = "\(entity.id)_photo_\(index)"
+                try fileStorageService.deleteImage(fileName: photoPath)
+            }
+        } catch {
+            throw StorageError.imageDeleteFailed
+        }
+        
+        do {
+            try storageService.delete(by: entity.id)
+        } catch {
+            throw StorageError.realmDeleteFailed
+        }
+    }
+    
     private func convert(object: WalkRecordObject) -> WalkDiaryEntity? {
         do {
             
