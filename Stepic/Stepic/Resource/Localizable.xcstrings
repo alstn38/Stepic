@@ -1,6 +1,9 @@
 {
   "sourceLanguage" : "ko",
   "strings" : {
+    "%@km" : {
+
+    },
     "%lld" : {
       "shouldTranslate" : false
     },
@@ -969,6 +972,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "회"
+          }
+        }
+      }
+    },
+    "walkDistanceTitle" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Distance"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이동거리"
           }
         }
       }

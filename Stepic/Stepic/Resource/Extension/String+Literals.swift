@@ -71,6 +71,7 @@ extension String {
             static let statisticsTitle: String = localized("statisticsTitle")
             static let emotionTitle: String = localized("emotionTitle")
             static let walkDurationTitle: String = localized("walkDurationTitle")
+            static let walkDistanceTitle: String = localized("walkDistanceTitle")
         }
         
         enum Alert {
