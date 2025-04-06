@@ -92,6 +92,13 @@ final class MyPageViewController: UIViewController {
                 owner.present(monthPicker, animated: true)
             }
             .disposed(by: disposeBag)
+        
+        settingButton.rx.tap
+            .bind(with: self) { owner, _ in
+                let viewController = SettingsViewController()
+                owner.navigationController?.pushViewController(viewController, animated: true)
+            }
+            .disposed(by: disposeBag)
     }
     
     private func configureNavigation() {
