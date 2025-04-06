@@ -17,6 +17,7 @@ final class HomeViewController: UIViewController {
     
     private let viewModel: HomeViewModel
     private var walkDiaryData: [WalkDiaryEntity] = []
+    private let viewWillAppearRelay = PublishRelay<Void>()
     private let calendarDidSelectRelay = PublishRelay<Date>()
     private let disposeBag = DisposeBag()
     
@@ -74,11 +75,17 @@ final class HomeViewController: UIViewController {
         configureBind()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        viewWillAppearRelay.accept(())
+    }
+    
     private func configureBind() {
         let selectDateDidChangeRelay = PublishRelay<YearMonth>()
         
         let input = HomeViewModel.Input(
-            viewDidLoad: Observable.just(()),
+            viewWillAppear: viewWillAppearRelay.asObservable(),
             selectDateDidChange: selectDateDidChangeRelay.asObservable(),
             calendarDidSelect: calendarDidSelectRelay.asObservable(),
             recordButtonDidTap: recordButton.rx.tap.asObservable()

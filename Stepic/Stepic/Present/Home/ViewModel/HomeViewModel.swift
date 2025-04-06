@@ -14,7 +14,7 @@ import RxSwift
 final class HomeViewModel: InputOutputModel {
     
     struct Input {
-        let viewDidLoad: Observable<Void>
+        let viewWillAppear: Observable<Void>
         let selectDateDidChange: Observable<YearMonth>
         let calendarDidSelect: Observable<Date>
         let recordButtonDidTap: Observable<Void>
@@ -54,7 +54,7 @@ final class HomeViewModel: InputOutputModel {
         
         let weatherLocationUpdateRelay = PublishRelay<Void>()
         
-        input.viewDidLoad
+        input.viewWillAppear
             .bind(with: self) { owner, _ in
                 let todayDate = owner.getTodayDate()
                 let yearMonth = YearMonth(year: todayDate.year, month: todayDate.month)
