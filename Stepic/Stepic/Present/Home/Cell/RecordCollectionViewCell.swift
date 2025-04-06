@@ -45,15 +45,20 @@ final class RecordCollectionViewCell: UICollectionViewCell, ReusableViewProtocol
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        walkImageView.isHidden = true
+        
+        imageViewStackView.arrangedSubviews.forEach {
+            imageViewStackView.removeArrangedSubview($0)
+            $0.removeFromSuperview()
+        }
     }
     
     func configureView(_ data: WalkDiaryEntity) {
         if let photo = data.photos.first?.image {
-            walkImageView.isHidden = false
+            imageViewStackView.addArrangedSubview(walkImageView)
             walkImageView.image = photo
         }
         
+        imageViewStackView.addArrangedSubview(mapImageView)
         mapImageView.image = data.thumbnailImage
         weatherImageView.image = UIImage(systemName: data.weatherSymbol)
         cityNameLabel.text = data.startLocation.city + " " + data.startLocation.district
@@ -140,11 +145,6 @@ final class RecordCollectionViewCell: UICollectionViewCell, ReusableViewProtocol
             infoStackView,
             lineView,
             dateLabel
-        )
-        
-        imageViewStackView.addArrangedSubviews(
-            walkImageView,
-            mapImageView
         )
         
         infoStackView.addArrangedSubviews(
