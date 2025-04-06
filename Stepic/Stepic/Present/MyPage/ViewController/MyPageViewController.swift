@@ -22,8 +22,9 @@ final class MyPageViewController: UIViewController {
     private let scrollView = UIScrollView()
     private let contentView = UIView()
     private let myPageInfoView = MyPageInfoView()
-    private let emotionBarChartController = UIHostingController(rootView: EmotionBarChartView(emotions: []))
     private let statisticsLabel = UILabel()
+    private let emotionBarChartController = UIHostingController(rootView: EmotionBarChartView(emotions: []))
+    private let walkDurationChartController = UIHostingController(rootView: WalkDurationChartView(data: []))
     
     init(viewModel: MyPageViewModel) {
         self.viewModel = viewModel
@@ -84,6 +85,12 @@ final class MyPageViewController: UIViewController {
             }
             .disposed(by: disposeBag)
         
+        output.durationChartData
+            .drive(with: self) { owner, data in
+                owner.walkDurationChartController.rootView = WalkDurationChartView(data: data)
+            }
+            .disposed(by: disposeBag)
+        
         /// 뷰 내부 로직
         myPageInfoView.calendarButton.rx.tap
             .bind(with: self) { owner, _ in
@@ -127,6 +134,9 @@ final class MyPageViewController: UIViewController {
         emotionBarChartController.view.layer.cornerRadius = 10
         emotionBarChartController.view.clipsToBounds = true
         
+        walkDurationChartController.view.layer.cornerRadius = 10
+        walkDurationChartController.view.clipsToBounds = true
+        
         statisticsLabel.text = .StringLiterals.MyPage.statisticsTitle
         statisticsLabel.textColor = .textPrimary
         statisticsLabel.font = .titleLarge
@@ -139,11 +149,14 @@ final class MyPageViewController: UIViewController {
         contentView.addSubviews(
             myPageInfoView,
             statisticsLabel,
-            emotionBarChartController.view
+            emotionBarChartController.view,
+            walkDurationChartController.view
         )
         
         addChild(emotionBarChartController)
         emotionBarChartController.didMove(toParent: self)
+        addChild(walkDurationChartController)
+        walkDurationChartController.didMove(toParent: self)
     }
     
     private func configureLayout() {
@@ -169,8 +182,14 @@ final class MyPageViewController: UIViewController {
         emotionBarChartController.view.snp.makeConstraints {
             $0.top.equalTo(statisticsLabel.snp.bottom).offset(8)
             $0.horizontalEdges.equalToSuperview().inset(22)
-            $0.height.equalTo(230)
-            $0.bottom.equalToSuperview() // 마지막 뷰에 추가
+            $0.height.equalTo(240)
+        }
+        
+        walkDurationChartController.view.snp.makeConstraints {
+            $0.top.equalTo(emotionBarChartController.view.snp.bottom).offset(10)
+            $0.horizontalEdges.equalToSuperview().inset(22)
+            $0.height.equalTo(160)
+            $0.bottom.equalToSuperview().inset(54)
         }
     }
 }

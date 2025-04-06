@@ -25,6 +25,7 @@ final class MyPageViewModel: InputOutputModel {
         let myPageInfoItems: Driver<MyPageInfoViewItem>
         let moveToSummaryView: Driver<WalkSummaryViewModel.WalkSummaryViewType>
         let emotionStaticData: Driver<[EmotionCount]>
+        let durationChartData: Driver<[DurationChartPoint]>
     }
     
     private let walkDiaryDataRelay = BehaviorRelay<[WalkDiaryEntity]>(value: [])
@@ -42,6 +43,7 @@ final class MyPageViewModel: InputOutputModel {
         let myPageInfoItemsRelay = BehaviorRelay<MyPageInfoViewItem>(value: MyPageInfoViewItem.dummy())
         let moveToSummaryViewRelay = PublishRelay<WalkSummaryViewModel.WalkSummaryViewType>()
         let emotionStaticDataRelay = BehaviorRelay<[EmotionCount]>(value: [])
+        let durationChartDataRelay = BehaviorRelay<[DurationChartPoint]>(value: [])
         
         input.viewDidLoad
             .bind(with: self) { owner, _ in
@@ -98,6 +100,12 @@ final class MyPageViewModel: InputOutputModel {
                     yearMonth: yearMonth
                 )
                 emotionStaticDataRelay.accept(emotionData)
+                
+                let durationChartData = owner.createDurationChartPoints(
+                    from: walkDiaryList,
+                    for: yearMonth
+                )
+                durationChartDataRelay.accept(durationChartData)
             }
             .disposed(by: disposeBag)
         
@@ -105,7 +113,8 @@ final class MyPageViewModel: InputOutputModel {
             selectedDate: selectedDateRelay.asDriver(),
             myPageInfoItems: myPageInfoItemsRelay.asDriver(),
             moveToSummaryView: moveToSummaryViewRelay.asDriver(onErrorDriveWith: .empty()),
-            emotionStaticData: emotionStaticDataRelay.asDriver()
+            emotionStaticData: emotionStaticDataRelay.asDriver(),
+            durationChartData: durationChartDataRelay.asDriver()
         )
     }
     
@@ -169,5 +178,36 @@ final class MyPageViewModel: InputOutputModel {
                 isMostFrequent: (emotionDict[emotion] == maxCount) && maxCount > 0
             )
         }
+    }
+    
+    func createDurationChartPoints(
+        from diaryList: [WalkDiaryEntity],
+        for yearMonth: YearMonth
+    ) -> [DurationChartPoint] {
+        let calendar = Calendar.current
+
+        let monthDiaryList = diaryList.filter {
+            let date = $0.startDate
+            return calendar.component(.year, from: date) == yearMonth.year &&
+                   calendar.component(.month, from: date) == yearMonth.month
+        }
+
+        var durationByDay: [Int: TimeInterval] = [:]
+        for diary in monthDiaryList {
+            let day = calendar.component(.day, from: diary.startDate)
+            durationByDay[day, default: 0] += diary.duration
+        }
+
+        let maxDuration = durationByDay.values.max() ?? 0
+
+        let result = durationByDay.map { (day, duration) in
+            DurationChartPoint(
+                day: day,
+                duration: duration / 60, // 초 → 분
+                isMax: duration == maxDuration
+            )
+        }
+
+        return result.sorted { $0.day < $1.day }
     }
 }
