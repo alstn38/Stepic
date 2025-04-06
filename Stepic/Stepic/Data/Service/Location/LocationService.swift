@@ -33,6 +33,7 @@ final class DefaultLocationService: NSObject, LocationService {
         super.init()
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
+        locationManager.allowsBackgroundLocationUpdates = true
     }
     
     func requestAuthorization() {
