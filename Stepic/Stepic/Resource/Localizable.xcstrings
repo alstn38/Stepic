@@ -1,6 +1,9 @@
 {
   "sourceLanguage" : "ko",
   "strings" : {
+    "%lld" : {
+
+    },
     "alertSave" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -745,6 +748,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "시작시간"
+          }
+        }
+      }
+    },
+    "statisticsTitle" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Statistics"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "통계"
           }
         }
       }
