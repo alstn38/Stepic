@@ -83,6 +83,8 @@ extension String {
             static let storageErrorAlertTitle: String = localized("storageErrorAlertTitle")
             static let mapThumbnailSaveFailedMessage: String = localized("mapThumbnailSaveFailedMessage")
             static let selectDateTitle: String = localized("selectDateTitle")
+            static let alertSave: String = localized("alertSave")
+            static let walkSaveWarningMessage: String = localized("walkSaveWarningMessage")
         }
         
         enum Toast {

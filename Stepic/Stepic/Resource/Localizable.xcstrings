@@ -1,6 +1,23 @@
 {
   "sourceLanguage" : "ko",
   "strings" : {
+    "alertSave" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "저장"
+          }
+        }
+      }
+    },
     "allWalkTitle" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -983,6 +1000,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "산책 정보"
+          }
+        }
+      }
+    },
+    "walkSaveWarningMessage" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Would you like to save this walk? You won’t be able to edit it later."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "산책을 저장하시겠어요? 저장 후에는 수정할 수 없어요."
           }
         }
       }
