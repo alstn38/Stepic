@@ -34,7 +34,10 @@ final class DefaultWalkRecordStorageService: WalkRecordStorageService {
     }
     
     func fetchAll() -> [WalkRecordObject] {
-        return Array(realm.objects(WalkRecordObject.self))
+        return Array(
+            realm.objects(WalkRecordObject.self)
+                .sorted(byKeyPath: "startTime", ascending: false)
+        )
     }
     
     func fetch(byYear year: Int, month: Int) -> [WalkRecordObject] {
@@ -43,8 +46,10 @@ final class DefaultWalkRecordStorageService: WalkRecordStorageService {
             let startDate = calendar.date(from: DateComponents(year: year, month: month, day: 1)),
             let endDate = calendar.date(byAdding: .month, value: 1, to: startDate)?.addingTimeInterval(-1)
         else { return [] }
+        
         let results = realm.objects(WalkRecordObject.self)
             .where { $0.startDate >= startDate && $0.startDate <= endDate }
+            .sorted(byKeyPath: "startTime", ascending: false)
         
         return Array(results)
     }
@@ -52,6 +57,7 @@ final class DefaultWalkRecordStorageService: WalkRecordStorageService {
     func fetchBookmarked() -> [WalkRecordObject] {
         let results = realm.objects(WalkRecordObject.self)
             .where { $0.isBookmarked == true }
+            .sorted(byKeyPath: "startTime", ascending: false)
 
         return Array(results)
     }
