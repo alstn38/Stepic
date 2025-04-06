@@ -69,8 +69,8 @@ final class DefaultWalkTrackerManager: WalkTrackerManager {
         defer { locationService.stopUpdatingLocation() }
 
         endTime = Date()
-
-        let distance = totalDistanceRelay.value
+        
+        let distance = totalDistanceRelay.value / 1000.0
         let duration = (endTime?.timeIntervalSince(startTime ?? Date())) ?? 0
         let date = Calendar.current.startOfDay(for: startTime ?? Date())
         
