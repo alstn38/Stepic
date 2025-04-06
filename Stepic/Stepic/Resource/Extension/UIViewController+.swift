@@ -70,4 +70,33 @@ extension UIViewController {
         
         presentingVC.dismiss(animated: true)
     }
+    
+    func presentSaveConfirmationAlert(
+        title: String,
+        message: String,
+        onConfirm: @escaping () -> Void
+    ) {
+        let alertController = UIAlertController(
+            title: title,
+            message: message,
+            preferredStyle: .alert
+        )
+        
+        let confirmAction = UIAlertAction(
+            title: .StringLiterals.Alert.alertSave,
+            style: .default
+        ) { _ in
+            onConfirm()
+        }
+        
+        let cancelAction = UIAlertAction(
+            title: .StringLiterals.Alert.locationAlertCancel,
+            style: .cancel
+        )
+        
+        alertController.addAction(confirmAction)
+        alertController.addAction(cancelAction)
+        
+        present(alertController, animated: true)
+    }
 }
