@@ -32,7 +32,7 @@ final class DefaultLocationService: NSObject, LocationService {
     override init() {
         super.init()
         locationManager.delegate = self
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
     }
     
     func requestAuthorization() {
