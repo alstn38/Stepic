@@ -13,7 +13,7 @@ import RxSwift
 final class MyPageViewModel: InputOutputModel {
     
     struct Input {
-        let viewDidLoad: Observable<Void>
+        let viewWillAppear: Observable<Void>
         let selectDateDidChange: Observable<YearMonth>
         let totalWalkButtonDidTap: Observable<Void>
         let monthWalkButtonDidTap: Observable<Void>
@@ -47,7 +47,7 @@ final class MyPageViewModel: InputOutputModel {
         let durationChartDataRelay = BehaviorRelay<[DurationChartPoint]>(value: [])
         let distanceChartDataRelay = BehaviorRelay<[DistanceChartPoint]>(value: [])
         
-        input.viewDidLoad
+        input.viewWillAppear
             .bind(with: self) { owner, _ in
                 let todayDate = owner.getTodayDate()
                 let yearMonth = YearMonth(year: todayDate.year, month: todayDate.month)

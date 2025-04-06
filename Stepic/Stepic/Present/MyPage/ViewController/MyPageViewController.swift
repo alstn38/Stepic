@@ -16,6 +16,7 @@ import SnapKit
 final class MyPageViewController: UIViewController {
     
     private let viewModel: MyPageViewModel
+    private let viewWillAppearRelay = PublishRelay<Void>()
     private let disposeBag = DisposeBag()
     
     private let settingButton = UIBarButtonItem()
@@ -47,11 +48,17 @@ final class MyPageViewController: UIViewController {
         configureLayout()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        viewWillAppearRelay.accept(())
+    }
+    
     private func configureBind() {
         let selectDateDidChangeRelay = PublishRelay<YearMonth>()
         
         let input = MyPageViewModel.Input(
-            viewDidLoad: Observable.just(()),
+            viewWillAppear: viewWillAppearRelay.asObservable(),
             selectDateDidChange: selectDateDidChangeRelay.asObservable(),
             totalWalkButtonDidTap: myPageInfoView.totalWalkButton.rx.tapGesture().map { _ in }.asObservable(),
             monthWalkButtonDidTap: myPageInfoView.monthWalkButton.rx.tapGesture().map { _ in }.asObservable(),
