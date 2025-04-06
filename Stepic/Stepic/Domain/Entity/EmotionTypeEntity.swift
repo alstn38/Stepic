@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUICore
 
 enum EmotionTypeEntity: Int, CaseIterable {
     case love
@@ -46,6 +47,23 @@ enum EmotionTypeEntity: Int, CaseIterable {
             return .sadEmoji
         case .angry:
             return .angryEmoji
+        }
+    }
+    
+    var swiftUIImage: Image {
+        switch self {
+        case .love:
+            return Image("loveEmoji")
+        case .happy:
+            return Image("happyEmoji")
+        case .neutral:
+            return Image("neutralEmoji")
+        case .tired:
+            return Image("tiredEmoji")
+        case .sad:
+            return Image("sadEmoji")
+        case .angry:
+            return Image("angryEmoji")
         }
     }
 }
