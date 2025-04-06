@@ -14,4 +14,5 @@ protocol WalkRecordRepository {
     func fetchBookmarked() -> [WalkDiaryEntity]
     func fetch(by id: String) throws -> WalkDiaryEntity
     func updateBookmark(entity: WalkDiaryEntity) throws
+    func delete(entity: WalkDiaryEntity) throws
 }
