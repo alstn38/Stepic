@@ -42,7 +42,7 @@ final class RouteView: UIView {
     func configureView(with pathCoordinates: [CLLocationCoordinate2D]) {
         walkMapRenderer.renderPath(on: mapView, pathCoordinates: pathCoordinates)
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             if let snapshot = self.mapView.captureSnapshot() {
                 self.mapViewDidCaptureRelay.accept(snapshot)
             }
@@ -52,7 +52,7 @@ final class RouteView: UIView {
     func configureView(with photos: [WalkPhotoEntity]) {
         walkMapRenderer.renderPhotos(on: mapView, photos: photos)
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             if let snapshot = self.mapView.captureSnapshot() {
                 self.mapViewDidCaptureRelay.accept(snapshot)
             }
