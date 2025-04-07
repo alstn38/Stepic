@@ -72,7 +72,7 @@ final class MonthPickerViewController: UIViewController {
     
     private func generateYearMonthList() -> [YearMonth] {
         let calendar = Calendar.current
-        var startDate = calendar.date(from: DateComponents(year: 2023, month: 1)) ?? Date()
+        var startDate = calendar.date(from: DateComponents(year: 2025, month: 1)) ?? Date()
         let endDate = Date()
         var result: [YearMonth] = []
 
