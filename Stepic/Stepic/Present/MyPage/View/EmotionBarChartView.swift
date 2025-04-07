@@ -36,7 +36,7 @@ struct EmotionBarChartView: View {
                         
                         RoundedRectangle(cornerRadius: 4)
                             .fill(item.isMostFrequent ? Color.accentPrimary : Color.textPlaceholder)
-                            .frame(width: 10, height: CGFloat(item.count) / CGFloat(max(maxCount, 1)) * 100)
+                            .frame(width: 10, height: maxCount == 0 ? 100 : CGFloat(item.count) / CGFloat(maxCount) * 100)
                             .frame(maxWidth: .infinity)
 
                         item.emotion.swiftUIImage
