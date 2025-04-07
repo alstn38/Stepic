@@ -209,6 +209,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Stepic/Resource/Base.lproj/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Stepic;
 				INFOPLIST_KEY_NSCameraUsageDescription = "산책 중 기억하고 싶은 장면이나 순간을 사진이나 영상으로 기록하기 위해 카메라 권한이 필요합니다.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "산책 경로를 기록하고 날씨 및 도시 정보를 제공하기 위해 위치 정보가 필요합니다.";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "산책 중 소리를 함께 담은 영상을 녹화하기 위해 마이크 권한이 필요합니다.";
@@ -245,6 +246,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Stepic/Resource/Base.lproj/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Stepic;
 				INFOPLIST_KEY_NSCameraUsageDescription = "산책 중 기억하고 싶은 장면이나 순간을 사진이나 영상으로 기록하기 위해 카메라 권한이 필요합니다.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "산책 경로를 기록하고 날씨 및 도시 정보를 제공하기 위해 위치 정보가 필요합니다.";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "산책 중 소리를 함께 담은 영상을 녹화하기 위해 마이크 권한이 필요합니다.";
