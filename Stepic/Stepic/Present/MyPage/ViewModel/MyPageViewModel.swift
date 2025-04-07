@@ -40,7 +40,7 @@ final class MyPageViewModel: InputOutputModel {
     }
     
     func transform(from input: Input) -> Output {
-        let selectedDateRelay = BehaviorRelay<YearMonth>(value: YearMonth(year: 0, month: 0))
+        let selectedDateRelay = BehaviorRelay<YearMonth>(value: getTodayDate())
         let myPageInfoItemsRelay = BehaviorRelay<MyPageInfoViewItem>(value: MyPageInfoViewItem.dummy())
         let moveToSummaryViewRelay = PublishRelay<WalkSummaryViewModel.WalkSummaryViewType>()
         let emotionStaticDataRelay = BehaviorRelay<[EmotionCount]>(value: [])
@@ -49,16 +49,13 @@ final class MyPageViewModel: InputOutputModel {
         
         input.viewWillAppear
             .bind(with: self) { owner, _ in
-                let todayDate = owner.getTodayDate()
-                let yearMonth = YearMonth(year: todayDate.year, month: todayDate.month)
-                selectedDateRelay.accept(yearMonth)
-                
                 let allData = owner.walkRecordRepository.fetchAll()
                 owner.walkDiaryDataRelay.accept(allData)
+                
                 let myPageInfo = owner.createMyPageInfo(
                     from: owner.walkDiaryDataRelay.value,
-                    year: todayDate.year,
-                    month: todayDate.month
+                    year: selectedDateRelay.value.year,
+                    month: selectedDateRelay.value.month
                 )
                 myPageInfoItemsRelay.accept(myPageInfo)
             }
@@ -93,8 +90,8 @@ final class MyPageViewModel: InputOutputModel {
             .bind(to: moveToSummaryViewRelay)
             .disposed(by: disposeBag)
         
-        walkDiaryDataRelay
-            .withLatestFrom(selectedDateRelay) { ($0, $1) }
+        Observable
+            .combineLatest(walkDiaryDataRelay, selectedDateRelay)
             .bind(with: self) { owner,  data in
                 let (walkDiaryList, yearMonth) = data
                 let emotionData = owner.createEmotionCounts(
