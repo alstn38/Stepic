@@ -57,9 +57,9 @@ final class WalkInfoView: UIView {
         weatherIconImageView.image = UIImage(systemName: data.weather.symbolName)
         weatherStatusLabel.text = data.weather.description
         weatherTemperatureLabel.text = data.weather.temperature
-        startLocationLabel.text = data.tracking.startLocation.district + " " + data.tracking.startLocation.street
+        startLocationLabel.text = .combinedString(data.tracking.startLocation.district, data.tracking.startLocation.street)
         startCityLabel.text = data.tracking.startLocation.city
-        arrivalLocationLabel.text = data.tracking.endLocation.district + " " + data.tracking.endLocation.street
+        arrivalLocationLabel.text = .combinedString(data.tracking.endLocation.district, data.tracking.endLocation.street)
         arrivalCityLabel.text = data.tracking.endLocation.city
         startTimeLabel.text = DateFormatManager.shared.formattedTime(from: data.tracking.startTime)
         arrivalTimeLabel.text = DateFormatManager.shared.formattedTime(from: data.tracking.endTime)

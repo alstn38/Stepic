@@ -30,7 +30,7 @@ final class WeatherView: UIView {
     
     func configureView(_ data: WeatherLocationEntity) {
         weatherImageView.image = UIImage(systemName: data.symbolName)
-        locationLabel.text = data.city + " " + data.district
+        locationLabel.text = .combinedString(data.city, data.district)
         weatherLabel.text = data.description + " " + data.temperature
     }
     

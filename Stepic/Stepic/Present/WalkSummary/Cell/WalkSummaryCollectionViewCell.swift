@@ -70,7 +70,7 @@ final class WalkSummaryCollectionViewCell: UICollectionViewCell, ReusableViewPro
         imageViewStackView.addArrangedSubview(mapImageView)
         mapImageView.image = data.thumbnailImage
         weatherImageView.image = UIImage(systemName: data.weatherSymbol)
-        cityNameLabel.text = data.startLocation.city + " " + data.startLocation.district
+        cityNameLabel.text = .combinedString(data.startLocation.city, data.startLocation.district)
         weatherLabel.text = data.weatherDescription + " " + data.temperature
         emotionImageView.image = EmotionTypeEntity(rawValue: data.emotion)?.image
         durationTimeLabel.text = DateFormatManager.shared.formattedDurationTime(from: data.duration)
