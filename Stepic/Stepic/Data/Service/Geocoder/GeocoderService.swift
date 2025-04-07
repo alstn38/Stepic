@@ -25,8 +25,8 @@ final class DefaultGeocoderService: GeocoderService {
                     continuation.resume(throwing: error)
                 } else if let placeMark = placeMarks?.first {
                     let address = LocationEntity(
-                        city: placeMark.locality ?? "Unknown",
-                        district: placeMark.subLocality ?? "Unknown",
+                        city: placeMark.locality ?? "",
+                        district: placeMark.subLocality ?? "",
                         street: placeMark.thoroughfare ?? ""
                     )
                     continuation.resume(returning: address)
