@@ -156,11 +156,13 @@ final class DetailViewController: UIViewController {
         
         output.photoData
             .withLatestFrom(output.viewMode) { ($0, $1) }
-            .map { data, viewMode in
+            .map { [weak self] data, viewMode in
                 var items = data.map { DetailPhotoItem.photo($0, viewMode: viewMode) }
                 
                 if case .create = viewMode {
                     if items.count < 10 { items.append(.addPlaceholder) }
+                } else if case .viewer = viewMode {
+                    if items.isEmpty { self?.hiddenPictureSelectView() }
                 }
                 
                 return [DetailPhotoSection(items: items)]
@@ -398,6 +400,16 @@ final class DetailViewController: UIViewController {
         }
         
         self.present(picker, animated: true)
+    }
+    
+    private func hiddenPictureSelectView() {
+        self.pictureSelectView.snp.remakeConstraints {
+            $0.top.equalTo(self.walkInfoView.snp.bottom)
+            $0.horizontalEdges.equalToSuperview()
+            $0.height.equalTo(0)
+        }
+        self.pictureSelectView.alpha = 0
+        self.view.layoutIfNeeded()
     }
     
     private func scrollToRecordView() {
