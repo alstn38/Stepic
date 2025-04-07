@@ -17,6 +17,10 @@ extension String {
 extension String {
     
     enum StringLiterals {
+        enum Common {
+            static let unknown: String = localized("unknown")
+        }
+        
         enum TabBar {
             static let homeTitle: String = localized("tapBarHomeTitle")
             static let myPageTitle: String = localized("tapBarMyPageTitle")
