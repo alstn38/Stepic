@@ -46,7 +46,7 @@ final class HomeViewModel: InputOutputModel {
     
     func transform(from input: Input) -> Output {
         let weatherLocationDataRelay = BehaviorRelay(value: WeatherLocationEntity.loadingDummy())
-        let selectedDateRelay = BehaviorRelay<YearMonth>(value: YearMonth(year: 0, month: 0))
+        let selectedDateRelay = BehaviorRelay<YearMonth>(value: getTodayDate())
         let walkDiaryDataRelay = BehaviorRelay<[WalkDiaryEntity]>(value: [])
         let selectDiaryDataRelay = BehaviorRelay<[WalkDiaryEntity]>(value: [])
         let moveToWalkViewRelay = PublishRelay<Void>()
@@ -55,12 +55,9 @@ final class HomeViewModel: InputOutputModel {
         let weatherLocationUpdateRelay = PublishRelay<Void>()
         
         input.viewWillAppear
-            .bind(with: self) { owner, _ in
-                let todayDate = owner.getTodayDate()
-                let yearMonth = YearMonth(year: todayDate.year, month: todayDate.month)
-                selectedDateRelay.accept(yearMonth)
-                
-                let walkDiaryData = owner.walkRecordRepository.fetch(byYear: todayDate.year, month: todayDate.month)
+            .withLatestFrom(selectedDateRelay)
+            .bind(with: self) { owner, yearMonth in
+                let walkDiaryData = owner.walkRecordRepository.fetch(byYear: yearMonth.year, month: yearMonth.month)
                 walkDiaryDataRelay.accept(walkDiaryData)
                 
                 let calendar = Calendar.current
@@ -76,6 +73,11 @@ final class HomeViewModel: InputOutputModel {
                 
                 let walkDiaryData = owner.walkRecordRepository.fetch(byYear: yearMonth.year, month: yearMonth.month)
                 walkDiaryDataRelay.accept(walkDiaryData)
+                
+                let calendar = Calendar.current
+                let filtered = walkDiaryDataRelay.value
+                    .filter { calendar.isDate($0.startDate, inSameDayAs: Date()) }
+                selectDiaryDataRelay.accept(filtered)
             }
             .disposed(by: disposeBag)
         
