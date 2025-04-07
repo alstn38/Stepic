@@ -53,6 +53,7 @@ struct EmotionBarChartView: View {
             }
         }
         .padding(.horizontal, 18)
+        .padding(.vertical, 12)
         .background(Color(uiColor: .backgroundSecondary))
         .cornerRadius(10)
     }

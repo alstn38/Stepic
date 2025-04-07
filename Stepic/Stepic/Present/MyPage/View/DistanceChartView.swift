@@ -27,7 +27,6 @@ struct DistanceChartView: View {
                     .font(.callout)
                     .bold()
             }
-            .padding(.top, 12)
 
             GeometryReader { geometry in
                 let width = geometry.size.width
@@ -61,12 +60,17 @@ struct DistanceChartView: View {
                             .fill(point.isMax ? Color.accentPrimary : Color.textSecondary)
                             .frame(width: 6, height: 6)
                             .position(x: x, y: y)
-
+                        
                         if point.isMax {
                             Text("\(String(format: "%.0f", distance))km")
                                 .font(.caption2)
                                 .foregroundColor(.textPrimary)
                                 .position(x: x, y: y - 14)
+                            
+                            Text(ordinalString(for: point.day))
+                                .font(.caption2)
+                                .foregroundColor(.textPlaceholder)
+                                .position(x: x, y: y + 14)
                         }
                     }
                 }
@@ -74,8 +78,20 @@ struct DistanceChartView: View {
             .frame(height: 100)
         }
         .padding(.horizontal, 18)
-        .padding(.bottom, 8)
+        .padding(.vertical, 12)
         .background(Color(uiColor: .backgroundSecondary))
         .cornerRadius(10)
+    }
+    
+    private func ordinalString(for day: Int) -> String {
+        let locale = Locale.current
+        if locale.identifier.hasPrefix("ko") {
+            return "\(day)일"
+        } else {
+            let formatter = NumberFormatter()
+            formatter.numberStyle = .ordinal
+            formatter.locale = locale
+            return formatter.string(from: NSNumber(value: day)) ?? "\(day)"
+        }
     }
 }
