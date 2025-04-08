@@ -8,9 +8,10 @@
 import UIKit
 
 import FSCalendar
-import RxSwift
 import RxCocoa
 import RxDataSources
+import RxGesture
+import RxSwift
 import SnapKit
 
 final class HomeViewController: UIViewController {
@@ -176,6 +177,15 @@ final class HomeViewController: UIViewController {
                 let viewModel = DetailViewModel(detailViewType: .viewer(walkDiary: diaryData))
                 let viewController = DetailViewController(viewModel: viewModel)
                 owner.navigationController?.pushViewController(viewController, animated: true)
+            }
+            .disposed(by: disposeBag)
+        
+        weatherView.rx.tapGesture().when(.recognized)
+            .bind(with: self) { owner, _ in
+                let viewController = WeatherAttributionPopupViewController()
+                viewController.modalPresentationStyle = .overFullScreen
+                viewController.modalTransitionStyle = .crossDissolve
+                owner.present(viewController, animated: true)
             }
             .disposed(by: disposeBag)
     }

@@ -142,6 +142,16 @@ final class WalkViewController: UIViewController {
         countDownView.startAnimation {
             startTrigger.accept(())
         }
+        
+        /// 뷰 내부 로직
+        weatherView.rx.tapGesture().when(.recognized)
+            .bind(with: self) { owner, _ in
+                let viewController = WeatherAttributionPopupViewController()
+                viewController.modalPresentationStyle = .overFullScreen
+                viewController.modalTransitionStyle = .crossDissolve
+                owner.present(viewController, animated: true)
+            }
+            .disposed(by: disposeBag)
     }
     
     private func configureView() {
