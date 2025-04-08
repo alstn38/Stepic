@@ -797,6 +797,23 @@
         }
       }
     },
+    "searchPlaceholder" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search by location, title, or content"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "위치, 제목, 내용을 검색해보세요"
+          }
+        }
+      }
+    },
     "selectDateTitle" : {
       "extractionState" : "manual",
       "localizations" : {
