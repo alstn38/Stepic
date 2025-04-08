@@ -18,18 +18,20 @@ final class WalkSummaryViewController: UIViewController {
     private let viewWillAppearRelay = PublishRelay<Void>()
     private let disposeBag = DisposeBag()
     
-    private lazy var dataSource = RxCollectionViewSectionedReloadDataSource<WalkSummarySection>(
-        configureCell: { _, collectionView, indexPath, item in
+    private lazy var walkSummaryCollectionDataSource = UICollectionViewDiffableDataSource<WalkSummarySection, WalkDiaryEntity>(
+        collectionView: walkSummaryCollectionView,
+        cellProvider: { collectionView, indexPath, itemIdentifier in
             guard let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: WalkSummaryCollectionViewCell.identifier,
                 for: indexPath
             ) as? WalkSummaryCollectionViewCell else { return UICollectionViewCell() }
-
-            cell.configureView(item)
+            
+            cell.configureView(itemIdentifier)
             return cell
         }
     )
     
+    private let searchBar = UISearchBar()
     private lazy var walkSummaryCollectionView = UICollectionView(frame: .zero, collectionViewLayout: configureCollectionViewLayout())
     
     init(viewModel: WalkSummaryViewModel) {
@@ -59,22 +61,31 @@ final class WalkSummaryViewController: UIViewController {
     
     private func configureBind() {
         let input = WalkSummaryViewModel.Input(
-            viewWillAppear: viewWillAppearRelay.asObservable()
+            viewWillAppear: viewWillAppearRelay.asObservable(),
+            searchTextDidChange: searchBar.rx.text.orEmpty.asObservable(),
+            diaryDataDidTap: walkSummaryCollectionView.rx.itemSelected.asObservable()
         )
         
         let output = viewModel.transform(from: input)
         
-        output.walkDiaryData
-            .map { [WalkSummarySection(items: $0)] }
-            .drive(walkSummaryCollectionView.rx.items(dataSource: dataSource))
+        output.filteredWalkDiaryData
+            .drive(with: self) { owner, data in
+                owner.updateSnapshot(data: data)
+            }
             .disposed(by: disposeBag)
         
-        /// 뷰 내부 로직
-        walkSummaryCollectionView.rx.modelSelected(WalkDiaryEntity.self)
-            .bind(with: self) { owner, diaryData in
+        output.moveToDetailView
+            .drive(with: self) { owner, diaryData in
                 let viewModel = DetailViewModel(detailViewType: .viewer(walkDiary: diaryData))
                 let viewController = DetailViewController(viewModel: viewModel)
                 owner.navigationController?.pushViewController(viewController, animated: true)
+            }
+            .disposed(by: disposeBag)
+        
+        /// 뷰 내부 로직
+        searchBar.rx.searchButtonClicked
+            .bind(with: self) { owner, _ in
+                owner.searchBar.resignFirstResponder()
             }
             .disposed(by: disposeBag)
     }
@@ -82,7 +93,13 @@ final class WalkSummaryViewController: UIViewController {
     private func configureView() {
         view.backgroundColor = .backgroundPrimary
         
+        searchBar.placeholder = .StringLiterals.WalkSummary.searchPlaceholder
+        searchBar.searchBarStyle = .minimal
+        searchBar.returnKeyType = .done
+        searchBar.enablesReturnKeyAutomatically = false
+        
         walkSummaryCollectionView.backgroundColor = .backgroundPrimary
+        walkSummaryCollectionView.keyboardDismissMode = .onDrag
         walkSummaryCollectionView.showsVerticalScrollIndicator = false
         walkSummaryCollectionView.register(
             WalkSummaryCollectionViewCell.self,
@@ -91,13 +108,30 @@ final class WalkSummaryViewController: UIViewController {
     }
     
     private func configureHierarchy() {
-        view.addSubview(walkSummaryCollectionView)
+        view.addSubviews(
+            searchBar,
+            walkSummaryCollectionView
+        )
     }
     
     private func configureLayout() {
-        walkSummaryCollectionView.snp.makeConstraints {
-            $0.edges.equalTo(view.safeAreaLayoutGuide)
+        searchBar.snp.makeConstraints {
+            $0.top.equalTo(view.safeAreaLayoutGuide)
+            $0.horizontalEdges.equalToSuperview()
+            $0.height.equalTo(44)
         }
+        
+        walkSummaryCollectionView.snp.makeConstraints {
+            $0.top.equalTo(searchBar.snp.bottom)
+            $0.horizontalEdges.bottom.equalTo(view.safeAreaLayoutGuide)
+        }
+    }
+    
+    private func updateSnapshot(data: [WalkDiaryEntity]) {
+        var snapshot = NSDiffableDataSourceSnapshot<WalkSummarySection, WalkDiaryEntity>()
+        snapshot.appendSections(WalkSummarySection.allCases)
+        snapshot.appendItems(data, toSection: .main)
+        walkSummaryCollectionDataSource.apply(snapshot)
     }
     
     private func configureCollectionViewLayout() -> UICollectionViewLayout {
@@ -122,6 +156,7 @@ final class WalkSummaryViewController: UIViewController {
         
         let sectionLayout = NSCollectionLayoutSection(group: groupLayout)
         sectionLayout.interGroupSpacing = 24
+        sectionLayout.contentInsets = NSDirectionalEdgeInsets(top: 24, leading: 0, bottom: 0, trailing: 0)
         
         let layout = UICollectionViewCompositionalLayout(section: sectionLayout)
         return layout
