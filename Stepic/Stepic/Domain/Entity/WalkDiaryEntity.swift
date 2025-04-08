@@ -35,6 +35,16 @@ struct WalkDiaryEntity: Identifiable {
     let thumbnailImage: UIImage
 }
 
+extension WalkDiaryEntity: Hashable {
+    static func == (lhs: WalkDiaryEntity, rhs: WalkDiaryEntity) -> Bool {
+        return lhs.id == rhs.id
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+}
+
 extension WalkDiaryEntity {
     
     func changeBookMark(_ isBookmark: Bool) -> WalkDiaryEntity {
