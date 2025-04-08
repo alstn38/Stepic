@@ -1222,6 +1222,23 @@
         }
       }
     },
+    "weatherInfoSource" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Weather information in Stepic is provided based on Apple Weather data."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stepic의 날씨 정보는 Apple Weather 데이터를 기반으로 제공됩니다."
+          }
+        }
+      }
+    },
     "weatherTitle" : {
       "extractionState" : "manual",
       "localizations" : {

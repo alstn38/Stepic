@@ -19,6 +19,8 @@ extension String {
     enum StringLiterals {
         enum Common {
             static let unknown: String = localized("unknown")
+            static let weatherInfoSource: String = localized("weatherInfoSource")
+            static let genericAlertConfirm: String = localized("genericAlertConfirm")
         }
         
         enum TabBar {
