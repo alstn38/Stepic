@@ -49,6 +49,13 @@ final class RecordView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func configureViewerMode() {
+        titleTextField.isUserInteractionEnabled = false
+        contentTextView.isEditable = false
+        contentTextView.isSelectable = true
+        contentTextView.isScrollEnabled = true
+    }
+    
     func configureView(_ data: WalkRecordInfoEntity) {
         emotionButtonArray[data.emotion?.rawValue ?? 0].configuration?.baseForegroundColor = .textPrimary
         titleTextField.text = data.title

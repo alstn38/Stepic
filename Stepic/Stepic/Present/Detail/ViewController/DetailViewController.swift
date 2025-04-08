@@ -115,7 +115,7 @@ final class DetailViewController: UIViewController {
                 case .create:
                     break
                 case .viewer:
-                    owner.recordView.isUserInteractionEnabled = false
+                    owner.recordView.configureViewerMode()
                     owner.recordButton.isHidden = true
                     owner.navigationItem.rightBarButtonItems?.insert(owner.moreButton, at: 0)
                 }
