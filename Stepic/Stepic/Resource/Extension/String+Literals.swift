@@ -131,6 +131,7 @@ extension String {
         
         enum WalkSummary {
             static let searchPlaceholder: String = localized("searchPlaceholder")
+            static let summaryEmptyTitle: String = localized("summaryEmptyTitle")
         }
     }
 }

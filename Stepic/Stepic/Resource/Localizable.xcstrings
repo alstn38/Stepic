@@ -916,6 +916,23 @@
         }
       }
     },
+    "summaryEmptyTitle" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "There are no walks to show."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "기록된 산책이 없습니다."
+          }
+        }
+      }
+    },
     "tapBarHomeTitle" : {
       "extractionState" : "manual",
       "localizations" : {
