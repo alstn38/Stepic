@@ -7,16 +7,13 @@
 
 import UIKit
 
+import ReactorKit
 import RxCocoa
-import RxDataSources
-import RxSwift
 import SnapKit
 
-final class WalkSummaryViewController: UIViewController {
+final class WalkSummaryViewController: UIViewController, View {
     
-    private let viewModel: WalkSummaryViewModel
-    private let viewWillAppearRelay = PublishRelay<Void>()
-    private let disposeBag = DisposeBag()
+    var disposeBag = DisposeBag()
     
     private lazy var walkSummaryCollectionDataSource = UICollectionViewDiffableDataSource<WalkSummarySection, WalkDiaryEntity>(
         collectionView: walkSummaryCollectionView,
@@ -32,11 +29,11 @@ final class WalkSummaryViewController: UIViewController {
     )
     
     private let searchBar = UISearchBar()
-    private lazy var walkSummaryCollectionView = UICollectionView(frame: .zero, collectionViewLayout: configureCollectionViewLayout())
+    private let walkSummaryCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
     
-    init(viewModel: WalkSummaryViewModel) {
-        self.viewModel = viewModel
+    init(reactor: WalkSummaryReactor) {
         super.init(nibName: nil, bundle: nil)
+        self.reactor = reactor
     }
     
     @available(*, unavailable)
@@ -47,45 +44,48 @@ final class WalkSummaryViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        configureBind()
         configureView()
         configureHierarchy()
         configureLayout()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        viewWillAppearRelay.accept(())
+    func bind(reactor: WalkSummaryReactor) {
+        bindAction(reactor)
+        bindState(reactor)
     }
     
-    private func configureBind() {
-        let input = WalkSummaryViewModel.Input(
-            viewWillAppear: viewWillAppearRelay.asObservable(),
-            searchTextDidChange: searchBar.rx.text.orEmpty.asObservable(),
-            diaryDataDidTap: walkSummaryCollectionView.rx.itemSelected.asObservable()
-        )
+    private func bindAction(_ reactor: WalkSummaryReactor) {
+        rx.methodInvoked(#selector(viewWillAppear(_:)))
+            .map { _ in Reactor.Action.viewWillAppear }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
         
-        let output = viewModel.transform(from: input)
+        searchBar.rx.text.orEmpty
+            .throttle(.milliseconds(300), scheduler: MainScheduler.instance)
+            .map { Reactor.Action.searchTextChanged($0) }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
         
-        output.filteredWalkDiaryData
-            .drive(with: self) { owner, data in
+        walkSummaryCollectionView.rx.itemSelected
+            .map { Reactor.Action.diaryItemSelected($0) }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+    }
+    
+    private func bindState(_ reactor: WalkSummaryReactor) {
+        reactor.state
+            .map { $0.filteredData }
+            .bind(with: self) { owner, data in
                 owner.updateSnapshot(data: data)
             }
             .disposed(by: disposeBag)
         
-        output.moveToDetailView
-            .drive(with: self) { owner, diaryData in
+        reactor.pulse(\.$selectedDiary)
+            .compactMap { $0 }
+            .bind(with: self) { owner, diaryData in
                 let viewModel = DetailViewModel(detailViewType: .viewer(walkDiary: diaryData))
                 let viewController = DetailViewController(viewModel: viewModel)
                 owner.navigationController?.pushViewController(viewController, animated: true)
-            }
-            .disposed(by: disposeBag)
-        
-        /// 뷰 내부 로직
-        searchBar.rx.searchButtonClicked
-            .bind(with: self) { owner, _ in
-                owner.searchBar.resignFirstResponder()
             }
             .disposed(by: disposeBag)
     }
@@ -101,6 +101,7 @@ final class WalkSummaryViewController: UIViewController {
         walkSummaryCollectionView.backgroundColor = .backgroundPrimary
         walkSummaryCollectionView.keyboardDismissMode = .onDrag
         walkSummaryCollectionView.showsVerticalScrollIndicator = false
+        walkSummaryCollectionView.collectionViewLayout = configureCollectionViewLayout()
         walkSummaryCollectionView.register(
             WalkSummaryCollectionViewCell.self,
             forCellWithReuseIdentifier: WalkSummaryCollectionViewCell.identifier
