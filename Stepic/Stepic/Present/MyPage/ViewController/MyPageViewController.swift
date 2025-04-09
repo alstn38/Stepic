@@ -81,8 +81,8 @@ final class MyPageViewController: UIViewController {
         
         output.moveToSummaryView
             .drive(with: self) { owner, type in
-                let viewModel = WalkSummaryViewModel(viewType: type)
-                let viewController = WalkSummaryViewController(viewModel: viewModel)
+                let reactor = WalkSummaryReactor(viewType: type)
+                let viewController = WalkSummaryViewController(reactor: reactor)
                 owner.navigationController?.pushViewController(viewController, animated: true)
             }
             .disposed(by: disposeBag)
