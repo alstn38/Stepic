@@ -7,16 +7,6 @@
 
 import Foundation
 
-import RxDataSources
-
-struct WalkSummarySection {
-    var items: [WalkDiaryEntity]
-}
-
-extension WalkSummarySection: SectionModelType {
-    
-    init(original: WalkSummarySection, items: [WalkDiaryEntity]) {
-        self = original
-        self.items = items
-    }
+enum WalkSummarySection: CaseIterable {
+    case main
 }

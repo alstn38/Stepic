@@ -7,34 +7,37 @@
 
 import UIKit
 
+import ReactorKit
 import RxCocoa
-import RxDataSources
-import RxSwift
 import SnapKit
 
-final class WalkSummaryViewController: UIViewController {
+final class WalkSummaryViewController: UIViewController, View {
     
-    private let viewModel: WalkSummaryViewModel
-    private let viewWillAppearRelay = PublishRelay<Void>()
-    private let disposeBag = DisposeBag()
+    var disposeBag = DisposeBag()
     
-    private lazy var dataSource = RxCollectionViewSectionedReloadDataSource<WalkSummarySection>(
-        configureCell: { _, collectionView, indexPath, item in
+    private lazy var walkSummaryCollectionDataSource = UICollectionViewDiffableDataSource<WalkSummarySection, WalkDiaryEntity>(
+        collectionView: walkSummaryCollectionView,
+        cellProvider: { collectionView, indexPath, itemIdentifier in
             guard let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: WalkSummaryCollectionViewCell.identifier,
                 for: indexPath
             ) as? WalkSummaryCollectionViewCell else { return UICollectionViewCell() }
-
-            cell.configureView(item)
+            
+            cell.configureView(itemIdentifier)
             return cell
         }
     )
     
-    private lazy var walkSummaryCollectionView = UICollectionView(frame: .zero, collectionViewLayout: configureCollectionViewLayout())
+    private let searchBar = UISearchBar()
+    private let walkSummaryCollectionView = UICollectionView(
+        frame: .zero,
+        collectionViewLayout: UICollectionViewLayout()
+    )
+    private let noResultLabel = UILabel()
     
-    init(viewModel: WalkSummaryViewModel) {
-        self.viewModel = viewModel
+    init(reactor: WalkSummaryReactor) {
         super.init(nibName: nil, bundle: nil)
+        self.reactor = reactor
     }
     
     @available(*, unavailable)
@@ -45,32 +48,50 @@ final class WalkSummaryViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        configureBind()
         configureView()
         configureHierarchy()
         configureLayout()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        viewWillAppearRelay.accept(())
+    func bind(reactor: WalkSummaryReactor) {
+        bindAction(reactor)
+        bindState(reactor)
     }
     
-    private func configureBind() {
-        let input = WalkSummaryViewModel.Input(
-            viewWillAppear: viewWillAppearRelay.asObservable()
-        )
-        
-        let output = viewModel.transform(from: input)
-        
-        output.walkDiaryData
-            .map { [WalkSummarySection(items: $0)] }
-            .drive(walkSummaryCollectionView.rx.items(dataSource: dataSource))
+    private func bindAction(_ reactor: WalkSummaryReactor) {
+        rx.methodInvoked(#selector(viewWillAppear(_:)))
+            .map { _ in Reactor.Action.viewWillAppear }
+            .bind(to: reactor.action)
             .disposed(by: disposeBag)
         
-        /// 뷰 내부 로직
-        walkSummaryCollectionView.rx.modelSelected(WalkDiaryEntity.self)
+        searchBar.rx.text.orEmpty
+            .throttle(.milliseconds(300), scheduler: MainScheduler.instance)
+            .map { Reactor.Action.searchTextChanged($0) }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        walkSummaryCollectionView.rx.itemSelected
+            .map { Reactor.Action.diaryItemSelected($0) }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+    }
+    
+    private func bindState(_ reactor: WalkSummaryReactor) {
+        reactor.state
+            .map { $0.filteredData }
+            .bind(with: self) { owner, data in
+                owner.updateSnapshot(data: data)
+            }
+            .disposed(by: disposeBag)
+        
+        reactor.state
+            .map { $0.isHiddenResultLabel }
+            .distinctUntilChanged()
+            .bind(to: noResultLabel.rx.isHidden)
+            .disposed(by: disposeBag)
+        
+        reactor.pulse(\.$selectedDiary)
+            .compactMap { $0 }
             .bind(with: self) { owner, diaryData in
                 let viewModel = DetailViewModel(detailViewType: .viewer(walkDiary: diaryData))
                 let viewController = DetailViewController(viewModel: viewModel)
@@ -82,22 +103,56 @@ final class WalkSummaryViewController: UIViewController {
     private func configureView() {
         view.backgroundColor = .backgroundPrimary
         
+        searchBar.placeholder = .StringLiterals.WalkSummary.searchPlaceholder
+        searchBar.searchBarStyle = .minimal
+        searchBar.returnKeyType = .done
+        searchBar.enablesReturnKeyAutomatically = false
+        
         walkSummaryCollectionView.backgroundColor = .backgroundPrimary
+        walkSummaryCollectionView.keyboardDismissMode = .onDrag
         walkSummaryCollectionView.showsVerticalScrollIndicator = false
+        walkSummaryCollectionView.collectionViewLayout = configureCollectionViewLayout()
         walkSummaryCollectionView.register(
             WalkSummaryCollectionViewCell.self,
             forCellWithReuseIdentifier: WalkSummaryCollectionViewCell.identifier
         )
+        
+        noResultLabel.text = .StringLiterals.WalkSummary.summaryEmptyTitle
+        noResultLabel.textColor = .textSecondary
+        noResultLabel.font = .bodyRegular
+        noResultLabel.textAlignment = .center
     }
     
     private func configureHierarchy() {
-        view.addSubview(walkSummaryCollectionView)
+        view.addSubviews(
+            searchBar,
+            walkSummaryCollectionView,
+            noResultLabel
+        )
     }
     
     private func configureLayout() {
-        walkSummaryCollectionView.snp.makeConstraints {
-            $0.edges.equalTo(view.safeAreaLayoutGuide)
+        searchBar.snp.makeConstraints {
+            $0.top.equalTo(view.safeAreaLayoutGuide)
+            $0.horizontalEdges.equalToSuperview()
+            $0.height.equalTo(44)
         }
+        
+        walkSummaryCollectionView.snp.makeConstraints {
+            $0.top.equalTo(searchBar.snp.bottom)
+            $0.horizontalEdges.bottom.equalTo(view.safeAreaLayoutGuide)
+        }
+        
+        noResultLabel.snp.makeConstraints {
+            $0.center.equalTo(walkSummaryCollectionView)
+        }
+    }
+    
+    private func updateSnapshot(data: [WalkDiaryEntity]) {
+        var snapshot = NSDiffableDataSourceSnapshot<WalkSummarySection, WalkDiaryEntity>()
+        snapshot.appendSections(WalkSummarySection.allCases)
+        snapshot.appendItems(data, toSection: .main)
+        walkSummaryCollectionDataSource.apply(snapshot)
     }
     
     private func configureCollectionViewLayout() -> UICollectionViewLayout {
@@ -122,6 +177,7 @@ final class WalkSummaryViewController: UIViewController {
         
         let sectionLayout = NSCollectionLayoutSection(group: groupLayout)
         sectionLayout.interGroupSpacing = 24
+        sectionLayout.contentInsets = NSDirectionalEdgeInsets(top: 24, leading: 0, bottom: 0, trailing: 0)
         
         let layout = UICollectionViewCompositionalLayout(section: sectionLayout)
         return layout

@@ -128,5 +128,10 @@ extension String {
             static let appInfoSectionTitle: String = localized("appInfoSectionTitle")
             static let versionLabel: String = localized("versionLabel")
         }
+        
+        enum WalkSummary {
+            static let searchPlaceholder: String = localized("searchPlaceholder")
+            static let summaryEmptyTitle: String = localized("summaryEmptyTitle")
+        }
     }
 }

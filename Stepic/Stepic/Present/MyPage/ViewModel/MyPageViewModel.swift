@@ -23,7 +23,7 @@ final class MyPageViewModel: InputOutputModel {
     struct Output {
         let selectedDate: Driver<YearMonth>
         let myPageInfoItems: Driver<MyPageInfoViewItem>
-        let moveToSummaryView: Driver<WalkSummaryViewModel.WalkSummaryViewType>
+        let moveToSummaryView: Driver<WalkSummaryReactor.WalkSummaryViewType>
         let emotionStaticData: Driver<[EmotionCount]>
         let durationChartData: Driver<[DurationChartPoint]>
         let distanceChartData: Driver<[DistanceChartPoint]>
@@ -42,7 +42,7 @@ final class MyPageViewModel: InputOutputModel {
     func transform(from input: Input) -> Output {
         let selectedDateRelay = BehaviorRelay<YearMonth>(value: getTodayDate())
         let myPageInfoItemsRelay = BehaviorRelay<MyPageInfoViewItem>(value: MyPageInfoViewItem.dummy())
-        let moveToSummaryViewRelay = PublishRelay<WalkSummaryViewModel.WalkSummaryViewType>()
+        let moveToSummaryViewRelay = PublishRelay<WalkSummaryReactor.WalkSummaryViewType>()
         let emotionStaticDataRelay = BehaviorRelay<[EmotionCount]>(value: [])
         let durationChartDataRelay = BehaviorRelay<[DurationChartPoint]>(value: [])
         let distanceChartDataRelay = BehaviorRelay<[DistanceChartPoint]>(value: [])
@@ -75,18 +75,18 @@ final class MyPageViewModel: InputOutputModel {
             .disposed(by: disposeBag)
         
         input.totalWalkButtonDidTap
-            .map { WalkSummaryViewModel.WalkSummaryViewType.entire }
+            .map { WalkSummaryReactor.WalkSummaryViewType.entire }
             .bind(to: moveToSummaryViewRelay)
             .disposed(by: disposeBag)
         
         input.monthWalkButtonDidTap
             .withLatestFrom(selectedDateRelay)
-            .map { WalkSummaryViewModel.WalkSummaryViewType.monthly(select: $0) }
+            .map { WalkSummaryReactor.WalkSummaryViewType.monthly(select: $0) }
             .bind(to: moveToSummaryViewRelay)
             .disposed(by: disposeBag)
         
         input.bookmarkButtonDidTap
-            .map { WalkSummaryViewModel.WalkSummaryViewType.bookMark }
+            .map { WalkSummaryReactor.WalkSummaryViewType.bookMark }
             .bind(to: moveToSummaryViewRelay)
             .disposed(by: disposeBag)
         
