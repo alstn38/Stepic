@@ -21,11 +21,13 @@ final class WalkSummaryReactor: Reactor {
         case setOriginalData([WalkDiaryEntity])
         case setFilteredData([WalkDiaryEntity])
         case setSelectedDiary(WalkDiaryEntity)
+        case setHiddenResultLabel(Bool)
     }
     
     struct State {
         var originalData: [WalkDiaryEntity] = []
         var filteredData: [WalkDiaryEntity] = []
+        var isHiddenResultLabel: Bool = true
         @Pulse var selectedDiary: WalkDiaryEntity?
     }
     
@@ -54,7 +56,12 @@ final class WalkSummaryReactor: Reactor {
             case .bookMark:
                 records = walkRecordRepository.fetchBookmarked()
             }
-            return Observable.just(.setOriginalData(records))
+            
+            let shouldHiddenLabel = !records.isEmpty
+            return Observable.concat([
+                .just(.setOriginalData(records)),
+                .just(.setHiddenResultLabel(shouldHiddenLabel))
+            ])
             
         case .searchTextChanged(let query):
             let lowercasedQuery = query.lowercased()
@@ -95,6 +102,9 @@ final class WalkSummaryReactor: Reactor {
             
         case .setSelectedDiary(let diary):
             newState.selectedDiary = diary
+            
+        case .setHiddenResultLabel(let isHidden):
+            newState.isHiddenResultLabel = isHidden
         }
         return newState
     }

@@ -29,7 +29,11 @@ final class WalkSummaryViewController: UIViewController, View {
     )
     
     private let searchBar = UISearchBar()
-    private let walkSummaryCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
+    private let walkSummaryCollectionView = UICollectionView(
+        frame: .zero,
+        collectionViewLayout: UICollectionViewLayout()
+    )
+    private let noResultLabel = UILabel()
     
     init(reactor: WalkSummaryReactor) {
         super.init(nibName: nil, bundle: nil)
@@ -80,6 +84,12 @@ final class WalkSummaryViewController: UIViewController, View {
             }
             .disposed(by: disposeBag)
         
+        reactor.state
+            .map { $0.isHiddenResultLabel }
+            .distinctUntilChanged()
+            .bind(to: noResultLabel.rx.isHidden)
+            .disposed(by: disposeBag)
+        
         reactor.pulse(\.$selectedDiary)
             .compactMap { $0 }
             .bind(with: self) { owner, diaryData in
@@ -106,12 +116,18 @@ final class WalkSummaryViewController: UIViewController, View {
             WalkSummaryCollectionViewCell.self,
             forCellWithReuseIdentifier: WalkSummaryCollectionViewCell.identifier
         )
+        
+        noResultLabel.text = .StringLiterals.WalkSummary.summaryEmptyTitle
+        noResultLabel.textColor = .textSecondary
+        noResultLabel.font = .bodyRegular
+        noResultLabel.textAlignment = .center
     }
     
     private func configureHierarchy() {
         view.addSubviews(
             searchBar,
-            walkSummaryCollectionView
+            walkSummaryCollectionView,
+            noResultLabel
         )
     }
     
@@ -125,6 +141,10 @@ final class WalkSummaryViewController: UIViewController, View {
         walkSummaryCollectionView.snp.makeConstraints {
             $0.top.equalTo(searchBar.snp.bottom)
             $0.horizontalEdges.bottom.equalTo(view.safeAreaLayoutGuide)
+        }
+        
+        noResultLabel.snp.makeConstraints {
+            $0.center.equalTo(walkSummaryCollectionView)
         }
     }
     
