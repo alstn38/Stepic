@@ -18,6 +18,7 @@
 		F1A408B82D9577BE00947B9F /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = F1A408B72D9577BE00947B9F /* SnapKit */; };
 		F1EDF35C2D9D65AB00B8CD5F /* YPImagePicker in Frameworks */ = {isa = PBXBuildFile; productRef = F1EDF35B2D9D65AB00B8CD5F /* YPImagePicker */; };
 		F1EDF3682D9D6EC300B8CD5F /* RxDataSources in Frameworks */ = {isa = PBXBuildFile; productRef = F1EDF3672D9D6EC300B8CD5F /* RxDataSources */; };
+		F1FE102D2DA5633C00473ED5 /* ReactorKit in Frameworks */ = {isa = PBXBuildFile; productRef = F1FE102C2DA5633C00473ED5 /* ReactorKit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -66,6 +67,7 @@
 			files = (
 				F19FF8692D944A4E00098615 /* RxSwift in Frameworks */,
 				F1A408B52D9577A300947B9F /* FSCalendar in Frameworks */,
+				F1FE102D2DA5633C00473ED5 /* ReactorKit in Frameworks */,
 				F17442FF2D9976D30089D8AE /* RxGesture in Frameworks */,
 				F1EDF3682D9D6EC300B8CD5F /* RxDataSources in Frameworks */,
 				F19FF8672D944A4E00098615 /* RxCocoa in Frameworks */,
@@ -127,6 +129,7 @@
 				F1EDF35B2D9D65AB00B8CD5F /* YPImagePicker */,
 				F1EDF3672D9D6EC300B8CD5F /* RxDataSources */,
 				F151BD8B2D9E4E3800C1D0FA /* Toast */,
+				F1FE102C2DA5633C00473ED5 /* ReactorKit */,
 			);
 			productName = Stepic;
 			productReference = F19FF8432D9447B700098615 /* Stepic.app */;
@@ -167,6 +170,7 @@
 				F1EDF35A2D9D65AB00B8CD5F /* XCRemoteSwiftPackageReference "YPImagePicker" */,
 				F1EDF3662D9D6EC300B8CD5F /* XCRemoteSwiftPackageReference "RxDataSources" */,
 				F151BD8A2D9E4E3800C1D0FA /* XCRemoteSwiftPackageReference "Toast-Swift" */,
+				F1FE102B2DA5633C00473ED5 /* XCRemoteSwiftPackageReference "ReactorKit" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = F19FF8442D9447B700098615 /* Products */;
@@ -494,6 +498,14 @@
 				minimumVersion = 5.0.2;
 			};
 		};
+		F1FE102B2DA5633C00473ED5 /* XCRemoteSwiftPackageReference "ReactorKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ReactorKit/ReactorKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.2.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -546,6 +558,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = F1EDF3662D9D6EC300B8CD5F /* XCRemoteSwiftPackageReference "RxDataSources" */;
 			productName = RxDataSources;
+		};
+		F1FE102C2DA5633C00473ED5 /* ReactorKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F1FE102B2DA5633C00473ED5 /* XCRemoteSwiftPackageReference "ReactorKit" */;
+			productName = ReactorKit;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
