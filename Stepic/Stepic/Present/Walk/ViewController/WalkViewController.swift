@@ -152,6 +152,12 @@ final class WalkViewController: UIViewController {
                 owner.present(viewController, animated: true)
             }
             .disposed(by: disposeBag)
+        
+        pauseButtonView.rx.tapGesture().when(.recognized)
+            .bind(with: self) { owner, _ in
+                AlertToastManager.showToastAtPresentedView(message: .StringLiterals.Toast.walkFinishHoldMessage)
+            }
+            .disposed(by: disposeBag)
     }
     
     private func configureView() {
