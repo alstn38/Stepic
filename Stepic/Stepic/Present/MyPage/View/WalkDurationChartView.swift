@@ -75,7 +75,8 @@ struct WalkDurationChartView: View {
                     }
                 }
             }
-            .frame(height: 100)
+            .frame(height: 130)
+            .padding(.bottom, 16)
         }
         .padding(.horizontal, 18)
         .padding(.vertical, 12)

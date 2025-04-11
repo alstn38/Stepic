@@ -54,6 +54,7 @@ final class RecordView: UIView {
         contentTextView.isEditable = false
         contentTextView.isSelectable = true
         contentTextView.isScrollEnabled = true
+        emotionStackView.isUserInteractionEnabled = false
     }
     
     func configureView(_ data: WalkRecordInfoEntity) {

@@ -208,7 +208,6 @@ final class MyPageViewController: UIViewController {
         walkDurationChartController.view.snp.makeConstraints {
             $0.top.equalTo(emotionBarChartController.view.snp.bottom).offset(10)
             $0.horizontalEdges.equalToSuperview().inset(22)
-            $0.height.equalTo(160)
         }
         
         distanceChartController.view.snp.makeConstraints {

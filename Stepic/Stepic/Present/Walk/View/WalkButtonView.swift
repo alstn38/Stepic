@@ -13,7 +13,6 @@ import SnapKit
 
 final class WalkButtonView: UIView {
     
-    let tapGesture = UITapGestureRecognizer()
     var longTapGesture: Observable<Void> {
         return logTapGestureSubject.asObserver()
     }
@@ -85,8 +84,6 @@ final class WalkButtonView: UIView {
             buttonImageView.image = buttonImage
             buttonImageView.contentMode = .scaleAspectFit
             buttonImageView.tintColor = .white
-        } else {
-            self.addGestureRecognizer(tapGesture)
         }
         
         buttonImageView.image = buttonImage
