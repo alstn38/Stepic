@@ -53,6 +53,7 @@ final class DefaultLocationService: NSObject, LocationService {
     
     /// 이동중에 위치를 요청하는 메서드 위치 연결을 해제하지 않는다.
     func getCurrentTrackingLocation() async throws -> CLLocation {
+        locationManager.startUpdatingLocation()
         return try await currentLocation
             .take(1)
             .asSingle()
