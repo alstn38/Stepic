@@ -37,7 +37,7 @@ struct WalkDiaryEntity: Identifiable {
 
 extension WalkDiaryEntity: Hashable {
     static func == (lhs: WalkDiaryEntity, rhs: WalkDiaryEntity) -> Bool {
-        return lhs.id == rhs.id
+        return lhs.id == rhs.id && lhs.isBookmarked == rhs.isBookmarked
     }
 
     func hash(into hasher: inout Hasher) {
