@@ -35,10 +35,19 @@ final class DateFormatManager {
         return timeFormatter.string(from: date)
     }
     
+    /// 시, 분, 초 DateComponentsFormatter
     func formattedDurationTime(from timeInterval: TimeInterval) -> String {
         let formatter = DateComponentsFormatter()
         formatter.unitsStyle = .abbreviated
         formatter.allowedUnits = [.hour, .minute, .second]
+        return formatter.string(from: timeInterval) ?? "No Data"
+    }
+    
+    /// 시, 분 DateComponentsFormatter
+    func formattedDurationHourMinTime(from timeInterval: TimeInterval) -> String {
+        let formatter = DateComponentsFormatter()
+        formatter.unitsStyle = .abbreviated
+        formatter.allowedUnits = [.hour, .minute]
         return formatter.string(from: timeInterval) ?? "No Data"
     }
     
