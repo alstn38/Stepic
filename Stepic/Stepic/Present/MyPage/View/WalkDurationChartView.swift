@@ -62,7 +62,7 @@ struct WalkDurationChartView: View {
                             .position(x: x, y: y)
 
                         if point.isMax {
-                            Text(DateFormatManager.shared.formattedDurationTime(from: point.duration))
+                            Text(DateFormatManager.shared.formattedDurationHourMinTime(from: point.duration))
                                 .font(.caption2)
                                 .foregroundColor(.textPrimary)
                                 .position(x: x, y: y - 14)
@@ -77,6 +77,7 @@ struct WalkDurationChartView: View {
             }
             .frame(height: 130)
             .padding(.bottom, 16)
+            .padding(.horizontal, 12)
         }
         .padding(.horizontal, 18)
         .padding(.vertical, 12)
