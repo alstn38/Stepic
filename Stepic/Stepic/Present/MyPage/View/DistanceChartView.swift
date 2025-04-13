@@ -77,6 +77,7 @@ struct DistanceChartView: View {
             }
             .frame(height: 130)
             .padding(.bottom, 16)
+            .padding(.horizontal, 12)
         }
         .padding(.horizontal, 18)
         .padding(.vertical, 12)

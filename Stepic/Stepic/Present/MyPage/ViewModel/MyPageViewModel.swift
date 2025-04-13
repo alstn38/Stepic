@@ -186,7 +186,7 @@ final class MyPageViewModel: InputOutputModel {
         }
     }
     
-    func createDurationChartPoints(
+    private func createDurationChartPoints(
         from diaryList: [WalkDiaryEntity],
         for yearMonth: YearMonth
     ) -> [DurationChartPoint] {
@@ -205,19 +205,19 @@ final class MyPageViewModel: InputOutputModel {
         }
 
         let maxDuration = durationByDay.values.max() ?? 0
-
+        
         let result = durationByDay.map { (day, duration) in
             DurationChartPoint(
                 day: day,
-                duration: duration / 60,
+                duration: duration,
                 isMax: duration == maxDuration
             )
         }
-
+        
         return result.sorted { $0.day < $1.day }
     }
     
-    func createDistanceChartPoints(
+    private func createDistanceChartPoints(
         from diaryList: [WalkDiaryEntity],
         for yearMonth: YearMonth
     ) -> [DistanceChartPoint] {
@@ -244,7 +244,7 @@ final class MyPageViewModel: InputOutputModel {
                 isMax: distance == maxDistance
             )
         }
-
+        
         return result.sorted { $0.day < $1.day }
     }
 }
