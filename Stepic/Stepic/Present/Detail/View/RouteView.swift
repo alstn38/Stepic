@@ -119,7 +119,9 @@ extension RouteView: MKMapViewDelegate {
         if annotation is MKUserLocation { return nil }
         
         if let photoAnnotation = annotation as? PhotoAnnotation {
-            var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: PhotoAnnotationView.identifier)
+            var annotationView = mapView.dequeueReusableAnnotationView(
+                withIdentifier: PhotoAnnotationView.identifier
+            )
             
             if annotationView == nil {
                 annotationView = PhotoAnnotationView(
@@ -129,6 +131,28 @@ extension RouteView: MKMapViewDelegate {
             } else {
                 annotationView?.annotation = photoAnnotation
             }
+            
+            return annotationView
+        }
+        
+        if let routeAnnotation = annotation as? RoutePointAnnotation {
+            var annotationView = mapView.dequeueReusableAnnotationView(
+                withIdentifier: RoutePointAnnotation.identifier
+            ) as? MKMarkerAnnotationView
+            
+            if annotationView == nil {
+                annotationView = MKMarkerAnnotationView(
+                    annotation: annotation,
+                    reuseIdentifier: RoutePointAnnotation.identifier
+                )
+                annotationView?.canShowCallout = false
+                annotationView?.titleVisibility = .visible
+            }
+            
+            annotationView?.markerTintColor = routeAnnotation.markerColor
+            annotationView?.glyphImage = routeAnnotation.glyphSystemImage
+            annotationView?.glyphTintColor = .white
+            annotationView?.annotation = annotation
             
             return annotationView
         }
