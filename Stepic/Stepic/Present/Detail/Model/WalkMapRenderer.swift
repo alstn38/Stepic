@@ -23,6 +23,8 @@ final class WalkMapRenderer {
 
         let region = regionForCoordinates(pathCoordinates)
         mapView.setRegion(region, animated: false)
+        
+        renderStartAndEndAnnotations(on: mapView, pathCoordinates: pathCoordinates)
     }
     
     /// 사진 애노테이션을 MapView에 추가하는 메서드
@@ -70,5 +72,15 @@ final class WalkMapRenderer {
         cachedRegion = MKCoordinateRegion(center: center, span: span)
 
         return MKCoordinateRegion(center: center, span: span)
+    }
+    
+    /// 출발지 도착지 Annotation 생성하는 메서드
+    private func renderStartAndEndAnnotations(on mapView: MKMapView, pathCoordinates: [CLLocationCoordinate2D]) {
+        guard let start = pathCoordinates.first, let end = pathCoordinates.last else { return }
+
+        let startAnnotation = RoutePointAnnotation(coordinate: start, type: .start)
+        let endAnnotation = RoutePointAnnotation(coordinate: end, type: .end)
+
+        mapView.addAnnotations([startAnnotation, endAnnotation])
     }
 }

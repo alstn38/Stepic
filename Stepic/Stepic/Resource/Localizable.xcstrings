@@ -1137,6 +1137,23 @@
         }
       }
     },
+    "walkDepartureTitle" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Start Point"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "출발지"
+          }
+        }
+      }
+    },
     "walkDistanceTitle" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -1184,6 +1201,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "산책의 감정을 남겨주세요."
+          }
+        }
+      }
+    },
+    "walkEndLocationTitle" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "End Point"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "도착지"
           }
         }
       }
