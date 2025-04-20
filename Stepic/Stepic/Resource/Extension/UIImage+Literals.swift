@@ -72,4 +72,8 @@ extension UIImage {
     static var ellipsis: UIImage {
         return UIImage(systemName: "ellipsis")!
     }
+    
+    static var flagPatternCheckered: UIImage {
+        return UIImage(systemName: "flag.pattern.checkered")!
+    }
 }
