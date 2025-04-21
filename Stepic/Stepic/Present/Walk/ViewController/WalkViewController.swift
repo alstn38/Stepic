@@ -73,6 +73,12 @@ final class WalkViewController: UIViewController {
         configureLayout()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        setTracking()
+    }
+    
     private func configureBind() {
         let startTrigger = PublishRelay<Void>()
         let didAddPhotoRelay = PublishRelay<[WalkPhotoEntity]>()
@@ -156,6 +162,28 @@ final class WalkViewController: UIViewController {
         pauseButtonView.rx.tapGesture().when(.recognized)
             .bind(with: self) { owner, _ in
                 AlertToastManager.showToastAtPresentedView(message: .StringLiterals.Toast.walkFinishHoldMessage)
+            }
+            .disposed(by: disposeBag)
+    }
+    
+    private func setTracking() {
+        Tracking.logScreen(name: Tracking.Screen.walk, from: self)
+        
+        albumButtonView.rx.tapGesture().when(.recognized)
+            .bind { _ in
+                Tracking.logEvent(Tracking.Event.pickPhotoFromAlbum)
+            }
+            .disposed(by: disposeBag)
+        
+        cameraButtonView.rx.tapGesture().when(.recognized)
+            .bind { _ in
+                Tracking.logEvent(Tracking.Event.takePhoto)
+            }
+            .disposed(by: disposeBag)
+        
+        pauseButtonView.longTapGesture
+            .bind { _ in
+                Tracking.logEvent(Tracking.Event.longPressToStop)
             }
             .disposed(by: disposeBag)
     }
