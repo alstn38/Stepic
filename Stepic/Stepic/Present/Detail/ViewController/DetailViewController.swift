@@ -113,8 +113,10 @@ final class DetailViewController: UIViewController {
             .drive(with: self) { owner, viewMode in
                 switch viewMode {
                 case .create:
+                    Tracking.logScreen(name: Tracking.Screen.walkRecord, from: self)
                     break
                 case .viewer:
+                    Tracking.logScreen(name: Tracking.Screen.walkDetail, from: self)
                     owner.recordView.configureViewerMode()
                     owner.recordButton.isHidden = true
                     owner.navigationItem.rightBarButtonItems?.insert(owner.moreButton, at: 0)
