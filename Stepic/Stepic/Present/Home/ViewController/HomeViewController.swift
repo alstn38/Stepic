@@ -82,6 +82,12 @@ final class HomeViewController: UIViewController {
         viewWillAppearRelay.accept(())
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        setTracking()
+    }
+    
     private func configureBind() {
         let selectDateDidChangeRelay = PublishRelay<YearMonth>()
         
@@ -157,6 +163,7 @@ final class HomeViewController: UIViewController {
             .bind(with: self) { owner, _ in
                 let monthPicker = MonthPickerViewController() { selected in
                     selectDateDidChangeRelay.accept(selected)
+                    Tracking.logEvent(Tracking.Event.mainChangeMonth)
                 }
                 
                 monthPicker.modalPresentationStyle = .pageSheet
@@ -186,6 +193,28 @@ final class HomeViewController: UIViewController {
                 viewController.modalPresentationStyle = .overFullScreen
                 viewController.modalTransitionStyle = .crossDissolve
                 owner.present(viewController, animated: true)
+            }
+            .disposed(by: disposeBag)
+    }
+    
+    private func setTracking() {
+        Tracking.logScreen(name: Tracking.Screen.main, from: self)
+        
+        recordButton.rx.tap
+            .bind { _ in
+                Tracking.logEvent(Tracking.Event.startWalk)
+            }
+            .disposed(by: disposeBag)
+        
+        calendarDidSelectRelay
+            .bind { _ in
+                Tracking.logEvent(Tracking.Event.tapCalendarEmoji)
+            }
+            .disposed(by: disposeBag)
+        
+        recordCollectionView.rx.itemSelected
+            .bind { _ in
+                Tracking.logEvent(Tracking.Event.tapMainWalkPreview)
             }
             .disposed(by: disposeBag)
     }
