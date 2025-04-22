@@ -18,10 +18,25 @@
 		F1A408B12D956E3B00947B9F /* RealmSwift in Embed Frameworks */ = {isa = PBXBuildFile; productRef = F1A408AF2D956D8700947B9F /* RealmSwift */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		F1A408B52D9577A300947B9F /* FSCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = F1A408B42D9577A300947B9F /* FSCalendar */; };
 		F1A408B82D9577BE00947B9F /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = F1A408B72D9577BE00947B9F /* SnapKit */; };
+		F1C81A332DB7C2480007D059 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1C81A322DB7C2480007D059 /* WidgetKit.framework */; };
+		F1C81A352DB7C2480007D059 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1C81A342DB7C2480007D059 /* SwiftUI.framework */; };
+		F1C81A432DB7C24B0007D059 /* StepicWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = F1C81A302DB7C2480007D059 /* StepicWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		F1C81A4D2DB7C4670007D059 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = F1C81A4C2DB7C4670007D059 /* RealmSwift */; };
+		F1C81A4E2DB7C4670007D059 /* RealmSwift in Embed Frameworks */ = {isa = PBXBuildFile; productRef = F1C81A4C2DB7C4670007D059 /* RealmSwift */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		F1EDF35C2D9D65AB00B8CD5F /* YPImagePicker in Frameworks */ = {isa = PBXBuildFile; productRef = F1EDF35B2D9D65AB00B8CD5F /* YPImagePicker */; };
 		F1EDF3682D9D6EC300B8CD5F /* RxDataSources in Frameworks */ = {isa = PBXBuildFile; productRef = F1EDF3672D9D6EC300B8CD5F /* RxDataSources */; };
 		F1FE102D2DA5633C00473ED5 /* ReactorKit in Frameworks */ = {isa = PBXBuildFile; productRef = F1FE102C2DA5633C00473ED5 /* ReactorKit */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		F1C81A402DB7C24A0007D059 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F19FF83B2D9447B700098615 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F1C81A2F2DB7C2480007D059;
+			remoteInfo = StepicWidgetExtension;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		F1A408B22D956E3B00947B9F /* Embed Frameworks */ = {
@@ -35,19 +50,72 @@
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		F1C81A422DB7C24B0007D059 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				F1C81A432DB7C24B0007D059 /* StepicWidgetExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F1C81A4F2DB7C4670007D059 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				F1C81A4E2DB7C4670007D059 /* RealmSwift in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		F19FF8432D9447B700098615 /* Stepic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Stepic.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F1C81A302DB7C2480007D059 /* StepicWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = StepicWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		F1C81A322DB7C2480007D059 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		F1C81A342DB7C2480007D059 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		F1C81A502DB7C5440007D059 /* StepicWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = StepicWidgetExtension.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		F1131F272DB7FF0E00E5BE14 /* Exceptions for "StepicWidget" folder in "Stepic" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Widget/WeeklyCalendar/WeeklyCalendarEntry.swift,
+				Widget/WeeklyCalendar/WeeklyCalendarWidgetView.swift,
+				Widget/WeeklyCalendar/WidgetCalendarTimelineProvider.swift,
+			);
+			target = F19FF8422D9447B700098615 /* Stepic */;
+		};
 		F19FF8552D9447B900098615 /* Exceptions for "Stepic" folder in "Stepic" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				"/Localized: Resource/Info.plist",
 			);
 			target = F19FF8422D9447B700098615 /* Stepic */;
+		};
+		F1C81A472DB7C24B0007D059 /* Exceptions for "StepicWidget" folder in "StepicWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Resource/Info.plist,
+			);
+			target = F1C81A2F2DB7C2480007D059 /* StepicWidgetExtension */;
+		};
+		F1C81A582DB7D67A0007D059 /* Exceptions for "Stepic" folder in "StepicWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Data/Common/StorageError.swift,
+				Data/DTO/Storage/WidgetCalendarObject.swift,
+				Data/Service/Storage/WidgetCalendarStorageService.swift,
+				"Resource/Extension/String+Literals.swift",
+				Resource/Localizable.xcstrings,
+			);
+			target = F1C81A2F2DB7C2480007D059 /* StepicWidgetExtension */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
@@ -56,8 +124,18 @@
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				F19FF8552D9447B900098615 /* Exceptions for "Stepic" folder in "Stepic" target */,
+				F1C81A582DB7D67A0007D059 /* Exceptions for "Stepic" folder in "StepicWidgetExtension" target */,
 			);
 			path = Stepic;
+			sourceTree = "<group>";
+		};
+		F1C81A362DB7C2480007D059 /* StepicWidget */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				F1131F272DB7FF0E00E5BE14 /* Exceptions for "StepicWidget" folder in "Stepic" target */,
+				F1C81A472DB7C24B0007D059 /* Exceptions for "StepicWidget" folder in "StepicWidgetExtension" target */,
+			);
+			path = StepicWidget;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -83,13 +161,26 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		F1C81A2D2DB7C2480007D059 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F1C81A4D2DB7C4670007D059 /* RealmSwift in Frameworks */,
+				F1C81A352DB7C2480007D059 /* SwiftUI.framework in Frameworks */,
+				F1C81A332DB7C2480007D059 /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		F19FF83A2D9447B700098615 = {
 			isa = PBXGroup;
 			children = (
+				F1C81A502DB7C5440007D059 /* StepicWidgetExtension.entitlements */,
 				F19FF8452D9447B700098615 /* Stepic */,
+				F1C81A362DB7C2480007D059 /* StepicWidget */,
+				F1C81A312DB7C2480007D059 /* Frameworks */,
 				F19FF8442D9447B700098615 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -98,8 +189,18 @@
 			isa = PBXGroup;
 			children = (
 				F19FF8432D9447B700098615 /* Stepic.app */,
+				F1C81A302DB7C2480007D059 /* StepicWidgetExtension.appex */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		F1C81A312DB7C2480007D059 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				F1C81A322DB7C2480007D059 /* WidgetKit.framework */,
+				F1C81A342DB7C2480007D059 /* SwiftUI.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -114,10 +215,12 @@
 				F19FF8412D9447B700098615 /* Resources */,
 				F1A408B22D956E3B00947B9F /* Embed Frameworks */,
 				F12BAA4B2DB6486F00D81CC3 /* Google Crashlytics */,
+				F1C81A422DB7C24B0007D059 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				F1C81A412DB7C24A0007D059 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				F19FF8452D9447B700098615 /* Stepic */,
@@ -142,6 +245,30 @@
 			productReference = F19FF8432D9447B700098615 /* Stepic.app */;
 			productType = "com.apple.product-type.application";
 		};
+		F1C81A2F2DB7C2480007D059 /* StepicWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F1C81A442DB7C24B0007D059 /* Build configuration list for PBXNativeTarget "StepicWidgetExtension" */;
+			buildPhases = (
+				F1C81A2C2DB7C2480007D059 /* Sources */,
+				F1C81A2D2DB7C2480007D059 /* Frameworks */,
+				F1C81A2E2DB7C2480007D059 /* Resources */,
+				F1C81A4F2DB7C4670007D059 /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				F1C81A362DB7C2480007D059 /* StepicWidget */,
+			);
+			name = StepicWidgetExtension;
+			packageProductDependencies = (
+				F1C81A4C2DB7C4670007D059 /* RealmSwift */,
+			);
+			productName = StepicWidgetExtension;
+			productReference = F1C81A302DB7C2480007D059 /* StepicWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -149,11 +276,14 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1620;
+				LastSwiftUpdateCheck = 1630;
 				LastUpgradeCheck = 1630;
 				TargetAttributes = {
 					F19FF8422D9447B700098615 = {
 						CreatedOnToolsVersion = 16.2;
+					};
+					F1C81A2F2DB7C2480007D059 = {
+						CreatedOnToolsVersion = 16.3;
 					};
 				};
 			};
@@ -186,12 +316,20 @@
 			projectRoot = "";
 			targets = (
 				F19FF8422D9447B700098615 /* Stepic */,
+				F1C81A2F2DB7C2480007D059 /* StepicWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		F19FF8412D9447B700098615 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F1C81A2E2DB7C2480007D059 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -234,7 +372,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		F1C81A2C2DB7C2480007D059 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		F1C81A412DB7C24A0007D059 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F1C81A2F2DB7C2480007D059 /* StepicWidgetExtension */;
+			targetProxy = F1C81A402DB7C24A0007D059 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		F19FF8572D9447B900098615 /* Debug */ = {
@@ -436,6 +589,71 @@
 			};
 			name = Release;
 		};
+		F1C81A452DB7C24B0007D059 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = StepicWidgetExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = StepicWidget/Resource/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = StepicWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.alstn38.Stepic.StepicWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		F1C81A462DB7C24B0007D059 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = StepicWidgetExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = StepicWidget/Resource/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = StepicWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.alstn38.Stepic.StepicWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -453,6 +671,15 @@
 			buildConfigurations = (
 				F19FF8572D9447B900098615 /* Debug */,
 				F19FF8582D9447B900098615 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F1C81A442DB7C24B0007D059 /* Build configuration list for PBXNativeTarget "StepicWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F1C81A452DB7C24B0007D059 /* Debug */,
+				F1C81A462DB7C24B0007D059 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -600,6 +827,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = F1A408B62D9577BE00947B9F /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
+		};
+		F1C81A4C2DB7C4670007D059 /* RealmSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F1A408AE2D956D8700947B9F /* XCRemoteSwiftPackageReference "realm-swift" */;
+			productName = RealmSwift;
 		};
 		F1EDF35B2D9D65AB00B8CD5F /* YPImagePicker */ = {
 			isa = XCSwiftPackageProductDependency;
