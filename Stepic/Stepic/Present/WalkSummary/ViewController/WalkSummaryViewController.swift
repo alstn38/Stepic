@@ -53,6 +53,12 @@ final class WalkSummaryViewController: UIViewController, View {
         configureLayout()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        setTracking()
+    }
+    
     func bind(reactor: WalkSummaryReactor) {
         bindAction(reactor)
         bindState(reactor)
@@ -96,6 +102,22 @@ final class WalkSummaryViewController: UIViewController, View {
                 let viewModel = DetailViewModel(detailViewType: .viewer(walkDiary: diaryData))
                 let viewController = DetailViewController(viewModel: viewModel)
                 owner.navigationController?.pushViewController(viewController, animated: true)
+            }
+            .disposed(by: disposeBag)
+    }
+    
+    private func setTracking() {
+        Tracking.logScreen(name: Tracking.Screen.walkCollection, from: self)
+        
+        searchBar.rx.textDidBeginEditing
+            .bind { _ in
+                Tracking.logEvent(Tracking.Event.searchWalk)
+            }
+            .disposed(by: disposeBag)
+        
+        walkSummaryCollectionView.rx.itemSelected
+            .bind { _ in
+                Tracking.logEvent(Tracking.Event.tapSummaryWalkPreview)
             }
             .disposed(by: disposeBag)
     }

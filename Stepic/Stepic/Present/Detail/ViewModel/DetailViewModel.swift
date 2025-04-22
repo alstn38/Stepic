@@ -98,6 +98,7 @@ final class DetailViewModel: InputOutputModel {
             .bind(with: self) { owner, _ in
                 var newState = owner.bookMarkStateRelay.value
                 newState.toggle()
+                Tracking.logEvent(Tracking.Event.toggleBookmark)
                 
                 switch owner.detailViewType {
                 case .create:
@@ -268,6 +269,15 @@ final class DetailViewModel: InputOutputModel {
                         thumbnailImage: routeViewImage
                     )
                     try owner.walkRecordRepository.save(entity: newData)
+                    Tracking.logEvent(Tracking.Event.saveRecord)
+                    Tracking.logEvent(Tracking.Event.selectEmotion, parameters: [
+                        Tracking.Event.selectEmotion: owner.walkRecordInfoData.emotion?.rawValue ?? 0
+                    ])
+                    
+                    if !owner.walkRecordInfoData.content.isEmpty {
+                        Tracking.logEvent(Tracking.Event.editContent)
+                    }
+                    
                     dismissToRootRelay.accept(())
                 } catch {
                     presentAlertRelay.accept((

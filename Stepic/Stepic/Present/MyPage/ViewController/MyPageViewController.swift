@@ -54,6 +54,12 @@ final class MyPageViewController: UIViewController {
         viewWillAppearRelay.accept(())
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        setTracking()
+    }
+    
     private func configureBind() {
         let selectDateDidChangeRelay = PublishRelay<YearMonth>()
         
@@ -109,6 +115,7 @@ final class MyPageViewController: UIViewController {
         myPageInfoView.calendarButton.rx.tap
             .bind(with: self) { owner, _ in
                 let monthPicker = MonthPickerViewController() { selected in
+                    Tracking.logEvent(Tracking.Event.myPageChangeMonth)
                     selectDateDidChangeRelay.accept(selected)
                 }
                 
@@ -129,6 +136,28 @@ final class MyPageViewController: UIViewController {
             .bind(with: self) { owner, _ in
                 let viewController = SettingsViewController()
                 owner.navigationController?.pushViewController(viewController, animated: true)
+            }
+            .disposed(by: disposeBag)
+    }
+    
+    private func setTracking() {
+        Tracking.logScreen(name: Tracking.Screen.myPage, from: self)
+        
+        myPageInfoView.totalWalkButton.rx.tapGesture().when(.recognized)
+            .bind { _ in
+                Tracking.logEvent(Tracking.Event.tapTotalWalks)
+            }
+            .disposed(by: disposeBag)
+        
+        myPageInfoView.monthWalkButton.rx.tapGesture().when(.recognized)
+            .bind { _ in
+                Tracking.logEvent(Tracking.Event.tapMonthlyWalks)
+            }
+            .disposed(by: disposeBag)
+        
+        myPageInfoView.bookmarkButton.rx.tapGesture().when(.recognized)
+            .bind { _ in
+                Tracking.logEvent(Tracking.Event.tapBookmarkedWalks)
             }
             .disposed(by: disposeBag)
     }
