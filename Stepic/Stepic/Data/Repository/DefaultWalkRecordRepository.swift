@@ -7,18 +7,22 @@
 
 import UIKit
 import CoreLocation
+import WidgetKit
 
 final class DefaultWalkRecordRepository: WalkRecordRepository {
     
     private let storageService: WalkRecordStorageService
     private let fileStorageService: ImageFileStorageService
+    private let widgetCalendarService: WidgetCalendarWritableStorageService
     
     init(
         storageService: WalkRecordStorageService = DIContainer.shared.resolve(WalkRecordStorageService.self),
-        fileStorageService: ImageFileStorageService = DIContainer.shared.resolve(ImageFileStorageService.self)
+        fileStorageService: ImageFileStorageService = DIContainer.shared.resolve(ImageFileStorageService.self),
+        widgetCalendarService: WidgetCalendarWritableStorageService = DIContainer.shared.resolve(WidgetCalendarWritableStorageService.self)
     ) {
         self.storageService = storageService
         self.fileStorageService = fileStorageService
+        self.widgetCalendarService = widgetCalendarService
     }
     
     func save(entity: WalkDiaryEntity) throws {
@@ -41,6 +45,7 @@ final class DefaultWalkRecordRepository: WalkRecordRepository {
         let startLocation = LocationObject(from: entity.startLocation)
         let endLocation = LocationObject(from: entity.endLocation)
         
+        /// 산책 데이터
         let record = WalkRecordObject(
             id: id,
             isBookmarked: entity.isBookmarked,
@@ -62,7 +67,20 @@ final class DefaultWalkRecordRepository: WalkRecordRepository {
             thumbnailImagePath: thumbnailPath
         )
         
-        try storageService.save(record)
+        /// 위젯 정보
+        let widgetObject = WidgetCalendarObject(
+            id: entity.id,
+            date: entity.startDate,
+            emotion: entity.emotion
+        )
+        
+        do {
+            try widgetCalendarService.save(widgetObject)
+            try storageService.save(record)
+            WidgetCenter.shared.reloadTimelines(ofKind: "StepicWidget")
+        } catch {
+            throw StorageError.realmSaveFailed
+        }
     }
     
     func updateBookmark(entity: WalkDiaryEntity) throws {
@@ -106,7 +124,9 @@ final class DefaultWalkRecordRepository: WalkRecordRepository {
         }
         
         do {
+            try widgetCalendarService.delete(by: entity.id)
             try storageService.delete(by: entity.id)
+            WidgetCenter.shared.reloadTimelines(ofKind: "StepicWidget")
         } catch {
             throw StorageError.realmDeleteFailed
         }
