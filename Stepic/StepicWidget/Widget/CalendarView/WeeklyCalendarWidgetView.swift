@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct WeeklyCalendarWidgetView: View {
-    let entry: WeeklyCalendarEntry
+    let entry: CalendarEntry
 
     private let imageNames = [
         "loveEmoji", "happyEmoji", "neutralEmoji",
@@ -35,7 +35,7 @@ struct WeeklyCalendarWidgetView: View {
             HStack(spacing: 8) {
                 ForEach(0..<7, id: \.self) { index in
                     VStack {
-                        if let emotionIndex = entry.dayEmotions[index],
+                        if let emotionIndex = entry.weeklyEmotions[index],
                            emotionIndex < imageNames.count {
                             Image(imageNames[emotionIndex])
                                 .resizable()
