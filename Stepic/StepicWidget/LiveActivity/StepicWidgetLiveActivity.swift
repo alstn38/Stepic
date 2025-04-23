@@ -5,9 +5,9 @@
 //  Created by 강민수 on 4/22/25.
 //
 
-import ActivityKit
-import WidgetKit
-import SwiftUI
+//import ActivityKit
+//import WidgetKit
+//import SwiftUI
 
 //struct StepicWidgetAttributes: ActivityAttributes {
 //    public struct ContentState: Codable, Hashable {
