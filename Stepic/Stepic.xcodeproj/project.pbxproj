@@ -86,9 +86,13 @@
 		F1131F272DB7FF0E00E5BE14 /* Exceptions for "StepicWidget" folder in "Stepic" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Widget/WeeklyCalendar/WeeklyCalendarEntry.swift,
-				Widget/WeeklyCalendar/WeeklyCalendarWidgetView.swift,
-				Widget/WeeklyCalendar/WidgetCalendarTimelineProvider.swift,
+				Widget/CalendarView/MonthlyCalendarGridView.swift,
+				Widget/CalendarView/MonthlyCalendarSmallView.swift,
+				Widget/CalendarView/WeeklyCalendarWidgetView.swift,
+				Widget/Model/CalendarEntry.swift,
+				Widget/Model/DayItem.swift,
+				Widget/StepicWidget/StepicWidgetEntryView.swift,
+				Widget/StepicWidget/WidgetCalendarTimelineProvider.swift,
 			);
 			target = F19FF8422D9447B700098615 /* Stepic */;
 		};
@@ -602,7 +606,7 @@
 				INFOPLIST_FILE = StepicWidget/Resource/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = StepicWidget;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -634,7 +638,7 @@
 				INFOPLIST_FILE = StepicWidget/Resource/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = StepicWidget;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
