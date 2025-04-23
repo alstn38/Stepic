@@ -1323,6 +1323,40 @@
           }
         }
       }
+    },
+    "widgetDescription" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "View your weekly or monthly emotions as a widget."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "일주일 또는 한 달 감정을 위젯으로 확인해보세요."
+          }
+        }
+      }
+    },
+    "widgetDisplayName" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stepic Walk Calendar"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stepic 산책 캘린더"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"

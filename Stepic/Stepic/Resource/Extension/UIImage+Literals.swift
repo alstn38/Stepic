@@ -46,7 +46,11 @@ extension UIImage {
     }
     
     static var photoBadgePlus: UIImage {
-        return UIImage(systemName: "photo.badge.plus")!
+        if #available(iOS 17.0, *) {
+            return UIImage(systemName: "photo.badge.plus")!
+        } else {
+            return UIImage(systemName: "photo")!
+        }
     }
     
     static var gearShape: UIImage {
@@ -74,6 +78,10 @@ extension UIImage {
     }
     
     static var flagPatternCheckered: UIImage {
-        return UIImage(systemName: "flag.pattern.checkered")!
+        if #available(iOS 18.0, *) {
+            return UIImage(systemName: "flag.pattern.checkered")!
+        } else {
+            return UIImage(systemName: "flag.fill")!
+        }
     }
 }
