@@ -38,7 +38,7 @@ extension AppDelegate {
         DIContainer.shared.register(GeocoderService.self, dependency: DefaultGeocoderService())
         DIContainer.shared.register(WalkRecordStorageService.self, dependency: DefaultWalkRecordStorageService())
         DIContainer.shared.register(ImageFileStorageService.self, dependency: DefaultImageFileStorageService())
-        
+        DIContainer.shared.register(WidgetCalendarWritableStorageService.self, dependency: DefaultWidgetCalendarStorageService())
         
         /// Repository
         DIContainer.shared.register(WeatherLocationRepository.self, dependency: DefaultWeatherLocationRepository())
