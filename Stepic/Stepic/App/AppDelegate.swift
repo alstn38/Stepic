@@ -17,6 +17,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     ) -> Bool {
         register()
         FirebaseApp.configure()
+        WidgetMigrationService.migrateDataToWidgetRealm()
         return true
     }
 
