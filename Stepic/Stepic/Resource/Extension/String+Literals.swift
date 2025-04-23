@@ -135,5 +135,10 @@ extension String {
             static let searchPlaceholder: String = localized("searchPlaceholder")
             static let summaryEmptyTitle: String = localized("summaryEmptyTitle")
         }
+        
+        enum Widget {
+            static let widgetDisplayName: String = localized("widgetDisplayName")
+            static let widgetDescription: String = localized("widgetDescription")
+        }
     }
 }
