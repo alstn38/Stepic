@@ -22,7 +22,6 @@
 		F1C81A352DB7C2480007D059 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1C81A342DB7C2480007D059 /* SwiftUI.framework */; };
 		F1C81A432DB7C24B0007D059 /* StepicWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = F1C81A302DB7C2480007D059 /* StepicWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		F1C81A4D2DB7C4670007D059 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = F1C81A4C2DB7C4670007D059 /* RealmSwift */; };
-		F1C81A4E2DB7C4670007D059 /* RealmSwift in Embed Frameworks */ = {isa = PBXBuildFile; productRef = F1C81A4C2DB7C4670007D059 /* RealmSwift */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		F1EDF35C2D9D65AB00B8CD5F /* YPImagePicker in Frameworks */ = {isa = PBXBuildFile; productRef = F1EDF35B2D9D65AB00B8CD5F /* YPImagePicker */; };
 		F1EDF3682D9D6EC300B8CD5F /* RxDataSources in Frameworks */ = {isa = PBXBuildFile; productRef = F1EDF3672D9D6EC300B8CD5F /* RxDataSources */; };
 		F1FE102D2DA5633C00473ED5 /* ReactorKit in Frameworks */ = {isa = PBXBuildFile; productRef = F1FE102C2DA5633C00473ED5 /* ReactorKit */; };
@@ -59,17 +58,6 @@
 				F1C81A432DB7C24B0007D059 /* StepicWidgetExtension.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		F1C81A4F2DB7C4670007D059 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				F1C81A4E2DB7C4670007D059 /* RealmSwift in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -256,7 +244,6 @@
 				F1C81A2C2DB7C2480007D059 /* Sources */,
 				F1C81A2D2DB7C2480007D059 /* Frameworks */,
 				F1C81A2E2DB7C2480007D059 /* Resources */,
-				F1C81A4F2DB7C4670007D059 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -345,7 +332,6 @@
 /* Begin PBXShellScriptBuildPhase section */
 		F12BAA4B2DB6486F00D81CC3 /* Google Crashlytics */ = {
 			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
