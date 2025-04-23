@@ -218,8 +218,8 @@
 				F19FF8402D9447B700098615 /* Frameworks */,
 				F19FF8412D9447B700098615 /* Resources */,
 				F1A408B22D956E3B00947B9F /* Embed Frameworks */,
-				F12BAA4B2DB6486F00D81CC3 /* Google Crashlytics */,
 				F1C81A422DB7C24B0007D059 /* Embed Foundation Extensions */,
+				F12BAA4B2DB6486F00D81CC3 /* Google Crashlytics */,
 			);
 			buildRules = (
 			);
