@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CoreLocation
 
 final class KalmanFilterManager {
     // 프로세스 노이즈 (시스템의 불확실성, 작을수록 추정값에 더 의존)
@@ -45,5 +46,49 @@ final class KalmanFilterManager {
         p = (1 - K) * p
         
         return x
+    }
+    
+    /// GPS 정확도와 속도 정보를 기반으로 R, Q를 동적으로 조정한 후 필터를 업데이트합니다.
+    func update(measurement: Double, accuracy: CLLocationAccuracy, speed: CLLocationSpeed) -> Double {
+        updateR(basedOn: accuracy)
+        updateQ(basedOn: speed)
+        print("speed = \(speed)")
+        print("accuracy = \(accuracy)")
+        
+        // 예측 단계
+        p = p + Q
+        
+        // 업데이트 단계
+        K = p / (p + R)
+        x = x + K * (measurement - x)
+        p = (1 - K) * p
+        
+        return x
+    }
+    
+    /// GPS 수평 정확도를 기준으로 R(측정 노이즈) 조정
+    private func updateR(basedOn accuracy: CLLocationAccuracy) {
+        switch accuracy {
+        case ..<5:
+            R = 0.01  // 매우 정확할 때는 센서 값을 강하게 반영
+        case 5..<10:
+            R = 0.05
+        default:
+            R = 0.1   // 정확도가 낮을수록 센서 신뢰도 낮춤
+        }
+    }
+
+    /// 사용자 속도를 기준으로 Q(프로세스 노이즈) 조정
+    private func updateQ(basedOn speed: CLLocationSpeed) {
+        switch speed {
+        case ..<1.0:
+            Q = 0.005  // 정지 상태에 가까움 → 변화 거의 없음
+        case 1.0..<3.0:
+            Q = 0.01   // 일반적인 걷기
+        case 3.0..<6.0:
+            Q = 0.02   // 빠르게 걷기 또는 조깅
+        default:
+            Q = 0.05   // 달리기 이상 → 추정에 더 민감하게 반응
+        }
     }
 }
