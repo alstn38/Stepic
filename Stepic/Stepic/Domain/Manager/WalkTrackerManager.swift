@@ -73,8 +73,20 @@ final class DefaultWalkTrackerManager: WalkTrackerManager {
                 }
                 
                 /// 측정값에 칼만 필터 적용하여 보정된 값 계산
-                let filteredLat = self.kalmanFilterLat?.update(measurement: location.coordinate.latitude) ?? location.coordinate.latitude
-                let filteredLon = self.kalmanFilterLon?.update(measurement: location.coordinate.longitude) ?? location.coordinate.longitude
+                let accuracy = location.horizontalAccuracy
+                let speed = location.speed
+
+                let filteredLat = self.kalmanFilterLat?.update(
+                    measurement: location.coordinate.latitude,
+                    accuracy: accuracy,
+                    speed: speed
+                ) ?? location.coordinate.latitude
+
+                let filteredLon = self.kalmanFilterLon?.update(
+                    measurement: location.coordinate.longitude,
+                    accuracy: accuracy,
+                    speed: speed
+                ) ?? location.coordinate.longitude
                 
                 /// 보정된 좌표를 사용하여 새로운 CLLocation 생성
                 let filteredLocation = CLLocation(latitude: filteredLat, longitude: filteredLon)
