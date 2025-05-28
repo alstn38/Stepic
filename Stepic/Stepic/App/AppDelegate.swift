@@ -47,6 +47,7 @@ extension AppDelegate {
         
         /// Manager
         DIContainer.shared.register(LocationPermissionManager.self, dependency: DefaultLocationPermissionManager())
+        DIContainer.shared.register(MotionActivityManager.self, dependency: DefaultMotionActivityManager())
         DIContainer.shared.register(WalkTrackerManager.self, dependency: DefaultWalkTrackerManager())
     }
 }
