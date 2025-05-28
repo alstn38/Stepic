@@ -24,6 +24,7 @@ final class DefaultWalkTrackerManager: WalkTrackerManager {
     
     private let locationService: LocationService
     private let geocoderService: GeocoderService
+    private let motionActivityManager: MotionActivityManager
     
     private var kalmanFilterLat: KalmanFilterManager?
     private var kalmanFilterLon: KalmanFilterManager?
@@ -42,72 +43,35 @@ final class DefaultWalkTrackerManager: WalkTrackerManager {
     
     init(
         locationService: LocationService = DIContainer.shared.resolve(LocationService.self),
-        geocoderService: GeocoderService = DIContainer.shared.resolve(GeocoderService.self)
+        geocoderService: GeocoderService = DIContainer.shared.resolve(GeocoderService.self),
+        motionActivityManager: MotionActivityManager = DIContainer.shared.resolve(MotionActivityManager.self)
     ) {
         self.locationService = locationService
         self.geocoderService = geocoderService
+        self.motionActivityManager = motionActivityManager
     }
     
     func startTracking() {
         startTime = Date()
         locationService.startUpdatingLocation()
+        motionActivityManager.startMonitoring()
         
-        locationService.currentLocation
-            .subscribe { [weak self] location in
-                guard let self = self else { return }
-                
-                /// 첫 위치 측정 시 칼만 필터 초기화 (위도, 경도 각각)
-                if self.kalmanFilterLat == nil || self.kalmanFilterLon == nil {
-                    self.kalmanFilterLat = KalmanFilterManager(
-                        initialValue: location.coordinate.latitude,
-                        initialError: 1.0,
-                        processNoise: 0.01,
-                        measurementNoise: 0.1
-                    )
-                    self.kalmanFilterLon = KalmanFilterManager(
-                        initialValue: location.coordinate.longitude,
-                        initialError: 1.0,
-                        processNoise: 0.01,
-                        measurementNoise: 0.1
-                    )
-                }
-                
-                /// 측정값에 칼만 필터 적용하여 보정된 값 계산
-                let accuracy = location.horizontalAccuracy
-                let speed = location.speed
-
-                let filteredLat = self.kalmanFilterLat?.update(
-                    measurement: location.coordinate.latitude,
-                    accuracy: accuracy,
-                    speed: speed
-                ) ?? location.coordinate.latitude
-
-                let filteredLon = self.kalmanFilterLon?.update(
-                    measurement: location.coordinate.longitude,
-                    accuracy: accuracy,
-                    speed: speed
-                ) ?? location.coordinate.longitude
-                
-                /// 보정된 좌표를 사용하여 새로운 CLLocation 생성
-                let filteredLocation = CLLocation(latitude: filteredLat, longitude: filteredLon)
-                
-                /// 경로 좌표 배열에 보정된 위치 추가
-                self.pathCoordinates.append(filteredLocation.coordinate)
-                
-                /// 이전 위치와의 거리 계산하여 누적
-                if let prev = self.previousLocation {
-                    let addedDistance = filteredLocation.distance(from: prev)
-                    self.totalDistanceRelay.accept(self.totalDistanceRelay.value + addedDistance)
-                }
-                
-                /// 다음 업데이트를 위한 이전 위치 갱신
-                self.previousLocation = filteredLocation
-            }
-            .disposed(by: disposeBag)
+        Observable.combineLatest(
+            locationService.currentLocation,
+            motionActivityManager.isUserMoving
+        )
+        .subscribe { [weak self] location, isUserMoving in
+            guard let self = self else { return }
+            self.processLocationUpdate(location: location, isUserMoving: isUserMoving)
+        }
+        .disposed(by: disposeBag)
     }
     
     func stopTracking() async throws -> WalkTrackingEntity {
-        defer { locationService.stopUpdatingLocation() }
+        defer {
+            locationService.stopUpdatingLocation()
+            motionActivityManager.stopMonitoring()
+        }
         
         endTime = Date()
         
@@ -144,5 +108,57 @@ final class DefaultWalkTrackerManager: WalkTrackerManager {
     
     func getCurrentTrackingLocation() async throws -> CLLocation {
         return try await locationService.getCurrentTrackingLocation()
+    }
+    
+    private func processLocationUpdate(location: CLLocation, isUserMoving: Bool) {
+        /// 첫 위치 측정 시 칼만 필터 초기화 (위도, 경도 각각)
+        if self.kalmanFilterLat == nil || self.kalmanFilterLon == nil {
+            self.kalmanFilterLat = KalmanFilterManager(
+                initialValue: location.coordinate.latitude,
+                initialError: 1.0,
+                processNoise: 0.01,
+                measurementNoise: 0.1
+            )
+            self.kalmanFilterLon = KalmanFilterManager(
+                initialValue: location.coordinate.longitude,
+                initialError: 1.0,
+                processNoise: 0.01,
+                measurementNoise: 0.1
+            )
+        }
+        
+        /// 측정값에 칼만 필터 적용하여 보정된 값 계산
+        let accuracy = location.horizontalAccuracy
+        let speed = location.speed
+
+        let filteredLat = self.kalmanFilterLat?.update(
+            measurement: location.coordinate.latitude,
+            accuracy: accuracy,
+            speed: speed
+        ) ?? location.coordinate.latitude
+
+        let filteredLon = self.kalmanFilterLon?.update(
+            measurement: location.coordinate.longitude,
+            accuracy: accuracy,
+            speed: speed
+        ) ?? location.coordinate.longitude
+        
+        /// 보정된 좌표를 사용하여 새로운 CLLocation 생성
+        let filteredLocation = CLLocation(latitude: filteredLat, longitude: filteredLon)
+        
+        /// 유저가 걷기, 달리기, 사이클, 이동수단 일때만 위치를 업데이트한다.
+        guard isUserMoving else { return }
+        
+        /// 경로 좌표 배열에 보정된 위치 추가
+        self.pathCoordinates.append(filteredLocation.coordinate)
+        
+        /// 이전 위치와의 거리 계산하여 누적
+        if let prev = self.previousLocation {
+            let addedDistance = filteredLocation.distance(from: prev)
+            self.totalDistanceRelay.accept(self.totalDistanceRelay.value + addedDistance)
+        }
+        
+        /// 다음 업데이트를 위한 이전 위치 갱신
+        self.previousLocation = filteredLocation
     }
 }
