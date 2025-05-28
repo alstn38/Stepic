@@ -11,3 +11,4 @@ NSMicrophoneUsageDescription = "Microphone access is needed to record videos wit
 NSPhotoLibraryUsageDescription = "Photo library access is needed to select and share special moments from your walk.";
 NSCameraUsageDescription = "Camera access is needed to capture special moments or scenes during your walk.";
 NSLocationAlwaysAndWhenInUseUsageDescription = "We need your location to record your walking route and provide weather and city information.";
+NSMotionUsageDescription = "Motion data is used to display your walking route more accurately.";
